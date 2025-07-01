@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const connection_str = process.env.MONGODB_CONNECTIONSTR;
-const dbName = 'hotelbookingdb';
+const dbName = 'database';
 
 const client = new MongoClient(connection_str);
 

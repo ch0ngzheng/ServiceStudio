@@ -22,12 +22,12 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 const { connect } = require('./Models/db'); 
-const bookingsRouter = require('./routes/bookings');
+const transRouter = require('./routes/transactions'); // Assuming you want to use transactions router
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/bookings', bookingsRouter);
+app.use('/api/transactions', transRouter);
 
 (async () => {
     try {
