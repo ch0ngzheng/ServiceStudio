@@ -27,7 +27,10 @@ const transRouter = require('./routes/transactions'); // Assuming you want to us
 app.use(cors());
 app.use(express.json());
 
+const predictionRouter = require('./routes/predict');
+
 app.use('/api/transactions', transRouter);
+app.use('/api/predict', predictionRouter);
 
 (async () => {
     try {
