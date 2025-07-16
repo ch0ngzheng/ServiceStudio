@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DBSHeader from '../components/layout/DBSHeader';
-import InvestmentBanner from '../components/home/InvestmentBanner';
+import DBSHeader from '../components/layout/DBSHeader1';
+import InvestmentBanner from '../components/home/InvestmentBanner2';
 import SmartShortcuts from '../components/home/SmartShortcuts';
 import AccountsSection from '../components/home/AccountsSection';
 import DigiPortfolio from '../components/home/DigiPortfolio';
@@ -31,20 +31,20 @@ const HomePage = () => {
 
   return (
     <div className="max-w-sm mx-auto bg-gray-50 min-h-screen pb-16">
-      {/* Header with Investment Banner inside */}
-      <div className="bg-red-600 text-white">
-        <DBSHeader 
-          balanceVisible={balanceVisible}
-          toggleBalance={toggleBalance}
-          onLogout={handleLogout}
-        />
+      
+      {/* Header + Banner Section - Layered */}
+      <div className="relative">
+        {/* DBSHeader overlaid on top */}
+        <div className="relative top-0 left-0 right-0 z-100">
+          <DBSHeader 
+            balanceVisible={balanceVisible}
+            toggleBalance={toggleBalance}
+            onLogout={handleLogout}
+          />
+        {/* Investment Banner as background */}
         <InvestmentBanner />
-        
-        {/* Last Login Info */}
-        <div className="px-4 pb-4">
-          <p className="text-xs text-red-100 text-left">
-            Last Login: 09 Jul 2025, 09:43 AM (SG)
-          </p>
+
+
         </div>
       </div>
       
