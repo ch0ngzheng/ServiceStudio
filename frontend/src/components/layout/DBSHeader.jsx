@@ -23,7 +23,7 @@ const DBSHeader = ({ balanceVisible, toggleBalance, onLogout }) => {
           
           <button 
             onClick={onLogout}
-            className="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm font-medium"
+            className="bg-dbs-red bg-opacity-20 px-3 py-1 rounded-full text-sm font-medium"
           >
             LOG OUT
           </button>
