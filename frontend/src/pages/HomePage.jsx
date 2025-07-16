@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DBSHeader from '../components/layout/DBSHeader1';
-import InvestmentBanner from '../components/home/InvestmentBanner';
+import InvestmentBanner from '../components/home/InvestmentBannerSavings';
 import SmartShortcuts from '../components/home/SmartShortcuts';
 import AccountsSection from '../components/home/AccountsSection';
 import DigiPortfolio from '../components/home/DigiPortfolio';
@@ -37,7 +37,7 @@ const HomePage = () => {
       {/* Header + Banner Section - Layered */}
       <div className="relative w-full h-80">
         <InvestmentBanner />
-          <div className="absolute top-0 left-0 right-0w-full z-30">
+          <div className="absolute top-0 left-0 right-0 w-full z-30">
           <DBSHeader 
             balanceVisible={balanceVisible}
             toggleBalance={toggleBalance}
