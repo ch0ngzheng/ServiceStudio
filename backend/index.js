@@ -26,6 +26,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
+const predictionRouter = require('./routes/predict');
+
 // Routes
 app.use('/api/transactions', transRouter);
 
