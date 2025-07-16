@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DBSHeader from '../components/layout/DBSHeader1';
-import InvestmentBanner from '../components/home/InvestmentBanner2';
+import InvestmentBanner from '../components/home/InvestmentBanner';
 import SmartShortcuts from '../components/home/SmartShortcuts';
 import AccountsSection from '../components/home/AccountsSection';
 import DigiPortfolio from '../components/home/DigiPortfolio';
 import BottomNavigation from '../components/layout/BottomNavigation';
+
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -29,22 +30,19 @@ const HomePage = () => {
     console.log('Tab changed to:', tabId);
   };
 
+
   return (
-    <div className="max-w-sm mx-auto bg-gray-50 min-h-screen pb-16">
+    <div className="bg-gray-50 min-h-screen pb-16">
       
       {/* Header + Banner Section - Layered */}
-      <div className="relative">
-        {/* DBSHeader overlaid on top */}
-        <div className="relative top-0 left-0 right-0 z-100">
+      <div className="relative w-full h-80">
+        <InvestmentBanner />
+          <div className="absolute top-0 left-0 right-0w-full z-30">
           <DBSHeader 
             balanceVisible={balanceVisible}
             toggleBalance={toggleBalance}
             onLogout={handleLogout}
           />
-        {/* Investment Banner as background */}
-        <InvestmentBanner />
-
-
         </div>
       </div>
       
@@ -63,4 +61,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HomePage; 

@@ -25,22 +25,11 @@ const DBSHeader = ({ balanceVisible, toggleBalance, onLogout }) => {
             className="p-1 hover:bg-white hover:bg-opacity-20 rounded transition-colors"
           >
             <img
-              src={balanceVisible ? "/assets/eye.png" : "/assets/eye.png"}
+              src={balanceVisible ? "/assets/eye.png" : "/assets/eye-off.png"}
               alt={balanceVisible ? "Hide balance" : "Show balance"}
-              className="w-5 h-5 drop-shadow-sm"
+              className="w-5 h-4 drop-shadow-sm"
             />
           </button>
-        </div>
-
-        {/* Center - 5 Months pay text */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-white drop-shadow-sm font-dbs">5 Months pay</span>
-          {/* Small mountain/triangle icon */}
-          <div className="flex items-end gap-0.5">
-            <div className="w-2 h-3 bg-yellow-400 rounded-sm drop-shadow-sm"></div>
-            <div className="w-2 h-4 bg-yellow-500 rounded-sm drop-shadow-sm"></div>
-            <div className="w-2 h-2 bg-yellow-300 rounded-sm drop-shadow-sm"></div>
-          </div>
         </div>
 
         {/* Right side - Help and Logout */}
@@ -57,7 +46,7 @@ const DBSHeader = ({ balanceVisible, toggleBalance, onLogout }) => {
           {/* LOG OUT button - using custom DBS colors */}
           <button 
             onClick={onLogout}
-            className="bg-gray-600 bg-opacity-20 px-3 py-1 rounded-full text-sm font-medium"
+            className="bg-gray-500 bg-opacity-20 justify-end px-4 py-1 rounded-full text-xs font-small w-30"
           >
             LOG OUT
           </button>
