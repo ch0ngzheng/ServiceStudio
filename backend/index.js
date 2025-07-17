@@ -22,15 +22,15 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 const { connect } = require('./Models/db'); 
-const transRouter = require('./routes/transactions'); // Assuming you want to use transactions router
 const loginRouter = require('./routes/login');
 
 app.use(cors());
 app.use(express.json());
 
 const predictionRouter = require('./routes/predict');
+const transactionsRouter = require('./routes/transactions');
 
-app.use('/api/transactions', transRouter);
+app.use('/api/transactions', transactionsRouter);
 app.use('/api/predict', predictionRouter);
 app.use('/api/login', loginRouter);
 
