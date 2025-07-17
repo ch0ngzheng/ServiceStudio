@@ -36,11 +36,11 @@ const HomePage = () => {
       <div className="relative">
         {/* DBSHeader overlaid on top */}
         <div className="relative top-0 left-0 right-0 z-100">
-          <DBSHeader 
+          {/* <DBSHeader 
             balanceVisible={balanceVisible}
             toggleBalance={toggleBalance}
             onLogout={handleLogout}
-          />
+          /> */}
         {/* Investment Banner as background */}
         <InvestmentBanner />
 
