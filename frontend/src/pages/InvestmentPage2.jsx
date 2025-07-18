@@ -34,7 +34,7 @@ const BottomNavigation = ({ activeTab = 'invest' }) => {
   );
 };
 
-function InvestmentPage() {
+function InvestmentPage2() {
   const [bgImgError, setBgImgError] = useState(false);
 
   return (
@@ -245,7 +245,7 @@ function InvestmentPage() {
               {/* Asia ETF Button - Positioned with absolute positioning */}
               <div className="relative w-full">
                 <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 125, height: 2, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 40, color: '#FDF0D5', fontSize: '16px', left: '70px', top: '-15px' }}>
-                  Asia ETF
+                  Unit Trusts
                 </button>
               </div>
             </div>
@@ -299,4 +299,4 @@ function InvestmentPage() {
   );
 }
 
-export default InvestmentPage;
+export default InvestmentPage2;

@@ -34,7 +34,7 @@ const BottomNavigation = ({ activeTab = 'invest' }) => {
   );
 };
 
-function InvestmentPage() {
+function InvestmentPage3() {
   const [bgImgError, setBgImgError] = useState(false);
 
   return (
@@ -242,10 +242,10 @@ function InvestmentPage() {
                 </div>
               </div>
 
-              {/* Asia ETF Button - Positioned with absolute positioning */}
+              {/* Income Portfolio Button - Increased width for single line */}
               <div className="relative w-full">
-                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 125, height: 2, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 40, color: '#FDF0D5', fontSize: '16px', left: '70px', top: '-15px' }}>
-                  Asia ETF
+                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 165, height: 28, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 30, color: '#FDF0D5', fontSize: '16px', left: '50px', top: '-15px' }}>
+                  Income Portfolio
                 </button>
               </div>
             </div>
@@ -299,4 +299,4 @@ function InvestmentPage() {
   );
 }
 
-export default InvestmentPage;
+export default InvestmentPage3;
