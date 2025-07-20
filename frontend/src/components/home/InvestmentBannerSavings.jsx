@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 
-const InvestmentBanner = () => {
+const InvestmentBanner = ({ userId }) => {
+  const navigate = useNavigate();
   const [bgImgError, setBgImgError] = useState(false);
 
   return (
@@ -85,7 +87,10 @@ const InvestmentBanner = () => {
       {/* Investing Button*/}
       <div className="absolute text-centre bottom-12 left-4 right-4 z-10">
         <div className="flex justify-start py-6">
-          <button className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-lg">
+          <button 
+            className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-lg" 
+            onClick={() => navigate(`/savings/${userId}`)}
+          >
               Start Investing
           </button>
         </div>

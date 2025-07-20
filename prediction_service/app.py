@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import joblib
 import numpy as np
 
 app = Flask(__name__)
+CORS(app)  # This will enable CORS for all routes
 
 # Load the trained models and scalers from the artifacts file
 # note: the probababilities that are output from the json file are in percentage. ie 0.8 = 0.8%

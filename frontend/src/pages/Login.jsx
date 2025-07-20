@@ -43,7 +43,11 @@ const LoginPage = () => {
         password: formData.password
       });
 
-      if (response.data.success) {  
+      if (response.data.success) {
+        // Store the recommended product in localStorage to make it accessible to other pages
+        if (response.data.recommendedProduct) {
+          localStorage.setItem('recommendedProduct', response.data.recommendedProduct);
+        }
         navigate(`/homePage/${formData.id}`);
       }
     } catch (error) {

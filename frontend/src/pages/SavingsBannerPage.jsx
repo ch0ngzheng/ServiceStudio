@@ -1,5 +1,6 @@
 import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 // Inline BottomNavigation to avoid import issues
 const BottomNavigation = ({ activeTab = 'invest' }) => {
@@ -34,8 +35,18 @@ const BottomNavigation = ({ activeTab = 'invest' }) => {
   );
 };
 
-function InvestmentPage3() {
+function InvestmentPage2() {
+  const { userId } = useParams(); // Assuming you get userId from the route
   const [bgImgError, setBgImgError] = useState(false);
+  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts'); // Default value
+
+  useEffect(() => {
+    // Retrieve the recommended product from localStorage when the component mounts
+    const storedProduct = localStorage.getItem('recommendedProduct');
+    if (storedProduct) {
+      setRecommendedProduct(storedProduct);
+    }
+  }, []); // The empty dependency array ensures this effect runs only once
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -242,10 +253,10 @@ function InvestmentPage3() {
                 </div>
               </div>
 
-              {/* Income Portfolio Button - Increased width for single line */}
+              {/* Asia ETF Button - Positioned with absolute positioning */}
               <div className="relative w-full">
-                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 165, height: 28, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 30, color: '#FDF0D5', fontSize: '16px', left: '50px', top: '-15px' }}>
-                  Income Portfolio
+                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 125, height: 42, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 40, color: '#FDF0D5', fontSize: '16px', left: '70px', top: '-15px' }}>
+                  {recommendedProduct}
                 </button>
               </div>
             </div>
@@ -299,4 +310,4 @@ function InvestmentPage3() {
   );
 }
 
-export default InvestmentPage3;
+export default InvestmentPage2;

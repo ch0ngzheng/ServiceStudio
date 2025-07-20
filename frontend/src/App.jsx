@@ -3,9 +3,9 @@ import HomePage from './pages/HomePage';
 import TransactionPage from './pages/transactionPage';
 import Login from './pages/Login';
 import './App.css'; 
-import InvestmentPage from './pages/InvestmentPage';
-import InvestmentPage2 from './pages/InvestmentPage2.jsx';
-import InvestmentPage3 from './pages/InvestmentPage3.jsx';
+import PayBannerPage from './pages/PayBannerPage.jsx';
+import SavingsBannerPage from './pages/SavingsBannerPage.jsx';
+import BTOBannerPage from './pages/BTOBannerPage.jsx';
 
 function App() {
   return (
@@ -14,11 +14,10 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/transactionPage" element={<TransactionPage />} />
         <Route path="/homePage/:userId" element={<HomePage />} />
-        <Route path="/investment" element={<InvestmentPage />} />
-        <Route path="/investment2" element={<InvestmentPage2 />} />
-        <Route path="/investment3" element={<InvestmentPage3 />} />
+        <Route path="/pay/:userId" element={<PayBannerPage />} />
+        <Route path="/savings/:userId" element={<SavingsBannerPage />} />
+        <Route path="/bto/:userId" element={<BTOBannerPage />} />
         <Route path="/transactionPage" element={<TransactionPage />} />
-        
       </Routes>
     </Router>
   );

@@ -1,5 +1,6 @@
 import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 // Inline BottomNavigation to avoid import issues
 const BottomNavigation = ({ activeTab = 'invest' }) => {
@@ -35,7 +36,17 @@ const BottomNavigation = ({ activeTab = 'invest' }) => {
 };
 
 function InvestmentPage() {
+  const { userId } = useParams(); // Assuming you get userId from the route
   const [bgImgError, setBgImgError] = useState(false);
+  const [recommendedProduct, setRecommendedProduct] = useState('Asia ETF'); // Default value
+
+  useEffect(() => {
+    // Retrieve the recommended product from localStorage when the component mounts
+    const storedProduct = localStorage.getItem('recommendedProduct');
+    if (storedProduct) {
+      setRecommendedProduct(storedProduct);
+    }
+  }, []); // The empty dependency array ensures this effect runs only once
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -244,8 +255,8 @@ function InvestmentPage() {
 
               {/* Asia ETF Button - Positioned with absolute positioning */}
               <div className="relative w-full">
-                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 125, height: 2, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 40, color: '#FDF0D5', fontSize: '16px', left: '70px', top: '-15px' }}>
-                  Asia ETF
+                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 125, height: 42, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 40, color: '#FDF0D5', fontSize: '16px', left: '70px', top: '-15px' }}>
+                  {recommendedProduct}
                 </button>
               </div>
             </div>
