@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 const { getDb } = require('../Models/db');
 
@@ -23,8 +24,34 @@ router.post('/', async (req, res) => {
 
         // Compare the provided password with the one in the database
         if (user.password === password) {
-            // Passwords match
-            res.json({ success: true, message: 'Login successful' });
+            let recommendedProduct = 'No new recommendations'; // Default value
+            try {
+                const features = [user.age, user.account_balance, user.average_monthly_spending, user.average_monthly_income, user.average_monthly_flow];
+                const predictionResponse = await axios.post('http://localhost:5000/predict', { features });
+                const predictions = predictionResponse.data;
+
+                // Sort predictions by probability in descending order
+                const sortedPredictions = Object.entries(predictions).sort(([, a], [, b]) => b - a);
+
+                // Get user's existing products, defaulting to an empty array if not present
+                const userProducts = user.products || [];
+
+                // Find the highest-probability product the user doesn't already have
+                for (const [product, probability] of sortedPredictions) {
+                    if (!userProducts.includes(product)) {
+                        recommendedProduct = product;
+                        break; // Found the best one, exit loop
+                    }
+                }
+                
+                console.log(`Recommended product for user ${user_id}: ${recommendedProduct}`);
+
+            } catch (predictionError) {
+                console.error('Error calling prediction service or processing recommendations:', predictionError.message);
+            }
+
+            // Respond to the client with success and the recommended product
+            res.json({ success: true, message: 'Login successful', recommendedProduct });
         } else {
             // Passwords do not match
             res.status(401).json({ success: false, message: 'Invalid credentials' });
