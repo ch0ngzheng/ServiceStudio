@@ -54,6 +54,7 @@ def predict():
 
         # Get the prediction probabilities
         predictions = predict_product_subscriptions(user_features, models, scalers)
+        print(predictions)
         
         # Return the dictionary of predictions
         return jsonify(predictions)

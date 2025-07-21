@@ -1,44 +1,13 @@
 import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
-// Inline BottomNavigation to avoid import issues
-const BottomNavigation = ({ activeTab = 'invest' }) => {
-  const tabs = [
-    { id: 'home', icon: Home, label: 'Home' },
-    { id: 'cards', icon: CreditCard, label: 'Cards' },
-    { id: 'pay', icon: ArrowUpDown, label: 'Pay & Transfer' },
-    { id: 'invest', icon: PieChart, label: 'Invest' },
-    { id: 'more', icon: Menu, label: 'More' }
-  ];
-
-  return (
-    <div className="fixed bottom-0 left-0 w-full border-t border-gray-200" style={{ backgroundColor: '#162633' }}>
-      <div className="flex items-center justify-around py-2">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              className="flex flex-col items-center py-2 px-3 min-w-0 flex-1"
-            >
-              <Icon className={`w-6 h-6 ${isActive ? 'text-white' : 'text-gray-300'}`} />
-              <span className={`text-xs mt-1 truncate ${isActive ? 'text-white' : 'text-gray-300'}`}>
-                {tab.label}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+import BottomNavigation from '../components/layout/BottomNavigation';
 
 function InvestmentPage2() {
   const { userId } = useParams(); // Assuming you get userId from the route
   const [bgImgError, setBgImgError] = useState(false);
   const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts'); // Default value
+  const [activeTab, setActiveTab] = useState('invest');
 
   useEffect(() => {
     // Retrieve the recommended product from localStorage when the component mounts
@@ -47,6 +16,12 @@ function InvestmentPage2() {
       setRecommendedProduct(storedProduct);
     }
   }, []); // The empty dependency array ensures this effect runs only once
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    // Optional: handle navigation or other side effects
+    console.log(`Tab changed to: ${tabId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -305,7 +280,7 @@ function InvestmentPage2() {
       </div>
 
       {/* Bottom Navigation */}
-      <BottomNavigation activeTab="invest" />
+      <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
 }

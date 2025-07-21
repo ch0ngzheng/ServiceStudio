@@ -38,23 +38,24 @@ const LoginPage = () => {
     setError('');
 
     try {
+      // Corrected API endpoint and payload to match the backend
       const response = await axios.post('http://localhost:3000/api/login', {
-        user_id: formData.id,
+        user_id: formData.id, // Key changed from 'id' to 'user_id'
         password: formData.password
       });
 
       if (response.data.success) {
-        // Store the recommended product in localStorage to make it accessible to other pages
-        if (response.data.recommendedProduct) {
-          localStorage.setItem('recommendedProduct', response.data.recommendedProduct);
-        }
-        navigate(`/homePage/${formData.id}`);
+        // On success, get the user_id from the response
+        const userId = response.data.user_id;
+        // Navigate to the home page, passing the user_id in the URL
+        navigate(`/home/${userId}`);
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setError('Invalid credentials. Please check your User ID and password.');
       } else {
-        setError('Login failed. Please try again.');
+        console.error('Login API call failed:', error);
+        setError('Login failed. Please check your connection and try again.');
       }
     } finally {
       setIsLoading(false);
