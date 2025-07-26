@@ -3,11 +3,13 @@
 /backend/node_modules
 /frontend/node_modules
 /prediction_service/venv
+/budget_service/venv
 
 # Python
 __pycache__/
 *.pyc
 /prediction_service/model.pkl
+/budget_service/model.pkl
 
 # Environment variables
 .env*
