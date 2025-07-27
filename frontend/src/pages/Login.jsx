@@ -83,10 +83,9 @@ const LoginPage = () => {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="id" className="block text-sm font-medium text-gray-700">
-                User ID
-              </label>
-              <div className="mt-1 relative">
+
+              <div className="mt-1 w-[80%] mx-auto flex items-center gap-2">
+                <User className="h-5 w-5 text-gray-400 flex-shrink-0" />
                 <input
                   id="id"
                   name="id"
@@ -94,36 +93,35 @@ const LoginPage = () => {
                   required
                   value={formData.id}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
+                  className="w-full h-[40px] pl-6 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
                   placeholder="Enter your user ID"
                 />
-                <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
-                  placeholder="Enter your password"
-                />
-                <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                <button
-                  type="button"
-                  className="absolute right-3 top-2.5 text-gray-400"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
+
+              <div className="mt-1 w-[80%] mx-auto flex items-center gap-2">
+                <Lock className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                <div className="relative w-full">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full h-[40px] pl-6 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
+                    placeholder="Enter your password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -131,7 +129,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-2 px-4 rounded-md text-white font-medium ${
+            className={`w-[80%] mx-auto py-2 px-4 rounded-md text-white font-medium ${
               isLoading 
                 ? 'bg-gray-400 cursor-not-allowed' 
                 : 'bg-red-600 hover:bg-red-700'
