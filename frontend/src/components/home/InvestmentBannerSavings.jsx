@@ -7,99 +7,73 @@ const InvestmentBanner = ({ userId }) => {
   const [bgImgError, setBgImgError] = useState(false);
 
   return (
-    <div className="relative w-full h-80 overflow-hidden">
-      {/* Mountain Background */}
-      <div className="absolute inset-0">
+    <>
+      <div className="relative w-full">
+        {/* Background Image: Scales to set the aspect ratio */}
         <img 
-          src="/assets/mountain-background.png"
-          alt="Mountain background"
-          className="w-full h-full object-cover"
+          src="/assets/mountain-background.svg"
+          alt="Mountain background with milestone markers"
+          className="w-full h-auto"
           onError={() => setBgImgError(true)}
           style={bgImgError ? { display: 'none' } : {}}
         />
-        {/* Fallback gradient background if image doesn't load */}
+
+        {/* Fallback solid color background if the image fails */}
         {bgImgError && (
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 via-yellow-400 to-yellow-600"></div>
         )}
-      </div>
 
-      {/* 6 Months Saved */}
-      <div className="absolute top-[55px] left-[55px] flex items-center z-30"> 
-        <span className="text-[#002663] font-bold text-sm mr-2">6 Months Saved</span>
-        <div className="w-4 h-4 bg-red-600 rounded-full border-2 border-white flex items-center justify-center"></div>
-      </div>
+        {/* All content is absolutely positioned on top of the image */}
 
-      {/* 3 Months Saved */}
-      <div className="absolute top-[105px] left-[203px] flex items-center z-30">
-        <div className="w-4 h-4 bg-red-600 rounded-full border-2 border-white flex items-center justify-center"></div>
-        <span className="text-[#002663] font-bold text-sm ml-2">3 Months Saved</span>
-      </div>
-      
-      {/* 1 Month Saved */}
-      <div className="absolute top-[165px] left-[80px] flex items-center z-30">
-        <span className="text-[#002663] font-bold text-sm mr-2">1 Months Saved</span>
-        <div className="w-4 h-4 bg-red-600 rounded-full border-2 border-white flex items-center justify-center"></div>
-      </div>
-
-      {/* Climbing Figure - Fixed positioning */}
-      <div className="absolute bottom-[85px] left-[190px] w-8 h-8 z-20 rotate-[30deg] scale-x-[-1]">
-        <img 
-          src="/assets/climber-figure.svg"
-          alt="Climbing figure"
-          className="w-8 h-8 object-contain"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.nextElementSibling.style.display = 'flex';
-          }}
-        />
-        {/* CSS Fallback figure - hidden by default */}
-        <div className="w-8 h-8 flex-col items-center justify-center hidden">
-          {/* Head */}
-          <div className="w-2 h-2 bg-gray-800 rounded-full"></div>
-          {/* Body and limbs container */}
-          <div className="relative flex flex-col items-center">
-            {/* Body */}
-            <div className="w-0.5 h-3 bg-gray-800"></div>
-            {/* Arms */}
-            <div className="absolute top-1 -left-1.5 w-3 h-0.5 bg-gray-800 transform rotate-12"></div>
-            <div className="absolute top-1 -right-1.5 w-3 h-0.5 bg-gray-800 transform -rotate-12"></div>
-            {/* Legs */}
-            <div className="absolute top-2.5 -left-1 w-2 h-0.5 bg-gray-800 transform rotate-45"></div>
-            <div className="absolute top-2.5 -right-1 w-2 h-0.5 bg-gray-800 transform -rotate-45"></div>
-          </div>
+        {/* 6 Months Saved */}
+        <div className="absolute top-[10%] left-[21%] flex items-center z-30">
+          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">6 Months Saved</span>
         </div>
-      </div>
 
-      {/* Main Content*/}
-      <div className="absolute top-[155px] right-4 text-right z-10 w-[180px]">
-          {/* Main Headline */}
-          <h2 className="text-dbs-red-600 text-sm font-bold leading-tight mb-2">
+        {/* 3 Months Saved */}
+        <div className="absolute top-[35%] left-[51%] flex items-center z-30">
+          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm ml-2">3 Months Saved</span>
+        </div>
+        
+        {/* 1 Month Saved */}
+        <div className="absolute top-[65%] left-[24.5%] flex items-center z-30">
+          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">1 Months Saved</span>
+        </div>
+
+        {/* Climbing Figure */}
+        <div className="absolute bottom-[27%] left-[48%] w-8 h-8 z-20 rotate-[30deg] scale-x-[-1]">
+          <img 
+            src="/assets/climber-figure.svg"
+            alt="Climbing figure"
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        {/* Main Content*/}
+        <div className="absolute top-[48%] right-[4%] text-right z-10 w-[45%]">
+          <h2 className="text-dbs-red-600 text-xs sm:text-sm font-bold leading-tight mb-2">
             Turn your $1,000+ savings into future gains.
           </h2>
-        <div className="w-full">
-          {/* Description */}
-          <p className="text-gray-800 text-[10px] leading-relaxed justify-end">
+          <p className="text-gray-800 text-[10px] sm:text-xs leading-relaxed justify-end">
             Invest in a wide range of unit trusts with DBS. Diversify and grow your money for your goals.
           </p>
         </div>
-      </div>
 
-      {/* Investing Button*/}
-      <div className="absolute text-centre bottom-12 left-4 right-4 z-10">
-        <div className="flex justify-start py-6">
+        {/* Investing Button*/}
+        <div className="absolute bottom-[8%] left-[4%] z-10">
           <button 
-            className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-lg" 
+            className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white rounded-lg font-medium shadow-lg flex items-center justify-center h-[2.5vw] md:h-[3vw] px-[2vw] md:px-6 text-[2.5vw] md:text-xs"
             onClick={() => navigate(`/savings/${userId}`)}
           >
-              Start Investing
+            Start Investing
           </button>
         </div>
       </div>
 
       {/* Last Login Footer */}
-      <div className="absolute bottom-0 left-0 right-0 bg-dbs-red-600 z-30">
+      <div className="bg-dbs-red-600">
         <div className="flex items-center justify-between px-4 py-2">
-          <p className="text-sm text-white">
+          <p className="text-xs sm:text-sm text-white">
             Last Login: 09 Jul 2025, 09:43 AM (SG)
           </p>
           <button 
@@ -110,7 +84,7 @@ const InvestmentBanner = ({ userId }) => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
