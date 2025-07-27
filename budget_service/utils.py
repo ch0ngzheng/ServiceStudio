@@ -1,11 +1,16 @@
-CATEGORIES = ["Transport", "Meals", "Shopping", "Groceries", "Miscellaneous"]
+CATEGORIES = ["Transport", "Food", "Shopping", "Entertainment", "Miscellaneous"]
 
 # Simple keyword mapping for categorization
 CATEGORY_KEYWORDS = {
-    "Transport": ["mrt", "bus", "grab", "greb", "gojek", "comfortdelgro", "taxi"],
-    "Meals": ["restaurant", "cafe", "food", "mcdo", "kfc", "subway"],
-    "Shopping": ["shopee", "lazada", "amazon", "uniqlo", "zara"],
-    "Groceries": ["fairprice", "cold storage", "shengsiong", "giant"],
+    "Food": ["McDonald's", "KFC", "Subway", "Food Court", "Coffeeshop", "Hawker Centre", 
+                    "GrabFood", "Foodpanda", "Toast Box", "Ya Kun", "Kopitiam"],
+    "Transport": ["MRT/Bus", "Grab", "Taxi", "EZ-Link Top-up"],
+    "Entertainment": ["Golden Village", "Shaw Cinemas", "Timezone", "Steam Games", 
+                           "Netflix", "Spotify", "PlayStation Store", "Apple App Store"],
+    "Shopping": ["Uniqlo", "H&M", "Popular Bookstore", "Challenger", "Courts", 
+                        "Shopee", "Lazada", "7-Eleven", "Watsons", "Guardian"],
+    "Savings": ["POSB", "DBS", "OCBC", "UOB"],
+    "Miscellaneous": ["Singtel", "Starhub", "M1", "Circles.Life"]
 }
 
 def auto_categorize_transaction(transaction):
