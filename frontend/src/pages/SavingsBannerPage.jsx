@@ -31,7 +31,7 @@ function SavingsBannerPage() {
             {/* Notification Bell */}
             <div className="relative">
               <img 
-                src="/assets/icons/bell.svg?v=1" 
+                src="/assets/icons/bell.svg" 
                 alt="Notifications" 
                 className="w-7 h-7"
                 onError={(e) => {
@@ -41,7 +41,6 @@ function SavingsBannerPage() {
                 }}
               />
               <Bell className="w-7 h-7 text-gray-500 hidden" />
-              <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-red-600 ring-2 ring-white text-white text-xs flex items-center justify-center text-[10px] font-bold">15</span>
             </div>
           </div>
           
@@ -171,7 +170,7 @@ function SavingsBannerPage() {
             {/* Steps Container */}
             <div className="mt-8 pl-4">
               {/* Step 1 - CKA not Completed */}
-              <div className="flex items-start w-full mb-6">
+              <div className="text-left flex items-start w-full mb-6">
                 <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   1.
                 </div>
@@ -187,7 +186,7 @@ function SavingsBannerPage() {
               </div>
 
               {/* Step 2 - CAR not Completed */}
-              <div className="flex items-start w-full mb-6">
+              <div className="text-left flex items-start w-full mb-6">
                 <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   2.
                 </div>
@@ -203,7 +202,7 @@ function SavingsBannerPage() {
               </div>
 
               {/* Step 3 - Ready to Invest */}
-              <div className="flex items-center w-full">
+              <div className="text-left flex items-center w-full">
                 <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-red-700 w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   3.
                 </div>
