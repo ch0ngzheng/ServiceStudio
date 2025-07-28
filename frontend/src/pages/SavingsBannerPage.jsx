@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
 
-function InvestmentPage2() {
+function SavingsBannerPage() {
   const { userId } = useParams(); // Assuming you get userId from the route
   const [bgImgError, setBgImgError] = useState(false);
   const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts'); // Default value
@@ -42,6 +42,7 @@ function InvestmentPage2() {
                 }}
               />
               <Bell className="w-7 h-7 text-gray-500 hidden" />
+              <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-red-600 ring-2 ring-white text-white text-xs flex items-center justify-center text-[10px] font-bold">15</span>
             </div>
           </div>
           
@@ -69,67 +70,55 @@ function InvestmentPage2() {
 
       {/* Icon Navigation */}
       <div className="bg-white px-4 py-4 mb-2">
-        <div className="grid grid-cols-4 gap-4">
-          <div className="flex flex-col items-center text-center">
+        <div className="grid grid-cols-4 gap-2">
+          <div className="flex flex-col items-center text-center gap-1">
             <img 
               src="/assets/icons/digiportfolio.svg" 
               alt="digiPortfolio" 
-              className="w-20 h-20"
+              className="w-14 h-14"
               onError={(e) => {
                 console.log('Failed to load digiportfolio icon');
                 e.target.style.display = 'none';
               }}
             />
+            <span className="text-xs text-gray-700">digiPortfolio</span>
           </div>
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center gap-1">
             <img 
               src="/assets/icons/ESA.svg" 
               alt="ESA" 
-              className="w-20 h-20"
+              className="w-14 h-14"
               onError={(e) => {
                 console.log('Failed to load ESA icon');
                 e.target.style.display = 'none';
               }}
             />
+            <span className="text-xs text-gray-700">ESA</span>
           </div>
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center gap-1">
             <img 
               src="/assets/icons/SGS.svg" 
               alt="SGS" 
-              className="w-20 h-20"
+              className="w-14 h-14"
               onError={(e) => {
                 console.log('Failed to load SGS icon');
                 e.target.style.display = 'none';
               }}
             />
+            <span className="text-xs text-gray-700">SGS</span>
           </div>
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center gap-1">
             <img 
               src="/assets/icons/EPS.svg" 
               alt="EPS" 
-              className="w-20 h-20"
+              className="w-14 h-14"
               onError={(e) => {
                 console.log('Failed to load EPS icon');
                 e.target.style.display = 'none';
               }}
             />
+            <span className="text-xs text-gray-700">EPS</span>
           </div>
-        </div>
-        <div className="grid grid-cols-4 gap-4 mt-4">
-          <div className="flex flex-col items-center text-center">
-            <img 
-              src="/assets/icons/checkrates.svg" 
-              alt="Check Rates" 
-              className="w-20 h-20"
-              onError={(e) => {
-                console.log('Failed to load checkrates icon');
-                e.target.style.display = 'none';
-              }}
-            />
-          </div>
-          <div></div>
-          <div></div>
-          <div></div>
         </div>
       </div>
 
@@ -140,99 +129,83 @@ function InvestmentPage2() {
         </h2>
 
         {/* Investment Guide Card with Mountain Background */}
-        <div className="bg-white shadow-sm overflow-hidden relative mb-2" style={{ height: '420px' }}>
-          {/* Mountain Background */}
-          <div className="absolute inset-0 z-0">
+        <div className="bg-white shadow-sm overflow-hidden relative mb-2">
+          {/* Asia ETF Button - Positioned with absolute positioning */}
+          <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20">
+            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-[#C1121F] shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
+              {recommendedProduct}
+            </button>
+          </div>
+          {/* Background Image: Scales to set the aspect ratio */}
+          <div className="h-[350px]">
             <img 
-              src="/assets/mountain-background.png"
-              alt="Mountain background"
+              src="/assets/mountain-background-no-red-dots.svg"
+              alt="Mountain background with milestone markers"
               className="w-full h-full object-cover"
               onError={() => setBgImgError(true)}
               style={bgImgError ? { display: 'none' } : {}}
             />
-            {/* Fallback gradient background if image doesn't load */}
-            {bgImgError && (
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-300 opacity-60">
-                {/* CSS Mountain shapes - made taller and more coverage */}
-                <div className="absolute bottom-0 w-full h-48 bg-gradient-to-t from-yellow-400 to-transparent"
-                     style={{ clipPath: 'polygon(0% 100%, 25% 30%, 45% 10%, 65% 40%, 80% 20%, 100% 35%, 100% 100%)' }}>
-                </div>
-                <div className="absolute bottom-0 w-full h-40 bg-gradient-to-t from-yellow-500 to-transparent opacity-80"
-                     style={{ clipPath: 'polygon(0% 100%, 30% 45%, 50% 25%, 70% 50%, 90% 30%, 100% 45%, 100% 100%)' }}>
-                </div>
-                <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-yellow-600 to-transparent opacity-60"
-                     style={{ clipPath: 'polygon(0% 100%, 40% 60%, 60% 40%, 80% 65%, 100% 50%, 100% 100%)' }}>
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Content Layer */}
-          <div className="relative z-10 p-4">
-            {/* Header Text - Left aligned */}
-            <div className="mb-4 text-left">
-              <h3 className="text-2xl font-bold mb-2" style={{ color: '#003049', textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
+          {/* Fallback solid color background if the image fails */}
+          {bgImgError && (
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 via-yellow-400 to-yellow-600"></div>
+          )}
+
+          {/* Content Overlay */}
+          <div className="absolute inset-0 z-10 p-4">
+            {/* Header Text - Centered */}
+            <div className="text-left">
+              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2 text-[#003049]" style={{ textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
                 Hi, Bumairah!
               </h3>
-              <p className="text-black text-base">
+              <p className="text-black text-sm md:text-base w-full sm:w-[80%] md:w-[60%]">
                 You're all set to invest but you've yet to complete your CKA and CAR.
               </p>
             </div>
 
-            <div className="flex flex-col items-center w-full" style={{ marginLeft: '0px' }}>
+            {/* Steps Container */}
+            <div className="mt-8 pl-4">
               {/* Step 1 - CKA not Completed */}
-              <div className="flex items-start w-full max-w-md" style={{ marginBottom: '80px' }}>
-                <div className="text-white flex items-center justify-center font-bold mr-5 flex-shrink-0 rounded-full" style={{ width: '42px', height: '42px', backgroundColor: '#003049', fontSize: '20px' }}>
+              <div className="flex items-start w-full mb-6">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   1.
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold underline text-lg" style={{ color: '#003049' }}>CKA not Completed</span>
-                  </div>
-                  <p className="text-black text-base mb-2 text-left">
+                  <span className="font-bold underline text-base md:text-lg text-[#003049]">CKA not Completed</span>
+                  <p className="text-black text-sm md:text-base mb-2 text-left">
                     Investment Knowledge not Verified
                   </p>
-                  <div className="h-2 bg-gray-300 rounded-full overflow-hidden" style={{ width: '210px' }}>
-                    <div className="h-full rounded-full" style={{ width: '30%', backgroundColor: '#003049' }}></div>
+                  <div className="h-2 bg-gray-300 rounded-full overflow-hidden w-full max-w-[210px]">
+                    <div className="h-full rounded-full bg-[#003049]" style={{ width: '30%' }}></div>
                   </div>
                 </div>
               </div>
 
               {/* Step 2 - CAR not Completed */}
-              <div className="flex items-start w-full max-w-md" style={{ marginBottom: '80px' }}>
-                <div className="text-white flex items-center justify-center font-bold mr-5 flex-shrink-0 rounded-full" style={{ width: '42px', height: '42px', backgroundColor: '#003049', fontSize: '20px' }}>
+              <div className="flex items-start w-full mb-6">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   2.
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold underline text-lg" style={{ color: '#003049' }}>CAR not Completed</span>
-                  </div>
-                  <p className="text-black text-base mb-2 text-left">
+                  <span className="font-bold underline text-base md:text-lg text-[#003049]">CAR not Completed</span>
+                  <p className="text-black text-sm md:text-base mb-2 text-left">
                     Risk Profile not Established
                   </p>
-                  <div className="h-2 bg-gray-300 rounded-full overflow-hidden" style={{ width: '210px' }}>
-                    <div className="h-full rounded-full" style={{ width: '15%', backgroundColor: '#003049' }}></div>
+                  <div className="h-2 bg-gray-300 rounded-full overflow-hidden w-full max-w-[210px]">
+                    <div className="h-full rounded-full bg-[#003049]" style={{ width: '15%' }}></div>
                   </div>
                 </div>
               </div>
 
               {/* Step 3 - Ready to Invest */}
-              <div className="flex items-start w-full max-w-md">
-                <div className="text-white flex items-center justify-center font-bold mr-5 flex-shrink-0 rounded-full" style={{ width: '42px', height: '42px', backgroundColor: '#b91c1c', fontSize: '20px' }}>
+              <div className="flex items-center w-full">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-red-700 w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   3.
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2" style={{ marginBottom: '10px' }}>
-                    <span className="font-bold text-lg" style={{ color: '#003049' }}>Ready to Invest!</span>
-                  </div>
+                  <span className="font-bold text-base md:text-lg text-[#003049]">Ready to Invest!</span>
                 </div>
-              </div>
-
-              {/* Asia ETF Button - Positioned with absolute positioning */}
-              <div className="relative w-full">
-                <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center absolute" style={{ width: 125, height: 42, background: '#C1121F', boxShadow: '0px 4px 8px rgba(193, 18, 31, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.25)', borderRadius: 40, color: '#FDF0D5', fontSize: '16px', left: '70px', top: '-15px' }}>
-                  {recommendedProduct}
-                </button>
               </div>
             </div>
           </div>
@@ -262,7 +235,7 @@ function InvestmentPage2() {
           </div>
         </div>
 
-        {/* Unit Trusts & ETFs - Removed Unit Trust from title and description */}
+        {/* Unit Trusts & ETFs */}
         <div className="bg-white rounded-lg shadow-sm p-4 mx-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -285,4 +258,4 @@ function InvestmentPage2() {
   );
 }
 
-export default InvestmentPage2;
+export default SavingsBannerPage;
