@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 
-const InvestmentBanner = ({ userId }) => {
+const InvestmentBannerSavings = ({ userId }) => {
   const navigate = useNavigate();
   const [bgImgError, setBgImgError] = useState(false);
 
@@ -88,4 +88,4 @@ const InvestmentBanner = ({ userId }) => {
   );
 };
 
-export default InvestmentBanner;
+export default InvestmentBannerSavings;

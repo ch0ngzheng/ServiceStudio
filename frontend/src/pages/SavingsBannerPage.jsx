@@ -3,23 +3,22 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
 
+
 function SavingsBannerPage() {
   const { userId } = useParams(); // Assuming you get userId from the route
   const [bgImgError, setBgImgError] = useState(false);
-  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts'); // Default value
+  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
   const [activeTab, setActiveTab] = useState('invest');
 
   useEffect(() => {
-    // Retrieve the recommended product from localStorage when the component mounts
     const storedProduct = localStorage.getItem('recommendedProduct');
     if (storedProduct) {
       setRecommendedProduct(storedProduct);
     }
-  }, []); // The empty dependency array ensures this effect runs only once
+  }, []);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    // Optional: handle navigation or other side effects
     console.log(`Tab changed to: ${tabId}`);
   };
 
@@ -54,8 +53,8 @@ function SavingsBannerPage() {
           {/* Help/Question icon */}
           <button className="w-6 h-6 flex items-center justify-center hover:opacity-70 transition-opacity">
             <img 
-              src="/assets/icons/helpicon.svg" 
-              alt="Help" 
+              src="/assets/icons/helpicon.svg"
+              alt="Help"
               className="w-6 h-6"
               onError={(e) => {
                 console.log('Failed to load help icon, showing fallback');
@@ -73,9 +72,11 @@ function SavingsBannerPage() {
         <div className="grid grid-cols-4 gap-2">
           <div className="flex flex-col items-center text-center gap-1">
             <img 
+
               src="/assets/icons/digiportfolio.svg" 
               alt="digiPortfolio" 
               className="w-14 h-14"
+
               onError={(e) => {
                 console.log('Failed to load digiportfolio icon');
                 e.target.style.display = 'none';
@@ -85,9 +86,11 @@ function SavingsBannerPage() {
           </div>
           <div className="flex flex-col items-center text-center gap-1">
             <img 
+
               src="/assets/icons/ESA.svg" 
               alt="ESA" 
               className="w-14 h-14"
+
               onError={(e) => {
                 console.log('Failed to load ESA icon');
                 e.target.style.display = 'none';
@@ -141,6 +144,7 @@ function SavingsBannerPage() {
             <img 
               src="/assets/mountain-background-no-red-dots.svg"
               alt="Mountain background with milestone markers"
+
               className="w-full h-full object-cover"
               onError={() => setBgImgError(true)}
               style={bgImgError ? { display: 'none' } : {}}
@@ -221,9 +225,9 @@ function SavingsBannerPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#fca5a5' }}>
-                <div className="w-6 h-6 rounded-full relative" style={{ backgroundColor: '#b91c1c' }}>
+                <div className="w-6 h-6 rounded-full relative" style={{ backgroundColor: '#B31410' }}>
                   <div className="absolute inset-1 bg-white rounded-full"></div>
-                  <div className="absolute top-1.5 left-1.5 w-1 h-1 rounded-full" style={{ backgroundColor: '#b91c1c' }}></div>
+                  <div className="absolute top-1.5 left-1.5 w-1 h-1 rounded-full" style={{ backgroundColor: '#B31410' }}></div>
                 </div>
               </div>
               <div>
@@ -240,7 +244,7 @@ function SavingsBannerPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#fca5a5' }}>
-                <TrendingUp className="w-6 h-6" style={{ color: '#b91c1c' }} />
+                <TrendingUp className="w-6 h-6" style={{ color: '#B31410' }} />
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900">ETFs</h4>
@@ -252,8 +256,30 @@ function SavingsBannerPage() {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+      {/* Bottom Navigation using SVG */}
+      <div className="fixed bottom-0 left-0 right-0 w-full">
+        <img 
+          src="/assets/icons/bottom bar.svg"
+          alt="Bottom Navigation"
+          className="w-full h-auto block"
+          style={{ 
+            display: 'block',
+            width: '100%',
+            height: 'auto',
+            maxHeight: 'none',
+            objectFit: 'cover'
+          }}
+          onError={(e) => {
+            console.log('Failed to load bottom bar SVG, showing fallback');
+            e.target.style.display = 'none';
+            e.target.nextElementSibling.style.display = 'block';
+          }}
+        />
+        {/* Fallback navigation if SVG fails */}
+        <div className="w-full bg-gray-800 py-2 hidden">
+          <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+        </div>
+      </div>
     </div>
   );
 }
