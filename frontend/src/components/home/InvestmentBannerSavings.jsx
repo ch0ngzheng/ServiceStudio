@@ -26,13 +26,13 @@ const InvestmentBanner = ({ userId }) => {
         {/* All content is absolutely positioned on top of the image */}
 
         {/* 6 Months Saved */}
-        <div className="absolute top-[10%] left-[21%] flex items-center z-30">
+        <div className="absolute top-[10%] left-[20%] flex items-center z-30">
           <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">6 Months Saved</span>
         </div>
 
         {/* 3 Months Saved */}
-        <div className="absolute top-[35%] left-[51%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm ml-2">3 Months Saved</span>
+        <div className="absolute top-[35%] left-[53%] flex items-center z-30">
+          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">3 Months Saved</span>
         </div>
         
         {/* 1 Month Saved */}

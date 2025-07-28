@@ -19,6 +19,7 @@ function App() {
         <Route path="/pay/:userId" element={<PayBannerPage />} />
         <Route path="/savings/:userId" element={<SavingsBannerPage />} />
         <Route path="/bto/:userId" element={<BTOBannerPage />} />
+        <Route path="/transactionPage" element={<TransactionPage />} />
       </Routes>
     </Router>
   );
