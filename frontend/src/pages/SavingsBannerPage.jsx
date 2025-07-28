@@ -31,7 +31,7 @@ function SavingsBannerPage() {
             {/* Notification Bell */}
             <div className="relative">
               <img 
-                src="/assets/icons/bell.svg?v=1" 
+                src="/assets/icons/bell.svg" 
                 alt="Notifications" 
                 className="w-7 h-7"
                 onError={(e) => {
@@ -41,7 +41,6 @@ function SavingsBannerPage() {
                 }}
               />
               <Bell className="w-7 h-7 text-gray-500 hidden" />
-              <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-red-600 ring-2 ring-white text-white text-xs flex items-center justify-center text-[10px] font-bold">15</span>
             </div>
           </div>
           
