@@ -60,7 +60,7 @@ const InvestmentBanner = ({ userId }) => {
         </div>
 
         {/* Investing Button*/}
-        <div className="absolute bottom-[8%] left-[4%] z-10">
+        <div className="absolute bottom-[8%] left-[4%] z-40">
           <button 
             className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white rounded-lg font-medium shadow-lg flex items-center justify-center h-[2.5vw] md:h-[3vw] px-[2vw] md:px-6 text-[2.5vw] md:text-xs"
             onClick={() => navigate(`/savings/${userId}`)}

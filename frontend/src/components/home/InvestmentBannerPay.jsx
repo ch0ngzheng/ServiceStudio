@@ -11,7 +11,7 @@ const InvestmentBanner = ({ userId }) => {
       {/* Mountain Background */}
       <div className="absolute inset-0">
         <img 
-          src="/assets/mountain-background.png"
+          src="/assets/mountain-background.svg"
           alt="Mountain background"
           className="w-full h-full object-cover"
           onError={() => setBgImgError(true)}
@@ -79,7 +79,7 @@ const InvestmentBanner = ({ userId }) => {
       </div>
 
       {/* Investing Button*/}
-      <div className="absolute text-centre bottom-12 left-4 right-4 z-10">
+      <div className="absolute text-centre bottom-12 left-4 right-4 z-40">
         <div className="flex justify-start py-6">
           <button 
             className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-lg" 
