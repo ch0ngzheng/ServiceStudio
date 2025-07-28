@@ -26,13 +26,13 @@ const InvestmentBannerSavings = ({ userId }) => {
         {/* All content is absolutely positioned on top of the image */}
 
         {/* 6 Months Saved */}
-        <div className="absolute top-[10%] left-[21%] flex items-center z-30">
+        <div className="absolute top-[10%] left-[20%] flex items-center z-30">
           <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">6 Months Saved</span>
         </div>
 
         {/* 3 Months Saved */}
-        <div className="absolute top-[35%] left-[51%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm ml-2">3 Months Saved</span>
+        <div className="absolute top-[35%] left-[53%] flex items-center z-30">
+          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">3 Months Saved</span>
         </div>
         
         {/* 1 Month Saved */}
@@ -41,7 +41,7 @@ const InvestmentBannerSavings = ({ userId }) => {
         </div>
 
         {/* Climbing Figure */}
-        <div className="absolute bottom-[27%] left-[48%] w-8 h-8 z-20 rotate-[30deg] scale-x-[-1]">
+        <div className="absolute bottom-[20%] left-[46%] w-8 h-8 z-20 rotate-[30deg] scale-x-[-1]">
           <img 
             src="/assets/climber-figure.svg"
             alt="Climbing figure"
@@ -60,7 +60,7 @@ const InvestmentBannerSavings = ({ userId }) => {
         </div>
 
         {/* Investing Button*/}
-        <div className="absolute bottom-[8%] left-[4%] z-10">
+        <div className="absolute bottom-[8%] left-[4%] z-40">
           <button 
             className="bg-dbs-red-600 hover:bg-dbs-red-700 text-white rounded-lg font-medium shadow-lg flex items-center justify-center h-[2.5vw] md:h-[3vw] px-[2vw] md:px-6 text-[2.5vw] md:text-xs"
             onClick={() => navigate(`/savings/${userId}`)}
@@ -72,7 +72,7 @@ const InvestmentBannerSavings = ({ userId }) => {
 
       {/* Last Login Footer */}
       <div className="bg-dbs-red-600">
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-between px-4 py-1">
           <p className="text-xs sm:text-sm text-white">
             Last Login: 09 Jul 2025, 09:43 AM (SG)
           </p>
