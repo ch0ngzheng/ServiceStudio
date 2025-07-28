@@ -91,7 +91,7 @@ const InvestmentBanner = ({ userId }) => {
 
       {/* Last Login Footer */}
       <div className="bg-dbs-red-600">
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-between px-4 py-1">
           <p className="text-xs sm:text-sm text-white">
             Last Login: 09 Jul 2025, 09:43 AM (SG)
           </p>

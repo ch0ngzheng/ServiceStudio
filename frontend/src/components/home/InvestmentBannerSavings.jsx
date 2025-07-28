@@ -41,7 +41,7 @@ const InvestmentBanner = ({ userId }) => {
         </div>
 
         {/* Climbing Figure */}
-        <div className="absolute bottom-[27%] left-[48%] w-8 h-8 z-20 rotate-[30deg] scale-x-[-1]">
+        <div className="absolute bottom-[20%] left-[46%] w-8 h-8 z-20 rotate-[30deg] scale-x-[-1]">
           <img 
             src="/assets/climber-figure.svg"
             alt="Climbing figure"
@@ -72,7 +72,7 @@ const InvestmentBanner = ({ userId }) => {
 
       {/* Last Login Footer */}
       <div className="bg-dbs-red-600">
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-between px-4 py-1">
           <p className="text-xs sm:text-sm text-white">
             Last Login: 09 Jul 2025, 09:43 AM (SG)
           </p>
