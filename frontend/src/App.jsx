@@ -8,7 +8,7 @@ import './App.css';
 import PayBannerPage from './pages/PayBannerPage.jsx';
 import SavingsBannerPage from './pages/SavingsBannerPage.jsx';
 import BTOBannerPage from './pages/BTOBannerPage.jsx';
-import SmartAdjustments from './pages/smartadjustments.jsx';  // Add this import
+import InsightsPage from './pages/InsightsPage';
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
         <Route path="/bto/:userId" element={<BTOBannerPage />} />
         <Route path="/smartadjustments/:userId" element={<SmartAdjustments />} />  {/* Add this route */}
         <Route path="/transactionPage" element={<TransactionPage />} />
+        <Route path="/insights/:userId" element={<InsightsPage />} />
       </Routes>
     </Router>
   );
