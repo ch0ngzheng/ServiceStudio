@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useParams } from 'react-router-dom';
+import BudgetCard from '../components/banking/budgetCard';
 
 const SmartAdjustments = ({ onNavigateToFriend }) => {
+  const { userId } = useParams();
 
   return (
     <div className="bg-gray-100 flex justify-center min-h-screen">
@@ -112,56 +115,9 @@ const SmartAdjustments = ({ onNavigateToFriend }) => {
           minHeight: '700px',
           position: 'relative'
         }}>
-          {/* Budget Dashboard SVG - Using your smart.svg file */}
-          <img 
-            src="/assets/icons/smart.svg" 
-            alt="Smart Adjustments Dashboard"
-            className="w-full"
-            style={{ 
-              width: '430px', 
-              height: 'auto',
-              display: 'block'
-            }}
-            onError={(e) => {
-              // Fallback if SVG fails to load
-              e.target.style.display = 'none';
-            }}
-          />
-          
-          {/* Dynamic Navigation Button for Friend's Page - Matching exact layout */}
-          <button
-            onClick={() => onNavigateToFriend && onNavigateToFriend()}
-            style={{
-              position: 'absolute',
-              top: '520px',
-              left: '131px',
-              width: '155px',
-              height: '18px',
-              backgroundColor: '#ACD2C4',
-              border: 'none',
-              borderRadius: '20px',
-              color: '#000000',
-              fontFamily: 'Inter',
-              fontSize: '11px',
-              fontWeight: '700',
-              lineHeight: '100%',
-              letterSpacing: '0%',
-              textAlign: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#9bc5b8';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = '#ACD2C4';
-            }}
-          >
-            Set Budget for August
-          </button>
+          <div className="p-4">
+            <BudgetCard userId={userId} />
+          </div>
         </div>
 
         {/* Bottom Navigation Bar */}

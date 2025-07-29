@@ -78,8 +78,8 @@ const HomePage = () => {
       
       {/* Main Content */}
       <div className="bg-gray-50">
-        <SmartShortcuts onNavigate={handleNavigation} />
-        <AccountsSection balanceVisible={balanceVisible} />
+        <SmartShortcuts onNavigate={handleNavigation} userId={userId} />
+        <AccountsSection balanceVisible={balanceVisible} userId={userId} />
         <DigiPortfolio />
       </div>
       

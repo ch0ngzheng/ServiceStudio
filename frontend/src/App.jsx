@@ -9,6 +9,8 @@ import SavingsBannerPage from './pages/SavingsBannerPage.jsx';
 import BTOBannerPage from './pages/BTOBannerPage.jsx';
 import SmartAdjustments from './pages/smartadjustments.jsx';
 import InsightsPage from './pages/InsightsPage';
+import SetBudgetPage from './pages/SetBudgetPage';
+
 
 // Wrapper component for SmartAdjustments with navigation
 const SmartAdjustmentsWrapper = () => {
@@ -33,6 +35,7 @@ function App() {
         <Route path="/savings/:userId" element={<SavingsBannerPage />} />
         <Route path="/bto/:userId" element={<BTOBannerPage />} />
         <Route path="/smartadjustments/:userId" element={<SmartAdjustmentsWrapper />} />
+        <Route path="/set-budget/:userId" element={<SetBudgetPage />} />
         <Route path="/insights/:userId" element={<InsightsPage />} />
       </Routes>
     </Router>

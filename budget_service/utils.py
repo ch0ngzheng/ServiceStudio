@@ -20,7 +20,7 @@ def auto_categorize_transaction(transaction):
     text_to_scan = f"{description} {merchant}"
 
     for category, keywords in CATEGORY_KEYWORDS.items():
-        if any(keyword in text_to_scan for keyword in keywords):
+        if any(keyword.lower() in text_to_scan for keyword in keywords):
             return category
     
     return "Miscellaneous"  # Default category

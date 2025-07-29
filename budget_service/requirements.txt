@@ -5,3 +5,5 @@ scikit-learn
 numpy
 joblib
 pymongo
+python-dotenv
+dnspython

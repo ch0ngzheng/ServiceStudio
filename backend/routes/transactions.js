@@ -60,4 +60,58 @@ router.get('/:user_id', async (req, res) => {
     }
 });
 
+router.post('/calculate_spending', async (req, res) => {
+    try {
+        const { user_id, year, month } = req.body;
+        const db = dbClient.getDb();
+
+        // Use provided year/month or default to the current month
+        const now = new Date();
+        const targetYear = year !== undefined ? year : now.getFullYear();
+        const targetMonth = month !== undefined ? month - 1 : now.getMonth(); // month is 1-based in request
+
+        // Format the start date string as YYYY-MM-01
+        const startMonthStr = String(targetMonth + 1).padStart(2, '0');
+        const startDateStr = `${targetYear}-${startMonthStr}-01`;
+
+        // Calculate the start of the next month for the end date
+        const nextMonthDate = new Date(targetYear, targetMonth + 1, 1);
+        const endYear = nextMonthDate.getFullYear();
+        const endMonthStr = String(nextMonthDate.getMonth() + 1).padStart(2, '0');
+        const endDateStr = `${endYear}-${endMonthStr}-01`;
+
+        // Find transactions where the date string is within the desired range
+        const transactions = await db.collection('transactions').find({
+            user_id,
+            date: {
+                $gte: startDateStr,
+                $lt: endDateStr
+            }
+        }).toArray();
+
+        const spendingBreakdown = {};
+        let totalSpent = 0;
+
+        transactions.forEach(t => {
+            // Spending transactions are negative, so we check for amount < 0
+            if (t.amount < 0) {
+                const amount = Math.abs(t.amount);
+                const category = t.category || 'Uncategorized';
+
+                if (!spendingBreakdown[category]) {
+                    spendingBreakdown[category] = 0;
+                }
+                spendingBreakdown[category] += amount;
+                totalSpent += amount;
+            }
+        });
+
+        res.json({ success: true, totalSpent, spendingBreakdown });
+
+    } catch (err) {
+        console.error("Error calculating spending:", err);
+        res.status(500).json({ success: false, error: "Failed to calculate spending" });
+    }
+});
+
 module.exports = router;
