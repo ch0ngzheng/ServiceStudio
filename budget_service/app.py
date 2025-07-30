@@ -1,4 +1,12 @@
 from flask import Flask, request, jsonify
+from datetime import datetime
+
+def parse_iso_date(date_str):
+    """Parses an ISO 8601 string, handling the 'Z' suffix for UTC."""
+    if date_str and date_str.endswith('Z'):
+        return datetime.fromisoformat(date_str[:-1] + '+00:00')
+    return datetime.fromisoformat(date_str)
+
 from flask_cors import CORS
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
@@ -58,7 +66,7 @@ def handle_transactions():
 
     try:
         # Determine the month and year from the transaction
-        trans_date = datetime.fromisoformat(timestamp_str)
+        trans_date = parse_iso_date(timestamp_str)
         month_key = f"{trans_date.year}-{trans_date.month:02d}"
 
         # Fetch the user and their budgets

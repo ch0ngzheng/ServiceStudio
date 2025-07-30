@@ -7,7 +7,7 @@ import './App.css';
 import PayBannerPage from './pages/PayBannerPage.jsx';
 import SavingsBannerPage from './pages/SavingsBannerPage.jsx';
 import BTOBannerPage from './pages/BTOBannerPage.jsx';
-import SmartAdjustments from './pages/smartadjustments.jsx';
+import SmartShortcuts from "./components/home/SmartShortcuts.jsx";
 import InsightsPage from './pages/InsightsPage';
 import SetBudgetPage from './pages/SetBudgetPage';
 
@@ -21,7 +21,7 @@ const SmartAdjustmentsWrapper = () => {
     navigate(`/insights/${userId}`);
   };
 
-  return <SmartAdjustments onNavigateToFriend={handleNavigateToInsights} />;
+  return <SmartShortcuts onNavigateToFriend={handleNavigateToInsights} />;
 };
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
         <Route path="/pay/:userId" element={<PayBannerPage />} />
         <Route path="/savings/:userId" element={<SavingsBannerPage />} />
         <Route path="/bto/:userId" element={<BTOBannerPage />} />
-        <Route path="/smartadjustments/:userId" element={<SmartAdjustmentsWrapper />} />
+        <Route path="/smartshortcuts/:userId" element={<SmartAdjustmentsWrapper />} />
         <Route path="/set-budget/:userId" element={<SetBudgetPage />} />
         <Route path="/insights/:userId" element={<InsightsPage />} />
       </Routes>
