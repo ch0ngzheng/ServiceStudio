@@ -129,24 +129,6 @@ function SavingsBannerPage() {
             />
           </div>
         </div>
-        
-        {/* Second row - check rates below digiPortfolio */}
-        <div className="grid grid-cols-4 gap-2">
-          <div className="flex flex-col items-center text-center gap-1">
-            <img 
-              src="/assets/icons/checkrates.svg" 
-              alt="Check Rates" 
-              className="w-14 h-14"
-              onError={(e) => {
-                console.log('Failed to load checkrates icon');
-                e.target.style.display = 'none';
-              }}
-            />
-          </div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
       </div>
 
       {/* Main Content */}
