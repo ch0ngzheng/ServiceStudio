@@ -1,14 +1,15 @@
-import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell } from 'lucide-react';
+import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
-
 
 function SavingsBannerPage() {
   const { userId } = useParams(); // Assuming you get userId from the route
   const [bgImgError, setBgImgError] = useState(false);
   const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
   const [activeTab, setActiveTab] = useState('invest');
+  const [isCKAPopupOpen, setIsCKAPopupOpen] = useState(false);
+  const [isCARPopupOpen, setIsCARPopupOpen] = useState(false);
 
   useEffect(() => {
     const storedProduct = localStorage.getItem('recommendedProduct');
@@ -20,6 +21,19 @@ function SavingsBannerPage() {
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     console.log(`Tab changed to: ${tabId}`);
+  };
+
+  const toggleCKAPopup = () => {
+    setIsCKAPopupOpen(!isCKAPopupOpen);
+  };
+
+  const toggleCARPopup = () => {
+    setIsCARPopupOpen(!isCARPopupOpen);
+  };
+
+  const closePopups = () => {
+    setIsCKAPopupOpen(false);
+    setIsCARPopupOpen(false);
   };
 
   return (
@@ -68,34 +82,29 @@ function SavingsBannerPage() {
 
       {/* Icon Navigation */}
       <div className="bg-white px-4 py-4 mb-2">
-        <div className="grid grid-cols-4 gap-2">
+        {/* First row - 4 icons */}
+        <div className="grid grid-cols-4 gap-2 mb-4">
           <div className="flex flex-col items-center text-center gap-1">
             <img 
-
               src="/assets/icons/digiportfolio.svg" 
               alt="digiPortfolio" 
               className="w-14 h-14"
-
               onError={(e) => {
                 console.log('Failed to load digiportfolio icon');
                 e.target.style.display = 'none';
               }}
             />
-            <span className="text-xs text-gray-700">digiPortfolio</span>
           </div>
           <div className="flex flex-col items-center text-center gap-1">
             <img 
-
               src="/assets/icons/ESA.svg" 
               alt="ESA" 
               className="w-14 h-14"
-
               onError={(e) => {
                 console.log('Failed to load ESA icon');
                 e.target.style.display = 'none';
               }}
             />
-            <span className="text-xs text-gray-700">ESA</span>
           </div>
           <div className="flex flex-col items-center text-center gap-1">
             <img 
@@ -107,7 +116,6 @@ function SavingsBannerPage() {
                 e.target.style.display = 'none';
               }}
             />
-            <span className="text-xs text-gray-700">SGS</span>
           </div>
           <div className="flex flex-col items-center text-center gap-1">
             <img 
@@ -119,7 +127,6 @@ function SavingsBannerPage() {
                 e.target.style.display = 'none';
               }}
             />
-            <span className="text-xs text-gray-700">EPS</span>
           </div>
         </div>
       </div>
@@ -160,7 +167,7 @@ function SavingsBannerPage() {
             {/* Header Text - Centered */}
             <div className="text-left">
               <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2 text-[#003049]" style={{ textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
-                Hi, Bumairah!
+                Hi, {userId || 'User'}!
               </h3>
               <p className="text-black text-sm md:text-base w-full sm:w-[80%] md:w-[60%]">
                 You're all set to invest but you've yet to complete your CKA and CAR.
@@ -175,13 +182,24 @@ function SavingsBannerPage() {
                   1.
                 </div>
                 <div className="flex-1">
-                  <span className="font-bold underline text-base md:text-lg text-[#003049]">CKA not Completed</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold underline text-base md:text-lg text-[#003049]">CKA not Completed</span>
+                    <img 
+                      src="/assets/icons/help.svg"
+                      alt="Help"
+                      className="w-4 h-4 cursor-pointer"
+                      onClick={toggleCKAPopup}
+                      onError={(e) => {
+                        console.log('Failed to load help icon, showing fallback');
+                        e.target.style.display = 'none';
+                        e.target.nextElementSibling.style.display = 'inline';
+                      }}
+                    />
+                    <span className="w-4 h-4 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-700 hidden cursor-pointer" onClick={toggleCKAPopup}>?</span>
+                  </div>
                   <p className="text-black text-sm md:text-base mb-2 text-left">
                     Investment Knowledge not Verified
                   </p>
-                  <div className="h-2 bg-gray-300 rounded-full overflow-hidden w-full max-w-[210px]">
-                    <div className="h-full rounded-full bg-[#003049]" style={{ width: '30%' }}></div>
-                  </div>
                 </div>
               </div>
 
@@ -191,13 +209,24 @@ function SavingsBannerPage() {
                   2.
                 </div>
                 <div className="flex-1">
-                  <span className="font-bold underline text-base md:text-lg text-[#003049]">CAR not Completed</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold underline text-base md:text-lg text-[#003049]">CAR not Completed</span>
+                    <img 
+                      src="/assets/icons/help.svg"
+                      alt="Help"
+                      className="w-4 h-4 cursor-pointer"
+                      onClick={toggleCARPopup}
+                      onError={(e) => {
+                        console.log('Failed to load help icon, showing fallback');
+                        e.target.style.display = 'none';
+                        e.target.nextElementSibling.style.display = 'inline';
+                      }}
+                    />
+                    <span className="w-4 h-4 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-700 hidden cursor-pointer" onClick={toggleCARPopup}>?</span>
+                  </div>
                   <p className="text-black text-sm md:text-base mb-2 text-left">
                     Risk Profile not Established
                   </p>
-                  <div className="h-2 bg-gray-300 rounded-full overflow-hidden w-full max-w-[210px]">
-                    <div className="h-full rounded-full bg-[#003049]" style={{ width: '15%' }}></div>
-                  </div>
                 </div>
               </div>
 
@@ -253,6 +282,158 @@ function SavingsBannerPage() {
             <span className="text-gray-400">→</span>
           </div>
         </div>
+
+      {/* CKA Popup - Moved to root level to avoid z-index conflicts */}
+      {isCKAPopupOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4" 
+          style={{ 
+            zIndex: 999999,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0
+          }} 
+          onClick={closePopups}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 relative border border-gray-100" 
+            style={{ 
+              zIndex: 1000000,
+              position: 'relative'
+            }} 
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header with DBS red accent */}
+            <div className="text-center mb-5 mt-2">
+              <div className="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Customer Knowledge Assessment</h3>
+              <p className="text-sm text-gray-600 font-medium">(CKA)</p>
+            </div>
+
+            {/* Close button */}
+            <button 
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100" 
+              onClick={closePopups}
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Content sections */}
+            <div className="space-y-3 text-center px-4">
+              <div className="bg-red-50 rounded-lg p-3 border-l-4 border-red-600 mx-2">
+                <h4 className="font-semibold text-red-800 mb-1 text-sm">What is CKA?</h4>
+                <p className="text-xs text-red-700 leading-relaxed">
+                  A mandatory evaluation that helps DBS understand your investment knowledge and experience level.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-600 mx-2">
+                <h4 className="font-semibold text-blue-800 mb-1 text-sm">Why is it required?</h4>
+                <p className="text-xs text-blue-700 leading-relaxed">
+                  Ensures you have the necessary knowledge to make informed investment decisions and access appropriate products.
+                </p>
+              </div>
+
+              <div className="bg-green-50 rounded-lg p-3 border-l-4 border-green-600 mx-2">
+                <h4 className="font-semibold text-green-800 mb-1 text-sm">What happens after?</h4>
+                <p className="text-xs text-green-700 leading-relaxed">
+                  You'll be able to invest in a wider range of products and services tailored to your knowledge level.
+                </p>
+              </div>
+            </div>
+
+            {/* Action button */}
+            <div className="mt-3 mb-2 text-center px-6">
+              <button 
+                className="bg-gradient-to-r from-red-600 to-red-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+                onClick={closePopups}
+              >
+                Got it, thanks!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CAR Popup */}
+      {isCARPopupOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4" 
+          style={{ 
+            zIndex: 999999,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0
+          }} 
+          onClick={closePopups}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 relative border border-gray-100" 
+            style={{ 
+              zIndex: 1000000,
+              position: 'relative'
+            }} 
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header with DBS red accent */}
+            <div className="text-center mb-5 mt-2">
+              <div className="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Customer Appropriateness Review</h3>
+              <p className="text-sm text-gray-600 font-medium">(CAR)</p>
+            </div>
+
+            {/* Close button */}
+            <button 
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100" 
+              onClick={closePopups}
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Content sections */}
+            <div className="space-y-3 text-center px-4">
+              <div className="bg-red-50 rounded-lg p-3 border-l-4 border-red-600 mx-2">
+                <h4 className="font-semibold text-red-800 mb-1 text-sm">What is CAR?</h4>
+                <p className="text-xs text-red-700 leading-relaxed">
+                  A comprehensive assessment of your financial situation, investment goals, and risk tolerance.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-600 mx-2">
+                <h4 className="font-semibold text-blue-800 mb-1 text-sm">Why is it important?</h4>
+                <p className="text-xs text-blue-700 leading-relaxed">
+                  Ensures investment recommendations match your financial circumstances and risk profile.
+                </p>
+              </div>
+
+              <div className="bg-green-50 rounded-lg p-3 border-l-4 border-green-600 mx-2">
+                <h4 className="font-semibold text-green-800 mb-1 text-sm">What's included?</h4>
+                <p className="text-xs text-green-700 leading-relaxed">
+                  Income review, investment experience, financial goals, and risk appetite assessment.
+                </p>
+              </div>
+            </div>
+
+            {/* Action button */}
+            <div className="mt-3 mb-2 text-center px-6">
+              <button 
+                className="bg-gradient-to-r from-red-600 to-red-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+                onClick={closePopups}
+              >
+                Got it, thanks!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
 
       <BottomNavigation activeTab="invest" onTabChange={handleTabChange} />
