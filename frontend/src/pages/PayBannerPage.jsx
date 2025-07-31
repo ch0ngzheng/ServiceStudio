@@ -2,6 +2,7 @@ import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, 
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
+import InvestmentFOMOBanner from '../components/banking/InvestmentFOMOBanner';
 
 function InvestmentPage() {
   const { userId } = useParams(); // Assuming you get userId from the route
@@ -259,6 +260,8 @@ function InvestmentPage() {
             </div>
           </div>
         </div>
+        
+        <InvestmentFOMOBanner />
 
         {/* Popular Section */}
         <div className="mt-8 mb-4">
@@ -300,6 +303,8 @@ function InvestmentPage() {
           </div>
         </div>
       </div>
+
+      
 
       {/* CKA Popup - Moved to root level to avoid z-index conflicts */}
       {isCKAPopupOpen && (

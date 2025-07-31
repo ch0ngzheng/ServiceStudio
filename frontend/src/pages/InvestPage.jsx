@@ -2,20 +2,30 @@ import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
+import InvestmentFOMOBanner from '../components/banking/InvestmentFOMOBanner';
 
 function SavingsBannerPage() {
   const navigate = useNavigate();
   const { userId } = useParams(); // get user id from route
   const [bgImgError, setBgImgError] = useState(false);
-  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
+
   const [activeTab, setActiveTab] = useState('invest');
   const [isCKAPopupOpen, setIsCKAPopupOpen] = useState(false);
   const [isCARPopupOpen, setIsCARPopupOpen] = useState(false);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
 
   useEffect(() => {
-    const storedProduct = localStorage.getItem('recommendedProduct');
-    if (storedProduct) {
-      setRecommendedProduct(storedProduct);
+    const storedProducts = localStorage.getItem('recommendedProducts');
+    if (storedProducts) {
+      try {
+        const parsedProducts = JSON.parse(storedProducts);
+        if (Array.isArray(parsedProducts)) {
+          console.log('Debug: Recommended Products Loaded:', parsedProducts);
+          setRecommendedProducts(parsedProducts);
+        }
+      } catch (error) {
+        console.error('Failed to parse recommended products from localStorage', error);
+      }
     }
   }, []);
 
@@ -138,17 +148,27 @@ function SavingsBannerPage() {
 
       {/* Main Content */}
       <div className="pb-20">
+
+
         <h2 className="text-base font-normal text-gray-600 mb-2 text-left px-4">
           Your personalised Investment Guide
         </h2>
 
         {/* Investment Guide Card with Mountain Background */}
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
-          {/* Asia ETF Button - Positioned with absolute positioning */}
-          <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20">
-            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-[#C1121F] shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
-              {recommendedProduct}
-            </button>
+          {/* Buttons for recommended products */}
+          <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20 flex flex-nowrap gap-4 justify-center">
+            {recommendedProducts.length > 0 ? (
+              recommendedProducts.map((product, index) => (
+                <button key={index} className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-[#C1121F] shadow-lg rounded-full text-white text-sm md:text-base py-2 px-6">
+                  {product}
+                </button>
+              ))
+            ) : (
+              <button className="font-bold flex items-center justify-center bg-gray-400 shadow-lg rounded-full text-white text-sm md:text-base py-2 px-6 cursor-not-allowed">
+                No Recommendations
+              </button>
+            )}
           </div>
           {/* Background Image: Scales to set the aspect ratio */}
           <div className="h-[350px]">
@@ -247,6 +267,8 @@ function SavingsBannerPage() {
             </div>
           </div>
         </div>
+
+        <InvestmentFOMOBanner />
 
         {/* Popular Section */}
         <div className="mt-8 mb-4">
