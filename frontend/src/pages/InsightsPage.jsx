@@ -74,37 +74,37 @@ const InsightsPage = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen font-sans">
+    <div className="bg-light-gray-background min-h-screen font-sans">
       {/* Header */}
       <header className="bg-white p-4 flex justify-between items-center">
             <div className="flex items-center space-x-4">
                 <div className="relative">
-                    <FaBell className="text-gray-600" size={20} />
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">15</span>
+                    <FaBell className="text-light-gray" size={20} />
+                    <span className="absolute -top-1 -right-1 bg-dbs-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">15</span>
                 </div>
-                <FaEye className="text-gray-600" size={20} />
+                <FaEye className="text-light-gray" size={20} />
             </div>
             <div className="flex items-center space-x-4">
-                <FaQuestionCircle className="text-gray-600" size={20} />
-                <button className="border border-red-500 text-red-500 px-4 py-1 rounded-full text-sm font-semibold">LOG OUT</button>
+                <FaQuestionCircle className="text-light-gray" size={20} />
+                <button className="border border-dbs-red-500 text-dbs-red-500 px-4 py-1 rounded-full text-sm font-semibold">LOG OUT</button>
             </div>
       </header>
 
       <main className="p-4 pb-32">
-        <h1 className="text-gray-500 text-lg mb-4">Your optimized monthly budget</h1>
+        <h1 className="text-light-gray text-lg mb-4">Your optimized monthly budget</h1>
 
         {/* Budget Categories */}
         <div className="space-y-2">
           {categories.length > 0 ? (
             categories.map((category, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <h2 className="font-semibold text-gray-800 text-lg">{category.name}</h2>
+              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-light-gray">
+                <h2 className="font-semibold text-darker-gray text-lg">{category.name}</h2>
                 <hr className="my-4" />
                 <input
                   type="text"
                   value={`SGD ${category.amount}`}
                   readOnly
-                  className="w-full p-6 text-lg border border-gray-300 rounded-md bg-gray-50"
+                  className="w-full p-6 text-lg border border-medium-gray rounded-md bg-light-gray-background"
                 />
               </div>
             ))
@@ -131,7 +131,7 @@ const InsightsPage = () => {
 
         {/* Message Display */}
         <div className="mt-8 flex flex-col items-center text-center">
-            {message && <p className="text-gray-500 text-lg mb-4">{message}</p>}
+            {message && <p className="text-light-gray text-lg mb-4">{message}</p>}
             {isSuccess && (
               <button 
                 onClick={handleConfirmBudget}

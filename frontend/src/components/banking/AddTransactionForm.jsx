@@ -55,7 +55,7 @@ const AddTransactionForm = ({ userId, onTransactionAdded }) => {
             id="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-dbs-indigo-500 focus:border-dbs-indigo-500 sm:text-sm"
             placeholder="e.g., 50.00"
           />
         </div>
@@ -66,7 +66,7 @@ const AddTransactionForm = ({ userId, onTransactionAdded }) => {
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-dbs-indigo-500 focus:border-dbs-indigo-500 sm:text-sm"
             placeholder="e.g., Coffee with friends"
           />
         </div>
@@ -77,18 +77,18 @@ const AddTransactionForm = ({ userId, onTransactionAdded }) => {
             id="merchant"
             value={merchant}
             onChange={(e) => setMerchant(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-dbs-indigo-500 focus:border-dbs-indigo-500 sm:text-sm"
             placeholder="e.g., Starbucks"
           />
         </div>
         <button 
           type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors"
+          className="w-full py-2 px-4 bg-dbs-blue-600 text-white font-bold rounded-full hover:bg-dbs-blue-700 transition-colors"
         >
           Add Transaction
         </button>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        {success && <p className="text-green-500 text-sm mt-2">{success}</p>}
+        {error && <p className="text-dbs-red-500 text-sm mt-2">{error}</p>}
+        {success && <p className="text-dbs-green-500 text-sm mt-2">{success}</p>}
       </form>
     </div>
   );

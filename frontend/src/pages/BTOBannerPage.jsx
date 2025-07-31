@@ -159,7 +159,7 @@ function BTOBannerPage() {
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
           {/* Income Portfolio Button - Positioned with absolute positioning */}
           <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20">
-            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-[#C1121F] shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
+            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
               {recommendedProduct}
             </button>
           </div>
@@ -183,7 +183,7 @@ function BTOBannerPage() {
           <div className="absolute inset-0 z-10 p-4">
             {/* Header Text - Centered */}
             <div className="text-left">
-              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2 text-[#003049]" style={{ textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
+              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2 text-dark-blue" style={{ textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
                 Hi, {userId || 'User'}!
               </h3>
               <p className="text-black text-sm md:text-base w-full sm:w-[80%] md:w-[60%]">
@@ -195,12 +195,12 @@ function BTOBannerPage() {
             <div className="mt-8 pl-4">
               {/* Step 1 - CKA not Completed */}
               <div className="text-left flex items-start w-full mb-6">
-                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-dark-blue w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   1.
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold underline text-base md:text-lg text-[#003049]">CKA not Completed</span>
+                    <span className="font-bold underline text-base md:text-lg text-dark-blue">CKA not Completed</span>
                     <img 
                       src="/assets/icons/help.svg"
                       alt="Help"
@@ -222,12 +222,12 @@ function BTOBannerPage() {
 
               {/* Step 2 - CAR not Completed */}
               <div className="text-left flex items-start w-full mb-6">
-                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-dark-blue w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   2.
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold underline text-base md:text-lg text-[#003049]">CAR not Completed</span>
+                    <span className="font-bold underline text-base md:text-lg text-dark-blue">CAR not Completed</span>
                     <img 
                       src="/assets/icons/help.svg"
                       alt="Help"
@@ -249,11 +249,11 @@ function BTOBannerPage() {
 
               {/* Step 3 - Ready to Invest */}
               <div className="text-left flex items-center w-full">
-                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-red-700 w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-primary-red w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   3.
                 </div>
                 <div className="flex-1">
-                  <span className="font-bold text-base md:text-lg text-[#003049]">Ready to Invest!</span>
+                  <span className="font-bold text-base md:text-lg text-dark-blue">Ready to Invest!</span>
                 </div>
               </div>
             </div>
@@ -269,10 +269,10 @@ function BTOBannerPage() {
         <div className="bg-white rounded-lg shadow-sm mb-2 p-4 mx-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#fca5a5' }}>
-                <div className="w-6 h-6 rounded-full relative" style={{ backgroundColor: '#B31410' }}>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-light-red-background">
+                <div className="w-6 h-6 rounded-full relative bg-secondary-red">
                   <div className="absolute inset-1 bg-white rounded-full"></div>
-                  <div className="absolute top-1.5 left-1.5 w-1 h-1 rounded-full" style={{ backgroundColor: '#B31410' }}></div>
+                  <div className="absolute top-1.5 left-1.5 w-1 h-1 rounded-full bg-secondary-red"></div>
                 </div>
               </div>
               <div>
@@ -288,8 +288,8 @@ function BTOBannerPage() {
         <div className="bg-white rounded-lg shadow-sm p-4 mx-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#fca5a5' }}>
-                <TrendingUp className="w-6 h-6" style={{ color: '#B31410' }} />
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-light-red-background">
+                <TrendingUp className="w-6 h-6 text-secondary-red" />
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900">ETFs</h4>

@@ -4,9 +4,9 @@ const BudgetCategory = ({ category, spent, total }) => {
   const percentage = total > 0 ? (spent / total) * 100 : 0;
   const isOverBudget = spent > total;
 
-  let progressBarColor = 'bg-green-400';
-  if (percentage > 85) progressBarColor = 'bg-yellow-400';
-  if (isOverBudget) progressBarColor = 'bg-red-500';
+  let progressBarColor = 'bg-dbs-green-400';
+  if (percentage > 85) progressBarColor = 'bg-dbs-yellow-400';
+  if (isOverBudget) progressBarColor = 'bg-dbs-red-500';
 
   const statusText = isOverBudget
     ? `You're over budget by SGD ${(spent - total).toFixed(2)}`
@@ -25,7 +25,7 @@ const BudgetCategory = ({ category, spent, total }) => {
         ></div>
       </div>
       <div className="flex justify-between w-full text-sm">
-        <span className={isOverBudget ? 'text-red-500' : 'text-gray-500'}>{statusText}</span>
+        <span className={isOverBudget ? 'text-dbs-red-500' : 'text-gray-500'}>{statusText}</span>
         <span className="font-medium text-gray-600">SGD {spent.toFixed(2)} / SGD {total.toFixed(2)}</span>
       </div>
     </div>
