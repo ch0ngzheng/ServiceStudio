@@ -20,24 +20,24 @@ const InvestmentBannerSavings = ({ userId }) => {
 
         {/* Fallback solid color background if the image fails */}
         {bgImgError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 via-yellow-400 to-yellow-600"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-dbs-yellow-200 via-dbs-yellow-400 to-dbs-yellow-600"></div>
         )}
 
         {/* All content is absolutely positioned on top of the image */}
 
         {/* 6 Months Saved */}
         <div className="absolute top-[10%] left-[20%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">6 Months Saved</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">6 Months Saved</span>
         </div>
 
         {/* 3 Months Saved */}
         <div className="absolute top-[35%] left-[53%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">3 Months Saved</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">3 Months Saved</span>
         </div>
         
         {/* 1 Month Saved */}
         <div className="absolute top-[65%] left-[24.5%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">1 Months Saved</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">1 Months Saved</span>
         </div>
 
         {/* Climbing Figure */}
@@ -54,7 +54,7 @@ const InvestmentBannerSavings = ({ userId }) => {
           <h2 className="text-dbs-red-600 text-xs sm:text-sm font-bold leading-tight mb-2">
             Turn your $1,000+ savings into future gains.
           </h2>
-          <p className="text-gray-800 text-[10px] sm:text-xs leading-relaxed justify-end">
+          <p className="text-darker-gray text-[10px] sm:text-xs leading-relaxed justify-end">
             Invest in a wide range of unit trusts with DBS. Diversify and grow your money for your goals.
           </p>
         </div>

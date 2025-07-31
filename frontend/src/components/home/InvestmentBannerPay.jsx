@@ -20,24 +20,24 @@ const InvestmentBanner = ({ userId }) => {
 
         {/* Fallback solid color background if the image fails */}
         {bgImgError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 via-yellow-400 to-yellow-600"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-dbs-yellow-200 via-dbs-yellow-400 to-dbs-yellow-600"></div>
         )}
 
         {/* All content is absolutely positioned on top of the image */}
 
         {/* 5 Months pay */}
         <div className="absolute top-[10%] left-[22%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">5 Months pay</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">5 Months pay</span>
         </div>
 
         {/* 3 Months pay */}
         <div className="absolute top-[35%] left-[53%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">3 Months pay</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">3 Months pay</span>
         </div>
 
         {/* 1 Month pay */}
         <div className="absolute top-[65%] left-[27%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">1 Month pay</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">1 Month pay</span>
         </div>
 
         {/* Climbing Figure - Dynamic positioning */}
@@ -52,16 +52,16 @@ const InvestmentBanner = ({ userId }) => {
             }}
           />
           <div className="w-full h-full flex-col items-center justify-center hidden">
-            <div className="w-2 h-2 bg-gray-800 rounded-full"></div>
+            <div className="w-2 h-2 bg-dbs-navy rounded-full"></div>
             <div className="relative flex flex-col items-center">
               {/* Body */}
-              <div className="w-0.5 h-3 bg-gray-800"></div>
+              <div className="w-0.5 h-3 bg-dbs-navy"></div>
               {/* Arms */}
-              <div className="absolute top-1 -left-1.5 w-3 h-0.5 bg-gray-800 transform rotate-12"></div>
-              <div className="absolute top-1 -right-1.5 w-3 h-0.5 bg-gray-800 transform -rotate-12"></div>
+              <div className="absolute top-1 -left-1.5 w-3 h-0.5 bg-dbs-navy transform rotate-12"></div>
+              <div className="absolute top-1 -right-1.5 w-3 h-0.5 bg-dbs-navy transform -rotate-12"></div>
               {/* Legs */}
-              <div className="absolute top-2.5 -left-1 w-2 h-0.5 bg-gray-800 transform rotate-45"></div>
-              <div className="absolute top-2.5 -right-1 w-2 h-0.5 bg-gray-800 transform -rotate-45"></div>
+              <div className="absolute top-2.5 -left-1 w-2 h-0.5 bg-dbs-navy transform rotate-45"></div>
+              <div className="absolute top-2.5 -right-1 w-2 h-0.5 bg-dbs-navy transform -rotate-45"></div>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ const InvestmentBanner = ({ userId }) => {
               5 months of steady pay - time to make it work for you!
             </h2>
           <div className="w-full mt-1">
-            <p className="text-gray-800 text-[10px] sm:text-xs leading-relaxed justify-end">
+            <p className="text-darker-gray text-[10px] sm:text-xs leading-relaxed justify-end">
               Let's grow it further with the <span className="font-medium">Asia ETF.</span>
             </p>
           </div>
