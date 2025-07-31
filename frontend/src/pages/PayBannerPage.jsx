@@ -1,14 +1,15 @@
 import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
 import InvestmentFOMOBanner from '../components/banking/InvestmentFOMOBanner';
 
-function InvestmentPage() {
-  const { userId } = useParams(); // Assuming you get userId from the route
+function PayBannerPage() {
+  const navigate = useNavigate();
+  const { userId } = useParams(); // get user id from route
   const [bgImgError, setBgImgError] = useState(false);
-  const [recommendedProduct, setRecommendedProduct] = useState('Asia ETF');
-  const [activeTab, setActiveTab] = useState('invest');
+  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
+  const [activeTab, setActiveTab] = useState('pay');
   const [isCKAPopupOpen, setIsCKAPopupOpen] = useState(false);
   const [isCARPopupOpen, setIsCARPopupOpen] = useState(false);
 
@@ -21,7 +22,11 @@ function InvestmentPage() {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    console.log(`Tab changed to: ${tabId}`);
+    if (tabId === 'home') {
+      navigate(`/homePage/${userId}`);
+    } else {
+      console.log(`Tab changed to: ${tabId}`);
+    }
   };
 
   const toggleCKAPopup = () => {
@@ -130,24 +135,6 @@ function InvestmentPage() {
             />
           </div>
         </div>
-        
-        {/* Second row - check rates below digiPortfolio */}
-        <div className="grid grid-cols-4 gap-2">
-          <div className="flex flex-col items-center text-center gap-1">
-            <img 
-              src="/assets/icons/checkrates.svg" 
-              alt="Check Rates" 
-              className="w-14 h-14"
-              onError={(e) => {
-                console.log('Failed to load checkrates icon');
-                e.target.style.display = 'none';
-              }}
-            />
-          </div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
       </div>
 
       {/* Main Content */}
@@ -160,7 +147,7 @@ function InvestmentPage() {
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
           {/* Asia ETF Button - Positioned with absolute positioning */}
           <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20">
-            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-[#C1121F] shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
+            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
               {recommendedProduct}
             </button>
           </div>
@@ -184,7 +171,7 @@ function InvestmentPage() {
           <div className="absolute inset-0 z-10 p-4">
             {/* Header Text - Centered */}
             <div className="text-left">
-              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2 text-[#003049]" style={{ textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
+              <h3 className="text-xl md:text-2xl font-bold mb-1 md:mb-2 text-dark-blue" style={{ textShadow: '0px 1px 4px rgba(0, 0, 0, 0.25)' }}>
                 Hi, {userId || 'User'}!
               </h3>
               <p className="text-black text-sm md:text-base w-full sm:w-[80%] md:w-[60%]">
@@ -196,12 +183,12 @@ function InvestmentPage() {
             <div className="mt-8 pl-4">
               {/* Step 1 - CKA not Completed */}
               <div className="text-left flex items-start w-full mb-6">
-                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-dark-blue w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   1.
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold underline text-base md:text-lg text-[#003049]">CKA not Completed</span>
+                    <span className="font-bold underline text-base md:text-lg text-dark-blue">CKA not Completed</span>
                     <img 
                       src="/assets/icons/help.svg"
                       alt="Help"
@@ -223,12 +210,12 @@ function InvestmentPage() {
 
               {/* Step 2 - CAR not Completed */}
               <div className="text-left flex items-start w-full mb-6">
-                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-[#003049] w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-dark-blue w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   2.
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold underline text-base md:text-lg text-[#003049]">CAR not Completed</span>
+                    <span className="font-bold underline text-base md:text-lg text-dark-blue">CAR not Completed</span>
                     <img 
                       src="/assets/icons/help.svg"
                       alt="Help"
@@ -250,11 +237,11 @@ function InvestmentPage() {
 
               {/* Step 3 - Ready to Invest */}
               <div className="text-left flex items-center w-full">
-                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-red-700 w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
+                <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-primary-red w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   3.
                 </div>
                 <div className="flex-1">
-                  <span className="font-bold text-base md:text-lg text-[#003049]">Ready to Invest!</span>
+                  <span className="font-bold text-base md:text-lg text-dark-blue">Ready to Invest!</span>
                 </div>
               </div>
             </div>
@@ -272,10 +259,10 @@ function InvestmentPage() {
         <div className="bg-white rounded-lg shadow-sm mb-2 p-4 mx-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#fca5a5' }}>
-                <div className="w-6 h-6 rounded-full relative" style={{ backgroundColor: '#B31410' }}>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-light-red-background">
+                <div className="w-6 h-6 rounded-full relative bg-secondary-red">
                   <div className="absolute inset-1 bg-white rounded-full"></div>
-                  <div className="absolute top-1.5 left-1.5 w-1 h-1 rounded-full" style={{ backgroundColor: '#B31410' }}></div>
+                  <div className="absolute top-1.5 left-1.5 w-1 h-1 rounded-full bg-secondary-red"></div>
                 </div>
               </div>
               <div>
@@ -291,8 +278,8 @@ function InvestmentPage() {
         <div className="bg-white rounded-lg shadow-sm p-4 mx-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#fca5a5' }}>
-                <TrendingUp className="w-6 h-6" style={{ color: '#B31410' }} />
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-light-red-background">
+                <TrendingUp className="w-6 h-6 text-secondary-red" />
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900">ETFs</h4>
@@ -304,28 +291,14 @@ function InvestmentPage() {
         </div>
       </div>
 
-      
-
-      {/* CKA Popup - Moved to root level to avoid z-index conflicts */}
+      {/* CKA Popup */}
       {isCKAPopupOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4" 
-          style={{ 
-            zIndex: 999999,
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0
-          }} 
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50" 
           onClick={closePopups}
         >
           <div 
             className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 relative border border-gray-100" 
-            style={{ 
-              zIndex: 1000000,
-              position: 'relative'
-            }} 
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with DBS red accent */}
@@ -372,7 +345,7 @@ function InvestmentPage() {
             {/* Action button */}
             <div className="mt-3 mb-2 text-center px-6">
               <button 
-                className="bg-gradient-to-r from-red-600 to-red-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-r from-dbs-red-600 to-dbs-red-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:from-dbs-red-700 hover:to-dbs-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
                 onClick={closePopups}
               >
                 Got it, thanks!
@@ -385,23 +358,11 @@ function InvestmentPage() {
       {/* CAR Popup */}
       {isCARPopupOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4" 
-          style={{ 
-            zIndex: 999999,
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0
-          }} 
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50" 
           onClick={closePopups}
         >
           <div 
             className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 relative border border-gray-100" 
-            style={{ 
-              zIndex: 1000000,
-              position: 'relative'
-            }} 
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with DBS red accent */}
@@ -409,7 +370,7 @@ function InvestmentPage() {
               <div className="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-7 h-7 text-white" />
               </div>
-              <h3 className="font-bold text-xl text-gray-900 mb-2">Customer Account Review</h3>
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Customer Appropriateness Review</h3>
               <p className="text-sm text-gray-600 font-medium">(CAR)</p>
             </div>
 
@@ -448,7 +409,7 @@ function InvestmentPage() {
             {/* Action button */}
             <div className="mt-3 mb-2 text-center px-6">
               <button 
-                className="bg-gradient-to-r from-red-600 to-red-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-r from-dbs-red-600 to-dbs-red-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:from-dbs-red-700 hover:to-dbs-red-800 transition-all duration-200 shadow-lg hover:shadow-xl"
                 onClick={closePopups}
               >
                 Got it, thanks!
@@ -464,4 +425,4 @@ function InvestmentPage() {
   );
 }
 
-export default InvestmentPage;
+export default PayBannerPage;

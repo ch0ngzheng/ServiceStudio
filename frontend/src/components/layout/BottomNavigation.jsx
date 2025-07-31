@@ -11,7 +11,7 @@ const BottomNavigation = ({ activeTab = 'home', onTabChange }) => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full border-t border-gray-200" style={{ backgroundColor: '#162633' }}>
+    <div className="fixed bottom-0 left-0 w-full border-t border-gray-200 bg-dark-blue">
       <div className="flex items-center justify-around py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;

@@ -9,7 +9,7 @@ import TransportCardBanner from './TransportCardBanner';
 const ToggleSwitch = ({ enabled, setEnabled }) => (
   <button 
     onClick={() => setEnabled(!enabled)}
-    className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 ease-in-out ${enabled ? 'bg-red-500' : 'bg-gray-300'}`}>
+    className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 ease-in-out ${enabled ? 'bg-dbs-red-500' : 'bg-gray-300'}`}>
     <span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-200 ease-in-out ${enabled ? 'translate-x-6' : 'translate-x-1'}`} />
   </button>
 );
@@ -165,31 +165,30 @@ const BudgetCard = ({
           </div>
         </div>
         <p className="text-sm text-gray-500 mb-4">We've automatically adjusted your budgets to keep you on track</p>
-        <div className="flex gap-2 mb-2">
-          {adjustments.length > 0 ? (
-            adjustments.slice(-3).map((adj, index) => (
-              <div key={index} className="flex-1 bg-red-50 p-3 rounded-2xl border border-red-200 flex items-center gap-3">
-                <div className="bg-red-100 p-2 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                </div>
-                <div>
-                  <p className="font-bold text-sm">Moved ${adj.amount.toFixed(2)}</p>
-                  <p className="text-xs text-gray-500">{`From ${adj.from} to ${adj.to}`}</p>
-                </div>
+        <div className="flex gap-4 mb-2">
+          {adjustments.map((adj, index) => (
+            <div key={index} className="flex-1 bg-dbs-red-50 p-3 rounded-2xl border border-dbs-red-200 flex items-center gap-3">
+              <div className="bg-dbs-red-100 p-2 rounded-full">
+                <adj.icon className="w-6 h-6 text-dbs-red-600" />
               </div>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500">No adjustments made yet.</p>
-          )}
+              <div>
+                <p className="font-bold text-sm">Moved ${adj.amount}</p>
+                <p className="text-xs text-gray-600">{adj.from} to {adj.to}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-1.5">
+          <div className="bg-dbs-red-400 h-1.5 rounded-full" style={{ width: '60%' }}></div>
         </div>
       </div>
 
       {/* Budget Breakdown Card */}
-      {/* Budget Breakdown Card */}
       <div className="mb-4">
         {loading && <p>Loading budget...</p>}
-        {error && <p className="text-red-500">Error: {error}</p>}
-        {originalBudget && spending ? (
+        {error && <p className="text-dbs-red-500">Error: {error}</p>}
+        {budget && spending ? (
+
           <BudgetBreakdown 
             key={refreshKey}
             categories={Object.keys(originalBudget).map(category => ({
@@ -205,34 +204,34 @@ const BudgetCard = ({
 
       {/* Month Wrapped Card */}
       {monthWrapped ? (
-      <div className="bg-blue-50 p-4 rounded-2xl shadow-sm">
+      <div className="bg-dbs-blue-50 p-4 rounded-2xl shadow-sm">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-lg text-blue-900">Month Wrapped</h2>
-          <span className="bg-green-200 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">{monthWrapped.status}</span>
+          <h2 className="font-bold text-lg text-dbs-blue-900">Month Wrapped</h2>
+          <span className="bg-dbs-green-200 text-dbs-green-800 text-xs font-semibold px-3 py-1 rounded-full">{monthWrapped.status}</span>
         </div>
-        <div className="flex text-center border-b border-blue-200 pb-4 mb-4">
-          <div className="w-1/2 border-r border-blue-200">
+        <div className="flex text-center border-b border-dbs-blue-200 pb-4 mb-4">
+          <div className="w-1/2 border-r border-dbs-blue-200">
             <p className="text-xs text-gray-500">SGD</p>
-            <p className="text-2xl font-bold text-blue-900">{monthWrapped.totalBudget.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-dbs-blue-900">{monthWrapped.totalBudget.toLocaleString()}</p>
             <p className="text-xs text-gray-500">Total Budget for {monthWrapped.month}</p>
           </div>
           <div className="w-1/2">
             <p className="text-xs text-gray-500">SGD</p>
-            <p className="text-2xl font-bold text-blue-900">{monthWrapped.totalSpent.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-dbs-blue-900">{monthWrapped.totalSpent.toLocaleString()}</p>
             <p className="text-xs text-gray-500">Total Spent for {monthWrapped.month}</p>
           </div>
         </div>
         <div className="text-center mb-4">
           <p className="text-xs text-gray-500">SGD</p>
-          <p className="text-3xl font-bold text-blue-900">{monthWrapped.totalSaved.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-dbs-blue-900">{monthWrapped.totalSaved.toLocaleString()}</p>
           <p className="text-xs text-gray-500">Total Saved for {monthWrapped.month} after Smart Reallocations.</p>
         </div>
-        <button onClick={() => navigate(`/set-budget/${userId}`)} className="w-full py-3 px-4 bg-green-300 text-green-900 font-bold rounded-full hover:bg-green-400 transition-colors">
+        <button onClick={() => navigate(`/set-budget/${userId}`)} className="w-full py-3 px-4 bg-dbs-green-300 text-dbs-green-900 font-bold rounded-full hover:bg-dbs-green-400 transition-colors">
           Set Budget for {monthWrapped.month}
         </button>
       </div>
       ) : (
-        <div className="bg-blue-50 p-4 rounded-2xl shadow-sm text-center">
+        <div className="bg-dbs-blue-50 p-4 rounded-2xl shadow-sm text-center">
           <p>Loading month summary...</p>
         </div>
       )}
