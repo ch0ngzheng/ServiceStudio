@@ -255,30 +255,7 @@ function SavingsBannerPage() {
         </div>
       </div>
 
-      {/* Bottom Navigation using SVG */}
-      <div className="fixed bottom-0 left-0 right-0 w-full">
-        <img 
-          src="/assets/icons/bottom bar.svg"
-          alt="Bottom Navigation"
-          className="w-full h-auto block"
-          style={{ 
-            display: 'block',
-            width: '100%',
-            height: 'auto',
-            maxHeight: 'none',
-            objectFit: 'cover'
-          }}
-          onError={(e) => {
-            console.log('Failed to load bottom bar SVG, showing fallback');
-            e.target.style.display = 'none';
-            e.target.nextElementSibling.style.display = 'block';
-          }}
-        />
-        {/* Fallback navigation if SVG fails */}
-        <div className="w-full bg-gray-800 py-2 hidden">
-          <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
-        </div>
-      </div>
+      <BottomNavigation activeTab="invest" onTabChange={handleTabChange} />
     </div>
   );
 }

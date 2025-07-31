@@ -1,6 +1,13 @@
 import { useState } from "react";
+import BottomNavigation from '../components/layout/BottomNavigation';
 
 const SmartAdjustments = ({ onNavigateToFriend }) => {
+  const [activeTab, setActiveTab] = useState('plan');
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    console.log(`Tab changed to: ${tabId}`);
+  };
 
   return (
     <div className="bg-gray-100 flex justify-center min-h-screen">
@@ -164,50 +171,7 @@ const SmartAdjustments = ({ onNavigateToFriend }) => {
           </button>
         </div>
 
-        {/* Bottom Navigation Bar */}
-        <div style={{ 
-          width: '430px', 
-          height: 'auto'
-        }}>
-          {/* Bottom Navigation SVG - Using your bottom bar.svg file */}
-          <img 
-            src="/assets/icons/bottom bar.svg" 
-            alt="Bottom Navigation Bar"
-            className="w-full"
-            style={{ 
-              width: '430px', 
-              height: 'auto',
-              display: 'block'
-            }}
-            onError={(e) => {
-              // Fallback if SVG fails to load - create a simple bottom nav
-              e.target.outerHTML = `
-                <div style="width: 430px; height: 80px; background-color: #2c3e50; display: flex; align-items: center; justify-content: space-around;">
-                  <div style="color: white; text-align: center; font-size: 12px;">
-                    <div>🏠</div>
-                    <div>Home</div>
-                  </div>
-                  <div style="color: white; text-align: center; font-size: 12px;">
-                    <div>💰</div>
-                    <div>Invest</div>
-                  </div>
-                  <div style="color: white; text-align: center; font-size: 12px;">
-                    <div>💳</div>
-                    <div>Pay & Transfer</div>
-                  </div>
-                  <div style="color: white; text-align: center; font-size: 12px;">
-                    <div>📊</div>
-                    <div>Plan</div>
-                  </div>
-                  <div style="color: white; text-align: center; font-size: 12px;">
-                    <div>⋯</div>
-                    <div>More</div>
-                  </div>
-                </div>
-              `;
-            }}
-          />
-        </div>
+        <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
       </div>
     </div>
   );
