@@ -3,6 +3,7 @@ import { Car, ShoppingBag, Sparkles, ChevronDown, ChevronUp } from 'lucide-react
 import BudgetBreakdown from './BudgetBreakdown';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import TransportCardBanner from './TransportCardBanner';
 
 // A simple toggle switch component
 const ToggleSwitch = ({ enabled, setEnabled }) => (
@@ -126,6 +127,9 @@ const BudgetCard = ({
     );
   }
 
+  const transportSpending = spending ? spending.Transport || 0 : 0;
+  const cashbackAmount = (transportSpending * 0.05).toFixed(2);
+
   return (
     <div className="p-4 bg-gray-50 font-sans">
       {/* Month Selector Header */}
@@ -231,6 +235,8 @@ const BudgetCard = ({
           <p>Loading month summary...</p>
         </div>
       )}
+      {/* Transport Cashback Banner */}
+      <TransportCardBanner cashbackAmount={cashbackAmount} />
     </div>
   );
 };

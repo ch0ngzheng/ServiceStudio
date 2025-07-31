@@ -44,9 +44,12 @@ const LoginPage = () => {
       });
 
       if (response.data.success) {
-        // Store the recommended product in localStorage to make it accessible to other pages
-        if (response.data.recommendedProduct) {
-          localStorage.setItem('recommendedProduct', response.data.recommendedProduct);
+        // Store the recommended products in localStorage to make it accessible to other pages
+        if (response.data.recommendedProducts && response.data.recommendedProducts.length > 0) {
+          localStorage.setItem('recommendedProducts', JSON.stringify(response.data.recommendedProducts));
+        } else {
+          // Clear any previous recommendations if there are none now
+          localStorage.removeItem('recommendedProducts');
         }
         navigate(`/homePage/${formData.id}`);
       }

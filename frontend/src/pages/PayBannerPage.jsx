@@ -2,6 +2,7 @@ import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
+import InvestmentFOMOBanner from '../components/banking/InvestmentFOMOBanner';
 
 function PayBannerPage() {
   const navigate = useNavigate();
@@ -246,6 +247,8 @@ function PayBannerPage() {
             </div>
           </div>
         </div>
+        
+        <InvestmentFOMOBanner />
 
         {/* Popular Section */}
         <div className="mt-8 mb-4">

@@ -2,20 +2,30 @@ import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
+import InvestmentFOMOBanner from '../components/banking/InvestmentFOMOBanner';
 
 function SavingsBannerPage() {
   const navigate = useNavigate();
   const { userId } = useParams(); // get user id from route
   const [bgImgError, setBgImgError] = useState(false);
-  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
+
   const [activeTab, setActiveTab] = useState('invest');
   const [isCKAPopupOpen, setIsCKAPopupOpen] = useState(false);
   const [isCARPopupOpen, setIsCARPopupOpen] = useState(false);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
 
   useEffect(() => {
-    const storedProduct = localStorage.getItem('recommendedProduct');
-    if (storedProduct) {
-      setRecommendedProduct(storedProduct);
+    const storedProducts = localStorage.getItem('recommendedProducts');
+    if (storedProducts) {
+      try {
+        const parsedProducts = JSON.parse(storedProducts);
+        if (Array.isArray(parsedProducts)) {
+          console.log('Debug: Recommended Products Loaded:', parsedProducts);
+          setRecommendedProducts(parsedProducts);
+        }
+      } catch (error) {
+        console.error('Failed to parse recommended products from localStorage', error);
+      }
     }
   }, []);
 
@@ -247,6 +257,8 @@ function SavingsBannerPage() {
             </div>
           </div>
         </div>
+
+        <InvestmentFOMOBanner />
 
         {/* Popular Section */}
         <div className="mt-8 mb-4">
