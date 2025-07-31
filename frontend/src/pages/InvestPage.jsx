@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
 import InvestmentFOMOBanner from '../components/banking/InvestmentFOMOBanner';
 
-function SavingsBannerPage() {
+function InvestPage() {
   const navigate = useNavigate();
   const { userId } = useParams(); // get user id from route
   const [bgImgError, setBgImgError] = useState(false);
@@ -50,6 +50,8 @@ function SavingsBannerPage() {
     setIsCKAPopupOpen(false);
     setIsCARPopupOpen(false);
   };
+
+    
 
   return (
     <div className="min-h-screen bg-light-gray-background">
@@ -155,10 +157,18 @@ function SavingsBannerPage() {
         {/* Investment Guide Card with Mountain Background */}
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
           {/* Asia ETF Button - Positioned with absolute positioning */}
-          <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20">
-            <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
-              {recommendedProduct}
-            </button>
+                              <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20 flex flex-row gap-2">
+            {recommendedProducts.length > 0 ? (
+              recommendedProducts.map((product, index) => (
+                <button key={index} className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
+                  {product}
+                </button>
+              ))
+            ) : (
+              <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
+                Explore Investments
+              </button>
+            )}
           </div>
           {/* Background Image: Scales to set the aspect ratio */}
           <div className="h-[350px]">
@@ -458,4 +468,4 @@ function SavingsBannerPage() {
   );
 }
 
-export default SavingsBannerPage;
+export default InvestPage;
