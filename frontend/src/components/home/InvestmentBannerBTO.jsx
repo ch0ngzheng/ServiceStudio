@@ -20,19 +20,19 @@ const InvestmentBanner = ({ userId }) => {
 
         {/* Fallback solid color background if the image fails */}
         {bgImgError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 via-yellow-400 to-yellow-600"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-dbs-yellow-200 via-dbs-yellow-400 to-dbs-yellow-600"></div>
         )}
 
         {/* All content is absolutely positioned on top of the image */}
 
         {/* Renovation Savings */}
         <div className="absolute top-[10%] left-[15%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">Renovation Savings</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">Renovation Savings</span>
         </div>
 
         {/* Downpayment Done */}
         <div className="absolute top-[35%] left-[53%] flex items-center z-30">
-          <span className="text-[#002663] font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">Downpayment Done</span>
+          <span className="text-dbs-navy font-bold text-[0.6rem] sm:text-xs md:text-sm mr-2">Downpayment Done</span>
         </div>
 
         {/* Climbing Figure */}
@@ -49,7 +49,7 @@ const InvestmentBanner = ({ userId }) => {
             <h2 className="text-dbs-red-600 text-xs sm:text-sm font-bold leading-tight mb-2">
               New home, new goals — let’s grow your future.
             </h2>
-            <p className="text-gray-800 text-[10px] sm:text-xs leading-relaxed justify-end">
+            <p className="text-darker-gray text-[10px] sm:text-xs leading-relaxed justify-end">
               You’ve taken a big step with your BTO. Keep building your financial future with digiPortfolio, starting from just S$1,000
             </p>
         </div>

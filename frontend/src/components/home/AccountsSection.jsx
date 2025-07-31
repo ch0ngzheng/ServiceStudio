@@ -26,7 +26,7 @@ const AccountsSection = ({ balanceVisible, userId }) => {
             onClick={() => setActiveTab('accounts')}
             className={`pb-2 px-4 border-b-2 font-medium text-sm transition-colors ${
               activeTab === 'accounts'
-                ? 'border-red-600 text-red-600'
+                ? 'border-primary-red text-primary-red'
                 : 'border-transparent text-gray-500'
             }`}
           >
@@ -36,7 +36,7 @@ const AccountsSection = ({ balanceVisible, userId }) => {
             onClick={() => setActiveTab('insights')}
             className={`pb-2 px-4 border-b-2 font-medium text-sm transition-colors ${
               activeTab === 'insights'
-                ? 'border-red-600 text-red-600'
+                ? 'border-primary-red text-primary-red'
                 : 'border-transparent text-gray-500'
             }`}
           >

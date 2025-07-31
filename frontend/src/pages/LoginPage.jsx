@@ -63,28 +63,28 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-light-gray-background flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-red-600 rounded-lg flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 bg-dbs-red-600 rounded-lg flex items-center justify-center mb-4">
             <User className="h-6 w-6 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">DBS Login</h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <h2 className="text-2xl font-bold text-darkest-gray">DBS Login</h2>
+          <p className="mt-2 text-sm text-light-gray">
             Enter your credentials to access your account
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="bg-dbs-red-50 border border-dbs-red-200 rounded-md p-4">
+              <p className="text-sm text-dbs-red-800">{error}</p>
             </div>
           )}
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="id" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="id" className="block text-sm font-medium text-light-gray">
                 User ID
               </label>
               <div className="mt-1 relative">
@@ -95,15 +95,15 @@ const LoginPage = () => {
                   required
                   value={formData.id}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
+                  className="w-full px-3 py-2 pl-10 border border-medium-gray rounded-md focus:outline-none focus:ring-dbs-red-500 focus:border-dbs-red-500"
                   placeholder="Enter your user ID"
                 />
-                <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <User className="absolute left-3 top-2.5 h-5 w-5 text-lighter-gray" />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-light-gray">
                 Password
               </label>
               <div className="mt-1 relative">
@@ -114,13 +114,13 @@ const LoginPage = () => {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
+                  className="w-full px-3 py-2 pl-10 pr-10 border border-medium-gray rounded-md focus:outline-none focus:ring-dbs-red-500 focus:border-dbs-red-500"
                   placeholder="Enter your password"
                 />
-                <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-2.5 h-5 w-5 text-lighter-gray" />
                 <button
                   type="button"
-                  className="absolute right-3 top-2.5 text-gray-400"
+                  className="absolute right-3 top-2.5 text-lighter-gray"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -134,15 +134,15 @@ const LoginPage = () => {
             disabled={isLoading}
             className={`w-full py-2 px-4 rounded-md text-white font-medium ${
               isLoading 
-                ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-red-600 hover:bg-red-700'
+                ? 'bg-lighter-gray cursor-not-allowed' 
+                : 'bg-dbs-red-600 hover:bg-dbs-red-700'
             }`}
           >
             {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
 
           <div className="text-center">
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-lighter-gray">
               Use your existing user_id and password from the database
             </p>
           </div>
