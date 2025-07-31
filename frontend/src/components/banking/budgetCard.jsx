@@ -16,18 +16,16 @@ const ToggleSwitch = ({ enabled, setEnabled }) => (
 const BudgetCard = ({ 
   userId, 
   refreshKey,
-  adjustments = [
-    { icon: Car, amount: 20, from: 'Entertainment', to: 'Transport' },
-    { icon: ShoppingBag, amount: 50, from: 'Shopping', to: 'Food' },
-  ],
   onSetNextMonthBudget = () => {},
 }) => {
   const [automationEnabled, setAutomationEnabled] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [budget, setBudget] = useState(null);
+  const [budget, setBudget] = useState(null); // This will hold the rebalanced budget for display logic
+  const [originalBudget, setOriginalBudget] = useState(null); // This will hold the original budget for display totals
   const [spending, setSpending] = useState(null);
   const [monthWrapped, setMonthWrapped] = useState(null);
+  const [adjustments, setAdjustments] = useState([]); // To store dynamic adjustments
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -49,49 +47,46 @@ const BudgetCard = ({
       try {
         setLoading(true);
 
-        // Fetch both budget limits and actual spending concurrently
-        const [budgetResponse, spendingResponse] = await Promise.all([
-          axios.get(`http://localhost:5001/budget/${userId}/${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}`),
-          axios.post('http://localhost:3000/api/transactions/calculate_spending', {
-            user_id: userId,
-            year: selectedDate.getFullYear(),
-            month: selectedDate.getMonth() + 1, // month is 1-based in the backend
-          }),
-        ]);
+        // Fetch all budget data from the single, enhanced endpoint
+        const response = await axios.get(`http://localhost:5001/budget/${userId}/${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}`);
+        
+        if (!response.data.success) {
+          throw new Error('Failed to fetch budget data.');
+        }
 
-        if (!budgetResponse.data.success) throw new Error('Failed to fetch budget data.');
-        if (!spendingResponse.data.success) throw new Error('Failed to calculate spending.');
-
-        const budgetData = budgetResponse.data.budget;
+        const { 
+          original_budget: budgetData, 
+          spending_breakdown: spendingData, 
+          rebalanced_budget: rebalancedBudgetData,
+          adjustments: adjustmentsData // Get adjustments from API
+        } = response.data;
 
         // Standard categories that should be displayed
         const standardCategories = ["Transport", "Food", "Shopping", "Entertainment", "Miscellaneous"];
         
-        // Create a new budget object with the correct structure
-        const processedBudget = {};
-
-        // Initialize standard categories with 0
+        // Create a new budget object with the correct structure for the *original* budget
+        const processedOriginalBudget = {};
         standardCategories.forEach(cat => {
-          processedBudget[cat] = 0;
+          processedOriginalBudget[cat] = 0;
         });
 
-        // Process fetched data, merging Meals and Groceries into Food
         for (const category in budgetData) {
           if (category === "Meals" || category === "Groceries") {
-            processedBudget["Food"] = (processedBudget["Food"] || 0) + budgetData[category];
+            processedOriginalBudget["Food"] = (processedOriginalBudget["Food"] || 0) + budgetData[category];
           } else if (standardCategories.includes(category)) {
-            processedBudget[category] = budgetData[category];
+            processedOriginalBudget[category] = budgetData[category];
           }
         }
 
-        const spendingData = spendingResponse.data.spendingBreakdown;
-
-        setBudget(processedBudget);
+        // Store both the original and rebalanced budgets
+        setOriginalBudget(processedOriginalBudget);
+        setBudget(rebalancedBudgetData);
         setSpending(spendingData);
+        setAdjustments(adjustmentsData || []); // Set adjustments, default to empty array
 
-        // Calculate month-wrapped data dynamically
-        const totalBudget = Object.values(processedBudget).reduce((sum, val) => sum + val, 0);
-        const totalSpent = Object.keys(processedBudget).reduce((sum, category) => sum + (spendingData[category] || 0), 0);
+        // Calculate month-wrapped data dynamically using the original budget values
+        const totalBudget = Object.values(processedOriginalBudget).reduce((sum, val) => sum + val, 0);
+        const totalSpent = Object.values(spendingData).reduce((sum, value) => sum + value, 0);
         const totalSaved = totalBudget - totalSpent;
 
         const currentMonth = selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -185,16 +180,16 @@ const BudgetCard = ({
       </div>
 
       {/* Budget Breakdown Card */}
-      {/* Budget Breakdown Card */}
       <div className="mb-4">
         {loading && <p>Loading budget...</p>}
         {error && <p className="text-dbs-red-500">Error: {error}</p>}
         {budget && spending ? (
+
           <BudgetBreakdown 
             key={refreshKey}
-            categories={Object.keys(budget).map(category => ({
+            categories={Object.keys(originalBudget).map(category => ({
               name: category,
-              total: budget[category],
+              total: originalBudget[category], // Use original budget for the total
               spent: spending[category] || 0,
             }))}
           />
