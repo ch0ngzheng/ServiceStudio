@@ -11,53 +11,67 @@ const InsightsPage = () => {
   const [message, setMessage] = useState('');
   const [categories, setCategories] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [setAsDefault, setSetAsDefault] = useState(false);
 
   useEffect(() => {
-    const { totalBudget, year, month } = location.state || {};
+    const { totalBudget } = location.state || {};
+    if (totalBudget) {
+      fetchOptimizedBudget(false); // Initial fetch without setting as default
+    }
+  }, [userId, location.state]);
 
+  const fetchOptimizedBudget = async (isDefault) => {
+    const { totalBudget, year, month } = location.state || {};
     if (!totalBudget) {
       setMessage('No budget amount was set. Please go back and set a budget.');
       return;
     }
 
-    const fetchOptimizedBudget = async () => {
-      try {
-        const response = await fetch('http://localhost:5001/optimize-budget', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            user_id: userId, 
-            total_budget: totalBudget,
-            year,
-            month
-          }),
-        });
+    try {
+      const response = await fetch('http://localhost:5001/optimize-budget', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          total_budget: totalBudget,
+          year,
+          month,
+          set_as_default: isDefault,
+        }),
+      });
 
-        const result = await response.json();
+      const result = await response.json();
 
-        if (response.ok) {
-          setIsSuccess(true);
-          setMessage(result.message || 'Budget optimized successfully!');
-          if (result.optimized_budget) {
-            const updatedCategories = Object.keys(result.optimized_budget).map(key => ({
-              name: key,
-              amount: result.optimized_budget[key].toFixed(2),
-            }));
-            setCategories(updatedCategories);
-          }
-        } else {
-          setMessage(result.error || 'Failed to optimize budget.');
+      if (response.ok) {
+        setIsSuccess(true);
+        setMessage(result.message || 'Budget optimized successfully!');
+        if (result.optimized_budget) {
+          const updatedCategories = Object.keys(result.optimized_budget).map(key => ({
+            name: key,
+            amount: result.optimized_budget[key].toFixed(2),
+          }));
+          setCategories(updatedCategories);
         }
-      } catch (error) {
-        setMessage('An error occurred while optimizing the budget.');
-        console.error('Optimization error:', error);
+        return true; // Indicate success
+      } else {
+        setMessage(result.error || 'Failed to optimize budget.');
+        return false; // Indicate failure
       }
-    };
+    } catch (error) {
+      setMessage('An error occurred while optimizing the budget.');
+      console.error('Optimization error:', error);
+      return false; // Indicate failure
+    }
+  };
 
-    fetchOptimizedBudget();
-  }, [userId, location.state]);
+  const handleConfirmBudget = async () => {
+    setMessage('Saving your preferences...');
+    const success = await fetchOptimizedBudget(setAsDefault);
+    if (success) {
+      setMessage('Budget confirmed and saved!');
+      setTimeout(() => navigate(`/homePage/${userId}`), 1500);
+    }
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
@@ -99,15 +113,31 @@ const InsightsPage = () => {
           )}
         </div>
 
+        {/* Set as Default Checkbox */}
+        {isSuccess && (
+          <div className="mt-6 flex items-center justify-center">
+            <input
+              type="checkbox"
+              id="setDefault"
+              checked={setAsDefault}
+              onChange={() => setSetAsDefault(!setAsDefault)}
+              className="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+            />
+            <label htmlFor="setDefault" className="ml-2 block text-sm text-gray-900">
+              Set as default for upcoming months
+            </label>
+          </div>
+        )}
+
         {/* Message Display */}
         <div className="mt-8 flex flex-col items-center text-center">
             {message && <p className="text-gray-500 text-lg mb-4">{message}</p>}
             {isSuccess && (
               <button 
-                onClick={() => navigate(`/homePage/${userId}`)}
+                onClick={handleConfirmBudget}
                 className="mt-4 w-full max-w-xs bg-teal-400 text-white px-6 py-3 rounded-full shadow-md font-bold hover:bg-teal-500 transition-colors duration-300"
               >
-                Back to Homepage
+                Confirm Budget
               </button>
             )}
         </div>

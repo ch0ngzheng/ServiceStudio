@@ -133,16 +133,20 @@ def get_budget(user_id, year, month):
             return jsonify({"success": False, "error": "User not found"}), 404
 
         month_key = f"{year}-{month:02d}"
-        budget_doc = db.budgets.find_one({"user_id": user_id, "month_key": month_key})
-        original_budget = budget_doc.get("budget") if budget_doc else None
-        adjustments_log = budget_doc.get("adjustments", []) if budget_doc else [] # Load historical adjustments
+        # Fetch the budget directly from the user's document, where `optimize_budget` saves it.
+        user_budgets = user.get('budgets', {})
+        original_budget = user_budgets.get(month_key, None)
+
+        # For now, we assume adjustments are not stored with this structure.
+        # This can be revisited if adjustments need to be stored per-month in the user doc.
+        adjustments_log = []
 
         if not original_budget:
-            # Fallback logic for default budget if none is set
-            original_budget = {
+            # If no specific budget for the month, check for a user-defined default.
+            original_budget = user.get('default_budget', {
                 "Transport": 200, "Food": 400, "Shopping": 300,
                 "Miscellaneous": 300,  "Entertainment": 500
-            }
+            })
 
         # 1. Calculate spending from transactions
         start_date = datetime(year, month, 1)
@@ -210,31 +214,25 @@ def get_budget(user_id, year, month):
                         rebalanced_budget[category] += transfer_amount
                         rebalanced_budget[donor_category] -= transfer_amount
 
-                        # Persist the change and the log entry immediately
-                        db.budgets.update_one(
-                            {"user_id": user_id, "month_key": month_key},
-                            {
-                                "$set": {"budget": rebalanced_budget},
-                                "$push": {"adjustments": log_entry}
-                            },
-                            upsert=True
-                        )
-                        # Also update the log in memory to ensure it's returned in this call
-                        adjustments_log.append(log_entry)
+                        # The rebalanced budget and adjustments are now stored in the user document.
+                        # We will update it once at the end if changes were made.
+                        pass # In-memory change is sufficient for the loop
 
                         spending_complete = False # Re-run the loop to check again
                         break # Exit inner loop and re-evaluate all categories
             
-        # If the budget was changed, save it back to the database for this month.
-        if rebalanced_budget != original_budget:
-            print(f"Saving updated budget for {month_key}: {rebalanced_budget}")
+        # After the loop, if any adjustments were made, save the final state.
+        if adjustments_log:
             db.users.update_one(
                 {'name': user_id},
-                {'$set': {f'budgets.{month_key}': rebalanced_budget}},
+                {
+                    '$set': {
+                        f'budgets.{month_key}.budget': rebalanced_budget,
+                        f'budgets.{month_key}.adjustments': adjustments_log
+                    }
+                },
                 upsert=True
             )
-            # The 'original_budget' for the purpose of the return value is now the rebalanced one
-            original_budget = rebalanced_budget
 
         return jsonify({
             "success": True,
@@ -289,23 +287,32 @@ def optimize_budget():
     # Distribute the total budget according to the model's predicted proportions
     optimized_budget = {cat: round(total_budget * prop, 2) for cat, prop in zip(CATEGORIES, predicted_proportions)}
     
-    # Save the optimized budget to the specific month's key
+    set_as_default = data.get('set_as_default', False)
+
+    # Save the optimized budget
     try:
         if year and month:
             target_year, target_month = year, month
         else:
             now = datetime.now()
-            # Default to next month if not provided
             target_year = now.year if now.month < 12 else now.year + 1
             target_month = (now.month % 12) + 1
         
         month_key = f"{target_year}-{target_month:02d}"
 
+        # Prepare the update operations
+        update_payload = {
+            f'budgets.{month_key}': optimized_budget
+        }
+        if set_as_default:
+            update_payload['default_budget'] = optimized_budget
+
         db.users.update_one(
             {'name': user_id},
-            {'$set': {f'budgets.{month_key}': optimized_budget}},
+            {'$set': update_payload},
             upsert=True
         )
+
     except Exception as e:
         app.logger.error(f"Database update failed for user {user_id}: {e}")
         return jsonify({"error": "Failed to save the optimized budget."}), 500

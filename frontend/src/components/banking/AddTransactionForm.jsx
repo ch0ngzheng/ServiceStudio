@@ -14,7 +14,7 @@ const AddTransactionForm = ({ userId, onTransactionAdded }) => {
     setError('');
     setSuccess('');
 
-    if (!amount || !description || !merchant) {
+    if (!amount || !merchant) {
       setError('Please fill out all fields.');
       return;
     }

@@ -185,18 +185,25 @@ const BudgetCard = ({
       <div className="mb-4">
         {loading && <p>Loading budget...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
-        {originalBudget && spending ? (
-          <BudgetBreakdown 
-            key={refreshKey}
-            categories={Object.keys(originalBudget).map(category => ({
-              name: category,
-              total: originalBudget[category], // Use original budget for the total
-              spent: spending[category] || 0,
-            }))}
-          />
-        ) : (
-          !error && <p>Loading budget details...</p>
-        )}
+        {(() => {
+          const budgetToDisplay = (budget && Object.keys(budget).length > 0) ? budget : originalBudget;
+
+          if (budgetToDisplay && spending) {
+            return (
+              <BudgetBreakdown
+                key={refreshKey}
+                categories={Object.keys(budgetToDisplay).map(category => ({
+                  name: category,
+                  total: budgetToDisplay[category],
+                  spent: spending[category] || 0,
+                }))}
+              />
+            );
+          } else if (!error) {
+            return <p>Loading budget details...</p>;
+          }
+          return null; // Handles the case where there is an error and no data
+        })()}
       </div>
 
       {/* Month Wrapped Card */}
