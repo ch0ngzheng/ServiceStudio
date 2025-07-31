@@ -1,10 +1,11 @@
 import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
 
 function SavingsBannerPage() {
-  const { userId } = useParams(); // Assuming you get userId from the route
+  const navigate = useNavigate();
+  const { userId } = useParams(); // get user id from route
   const [bgImgError, setBgImgError] = useState(false);
   const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
   const [activeTab, setActiveTab] = useState('invest');
@@ -20,7 +21,11 @@ function SavingsBannerPage() {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    console.log(`Tab changed to: ${tabId}`);
+    if (tabId === 'home') {
+      navigate(`/homePage/${userId}`);
+    } else {
+      console.log(`Tab changed to: ${tabId}`);
+    }
   };
 
   const toggleCKAPopup = () => {
