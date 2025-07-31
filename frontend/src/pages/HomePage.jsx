@@ -54,7 +54,11 @@ const HomePage = () => {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    console.log('Tab changed to:', tabId);
+    if (tabId === 'invest') {
+      navigate(`/invest/${userId}`);
+    } else {
+      console.log(`Tab changed to: ${tabId}`);
+    }
   };
 
   const BannerComponent = bannerToShow ? bannerComponents[bannerToShow] : InvestmentBannerSavings; // Default banner

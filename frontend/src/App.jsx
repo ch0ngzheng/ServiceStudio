@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import './App.css';
 
 import PayBannerPage from './pages/PayBannerPage.jsx';
-import SavingsBannerPage from './pages/SavingsBannerPage.jsx';
+import InvestPage from './pages/InvestPage.jsx';
 import BTOBannerPage from './pages/BTOBannerPage.jsx';
 import SmartShortcuts from "./components/home/SmartShortcuts.jsx";
 import InsightsPage from './pages/InsightsPage';
@@ -30,9 +30,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/transactionPage" element={<TransactionPage />} />
-        <Route path="/homePage/:userId" element={<HomePage />} />
+        <Route path="/homepage/:userId" element={<HomePage />} />
         <Route path="/pay/:userId" element={<PayBannerPage />} />
-        <Route path="/savings/:userId" element={<SavingsBannerPage />} />
+        <Route path="/invest/:userId" element={<InvestPage />} />
         <Route path="/bto/:userId" element={<BTOBannerPage />} />
         <Route path="/smartshortcuts/:userId" element={<SmartAdjustmentsWrapper />} />
         <Route path="/set-budget/:userId" element={<SetBudgetPage />} />

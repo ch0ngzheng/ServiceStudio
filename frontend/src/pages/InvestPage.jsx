@@ -1,12 +1,13 @@
 import { PieChart, TrendingUp, Shield, DollarSign, BarChart3, Home, CreditCard, ArrowUpDown, Menu, Bell, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BottomNavigation from '../components/layout/BottomNavigation';
 
-function InvestmentPage() {
-  const { userId } = useParams(); // Assuming you get userId from the route
+function SavingsBannerPage() {
+  const navigate = useNavigate();
+  const { userId } = useParams(); // get user id from route
   const [bgImgError, setBgImgError] = useState(false);
-  const [recommendedProduct, setRecommendedProduct] = useState('Asia ETF');
+  const [recommendedProduct, setRecommendedProduct] = useState('Unit Trusts');
   const [activeTab, setActiveTab] = useState('invest');
   const [isCKAPopupOpen, setIsCKAPopupOpen] = useState(false);
   const [isCARPopupOpen, setIsCARPopupOpen] = useState(false);
@@ -20,7 +21,11 @@ function InvestmentPage() {
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    console.log(`Tab changed to: ${tabId}`);
+    if (tabId === 'home') {
+      navigate(`/homePage/${userId}`);
+    } else {
+      console.log(`Tab changed to: ${tabId}`);
+    }
   };
 
   const toggleCKAPopup = () => {
@@ -129,24 +134,6 @@ function InvestmentPage() {
             />
           </div>
         </div>
-        
-        {/* Second row - check rates below digiPortfolio */}
-        <div className="grid grid-cols-4 gap-2">
-          <div className="flex flex-col items-center text-center gap-1">
-            <img 
-              src="/assets/icons/checkrates.svg" 
-              alt="Check Rates" 
-              className="w-14 h-14"
-              onError={(e) => {
-                console.log('Failed to load checkrates icon');
-                e.target.style.display = 'none';
-              }}
-            />
-          </div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
       </div>
 
       {/* Main Content */}
@@ -168,6 +155,7 @@ function InvestmentPage() {
             <img 
               src="/assets/mountain-background-no-red-dots.svg"
               alt="Mountain background with milestone markers"
+
               className="w-full h-full object-cover"
               onError={() => setBgImgError(true)}
               style={bgImgError ? { display: 'none' } : {}}
@@ -299,7 +287,6 @@ function InvestmentPage() {
             <span className="text-gray-400">→</span>
           </div>
         </div>
-      </div>
 
       {/* CKA Popup - Moved to root level to avoid z-index conflicts */}
       {isCKAPopupOpen && (
@@ -404,7 +391,7 @@ function InvestmentPage() {
               <div className="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-7 h-7 text-white" />
               </div>
-              <h3 className="font-bold text-xl text-gray-900 mb-2">Customer Account Review</h3>
+              <h3 className="font-bold text-xl text-gray-900 mb-2">Customer Appropriateness Review</h3>
               <p className="text-sm text-gray-600 font-medium">(CAR)</p>
             </div>
 
@@ -421,21 +408,21 @@ function InvestmentPage() {
               <div className="bg-red-50 rounded-lg p-3 border-l-4 border-red-600 mx-2">
                 <h4 className="font-semibold text-red-800 mb-1 text-sm">What is CAR?</h4>
                 <p className="text-xs text-red-700 leading-relaxed">
-                  A comprehensive review to establish your investment risk profile and financial objectives.
+                  A comprehensive assessment of your financial situation, investment goals, and risk tolerance.
                 </p>
               </div>
 
               <div className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-600 mx-2">
                 <h4 className="font-semibold text-blue-800 mb-1 text-sm">Why is it important?</h4>
                 <p className="text-xs text-blue-700 leading-relaxed">
-                  Helps us recommend suitable investment products that match your risk tolerance and goals.
+                  Ensures investment recommendations match your financial circumstances and risk profile.
                 </p>
               </div>
 
               <div className="bg-green-50 rounded-lg p-3 border-l-4 border-green-600 mx-2">
-                <h4 className="font-semibold text-green-800 mb-1 text-sm">What's next?</h4>
+                <h4 className="font-semibold text-green-800 mb-1 text-sm">What's included?</h4>
                 <p className="text-xs text-green-700 leading-relaxed">
-                  Once completed, you'll have access to personalized investment recommendations and advisory services.
+                  Income review, investment experience, financial goals, and risk appetite assessment.
                 </p>
               </div>
             </div>
@@ -452,11 +439,11 @@ function InvestmentPage() {
           </div>
         </div>
       )}
+      </div>
 
-      {/* Bottom Navigation */}
-      <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+      <BottomNavigation activeTab="invest" onTabChange={handleTabChange} />
     </div>
   );
 }
 
-export default InvestmentPage;
+export default SavingsBannerPage;
