@@ -133,7 +133,9 @@ def get_budget(user_id, year, month):
             return jsonify({"success": False, "error": "User not found"}), 404
 
         month_key = f"{year}-{month:02d}"
-        original_budget = user.get('budgets', {}).get(month_key)
+        budget_doc = db.budgets.find_one({"user_id": user_id, "month_key": month_key})
+        original_budget = budget_doc.get("budget") if budget_doc else None
+        adjustments_log = budget_doc.get("adjustments", []) if budget_doc else [] # Load historical adjustments
 
         if not original_budget:
             # Fallback logic for default budget if none is set
@@ -166,6 +168,7 @@ def get_budget(user_id, year, month):
         # 2. Calculate remaining budget and perform rebalancing in memory
         rebalanced_budget = original_budget.copy()
         spending_complete = False
+        # adjustments_log is now loaded from the DB
 
         while not spending_complete:
             spending_complete = True
@@ -197,9 +200,28 @@ def get_budget(user_id, year, month):
                     transfer_amount = min(transfer_amount, candidates[donor_category])
 
                     if transfer_amount > 0:
+                        log_entry = {
+                            "from": donor_category,
+                            "to": category,
+                            "amount": transfer_amount
+                        }
+                        adjustments_log.append(log_entry)
                         print(f"Rebalancing: Moving ${transfer_amount} from '{donor_category}' to '{category}'")
                         rebalanced_budget[category] += transfer_amount
                         rebalanced_budget[donor_category] -= transfer_amount
+
+                        # Persist the change and the log entry immediately
+                        db.budgets.update_one(
+                            {"user_id": user_id, "month_key": month_key},
+                            {
+                                "$set": {"budget": rebalanced_budget},
+                                "$push": {"adjustments": log_entry}
+                            },
+                            upsert=True
+                        )
+                        # Also update the log in memory to ensure it's returned in this call
+                        adjustments_log.append(log_entry)
+
                         spending_complete = False # Re-run the loop to check again
                         break # Exit inner loop and re-evaluate all categories
             
@@ -218,7 +240,8 @@ def get_budget(user_id, year, month):
             "success": True,
             "original_budget": original_budget, # This is now the potentially updated budget
             "spending_breakdown": spending_breakdown,
-            "rebalanced_budget": rebalanced_budget # In this new logic, this is the same as original_budget
+            "rebalanced_budget": rebalanced_budget, # In this new logic, this is the same as original_budget
+            "adjustments": adjustments_log
         })
 
     except Exception as e:

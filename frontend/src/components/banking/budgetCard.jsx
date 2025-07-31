@@ -16,10 +16,6 @@ const ToggleSwitch = ({ enabled, setEnabled }) => (
 const BudgetCard = ({ 
   userId, 
   refreshKey,
-  adjustments = [
-    { icon: Car, amount: 20, from: 'Entertainment', to: 'Transport' },
-    { icon: ShoppingBag, amount: 50, from: 'Shopping', to: 'Food' },
-  ],
   onSetNextMonthBudget = () => {},
 }) => {
   const [automationEnabled, setAutomationEnabled] = useState(true);
@@ -29,6 +25,7 @@ const BudgetCard = ({
   const [originalBudget, setOriginalBudget] = useState(null); // This will hold the original budget for display totals
   const [spending, setSpending] = useState(null);
   const [monthWrapped, setMonthWrapped] = useState(null);
+  const [adjustments, setAdjustments] = useState([]); // To store dynamic adjustments
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -57,7 +54,12 @@ const BudgetCard = ({
           throw new Error('Failed to fetch budget data.');
         }
 
-        const { original_budget: budgetData, spending_breakdown: spendingData, rebalanced_budget: rebalancedBudgetData } = response.data;
+        const { 
+          original_budget: budgetData, 
+          spending_breakdown: spendingData, 
+          rebalanced_budget: rebalancedBudgetData,
+          adjustments: adjustmentsData // Get adjustments from API
+        } = response.data;
 
         // Standard categories that should be displayed
         const standardCategories = ["Transport", "Food", "Shopping", "Entertainment", "Miscellaneous"];
@@ -80,6 +82,7 @@ const BudgetCard = ({
         setOriginalBudget(processedOriginalBudget);
         setBudget(rebalancedBudgetData);
         setSpending(spendingData);
+        setAdjustments(adjustmentsData || []); // Set adjustments, default to empty array
 
         // Calculate month-wrapped data dynamically using the original budget values
         const totalBudget = Object.values(processedOriginalBudget).reduce((sum, val) => sum + val, 0);
@@ -158,21 +161,22 @@ const BudgetCard = ({
           </div>
         </div>
         <p className="text-sm text-gray-500 mb-4">We've automatically adjusted your budgets to keep you on track</p>
-        <div className="flex gap-4 mb-2">
-          {adjustments.map((adj, index) => (
-            <div key={index} className="flex-1 bg-red-50 p-3 rounded-2xl border border-red-200 flex items-center gap-3">
-              <div className="bg-red-100 p-2 rounded-full">
-                <adj.icon className="w-6 h-6 text-red-600" />
+        <div className="flex gap-2 mb-2">
+          {adjustments.length > 0 ? (
+            adjustments.slice(-3).map((adj, index) => (
+              <div key={index} className="flex-1 bg-red-50 p-3 rounded-2xl border border-red-200 flex items-center gap-3">
+                <div className="bg-red-100 p-2 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <div>
+                  <p className="font-bold text-sm">Moved ${adj.amount.toFixed(2)}</p>
+                  <p className="text-xs text-gray-500">{`From ${adj.from} to ${adj.to}`}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-sm">Moved ${adj.amount}</p>
-                <p className="text-xs text-gray-600">{adj.from} to {adj.to}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-1.5">
-          <div className="bg-red-400 h-1.5 rounded-full" style={{ width: '60%' }}></div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">No adjustments made yet.</p>
+          )}
         </div>
       </div>
 
