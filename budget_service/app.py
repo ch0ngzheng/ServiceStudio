@@ -56,81 +56,45 @@ def db_status():
 
 @app.route('/transactions', methods=['POST'])
 def handle_transactions():
-    # handles new transaction, checks for overspending, and updates the specific month's budget
-    transaction = request.json
-    user_id = transaction.get('user_id')
-    timestamp_str = transaction.get('timestamp')
-
-    if not user_id or not timestamp_str:
-        return jsonify({"error": "user_id and timestamp are required"}), 400
-
+    """Handles adding a new transaction."""
     try:
-        # Determine the month and year from the transaction
-        trans_date = parse_iso_date(timestamp_str)
-        month_key = f"{trans_date.year}-{trans_date.month:02d}"
+        transaction = request.json
+        if not transaction:
+            return jsonify({"error": "Invalid JSON"}), 400
 
-        # Fetch the user and their budgets
-        user = db.users.find_one({'name': user_id})
+        user_id = transaction.get('user_id')
+        timestamp_str = transaction.get('timestamp')
+
+        if not user_id or not timestamp_str:
+            return jsonify({"error": "user_id and timestamp are required"}), 400
+
+        try:
+            trans_date = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+            month_key = f"{trans_date.year}-{trans_date.month:02d}"
+        except ValueError:
+            return jsonify({"error": "Invalid timestamp format"}), 400
+
+        # Check for user and budget, but don't fail if budget is missing.
+        # The get_budget endpoint will provide a default one.
+        user = db.users.find_one({"name": user_id})
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        # Get the specific budget for the transaction's month
-        monthly_budget = user.get('budgets', {}).get(month_key)
-        if not monthly_budget:
-            return jsonify({"error": f"No budget found for {month_key}. Please set a budget first."}), 404
-
-        # 1. Auto-categorize transaction
+        # Auto-categorize and save the new transaction
         category = auto_categorize_transaction(transaction)
         transaction['category'] = category
-        amount = transaction.get('amount', 0)
+        transaction['timestamp'] = trans_date
+        db.transactions.insert_one(transaction.copy())
 
-        notification = None
-        # 2. Check for overspending only on spending transactions (negative amount)
-        if amount < 0:
-            monthly_budget[category] = monthly_budget.get(category, 0) - abs(amount)
-
-            if monthly_budget[category] < 0:  # Overspending detected
-                overspent_amount = abs(monthly_budget[category])
-                notification = f"You've overspent ${overspent_amount:.2f} in {category}. "
-
-                # 3. Redistribute budget
-                monthly_budget[category] = 0  # Reset overspent category
-
-                other_categories = [c for c in CATEGORIES if c != category and monthly_budget.get(c, 0) > 0]
-
-                if not other_categories:
-                    notification += "No other categories to pull funds from."
-                else:
-                    amount_to_redistribute = overspent_amount
-                    pulled_from = {}
-                    other_categories.sort(key=lambda c: monthly_budget[c], reverse=True)
-
-                    for cat_from in other_categories:
-                        if amount_to_redistribute <= 0: break
-                        pull_amount = min(monthly_budget[cat_from], amount_to_redistribute)
-                        monthly_budget[cat_from] -= pull_amount
-                        pulled_from[cat_from] = pull_amount
-                        amount_to_redistribute -= pull_amount
-
-                    changes_str = ", ".join([f"-${v:.2f} from {k}" for k, v in pulled_from.items()])
-                    notification += f"Budget adjusted: {changes_str}"
-                    total_pulled = sum(pulled_from.values())
-                    notification += f"We've pulled ${total_pulled:.2f} from other categories to cover it."
-
-                # 4. Save the updated monthly budget back to the database
-                db.users.update_one(
-                    {'name': user_id},
-                    {'$set': {f'budgets.{month_key}': monthly_budget}}
-                )
-
-        # 5. Insert the transaction into the database
-        db.transactions.insert_one(transaction)
+        # The transaction is simply saved. The rebalancing is handled by get_budget.
+        notification = f"Transaction of ${abs(transaction.get('amount',0)):.2f} in {category} recorded."
 
         return jsonify({"success": True, "message": "Transaction added.", "notification": notification})
 
     except Exception as e:
-        app.logger.error(f"Error processing transaction for {user_id}: {e}")
-        return jsonify({"error": "An internal server error occurred."}), 500
+        app.logger.error(f"Error in handle_transactions: {e}")
+        return jsonify({"success": False, "error": "An internal server error occurred."}), 500
+
 
 @app.route('/assign-cluster', methods=['POST'])
 def assign_cluster():
@@ -158,39 +122,130 @@ def assign_cluster():
     else:
         return jsonify({"error": "Failed to assign user to a cluster."}), 500
 
+
+# this is the endpoint for getting the budget and also does the rebalancing
 @app.route('/budget/<string:user_id>/<int:year>/<int:month>', methods=['GET'])
 def get_budget(user_id, year, month):
-    """Retrieves the budget for a specific user and month."""
+    """Retrieves budget, calculates spending, and returns rebalanced budget for the month."""
     try:
         user = db.users.find_one({"name": user_id})
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 404
 
         month_key = f"{year}-{month:02d}"
-        budget = user.get('budgets', {}).get(month_key)
+        budget_doc = db.budgets.find_one({"user_id": user_id, "month_key": month_key})
+        original_budget = budget_doc.get("budget") if budget_doc else None
+        adjustments_log = budget_doc.get("adjustments", []) if budget_doc else [] # Load historical adjustments
 
-        # If no budget is found for the specific month, try to use the previous month's budget.
-        if not budget:
-            prev_month = month - 1
-            prev_year = year
-            if prev_month == 0:
-                prev_month = 12
-                prev_year = year - 1
+        if not original_budget:
+            # Fallback logic for default budget if none is set
+            original_budget = {
+                "Transport": 200, "Food": 400, "Shopping": 300,
+                "Miscellaneous": 300,  "Entertainment": 500
+            }
+
+        # 1. Calculate spending from transactions
+        start_date = datetime(year, month, 1)
+        end_date = datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1)
+        # Query for transactions using both the new `timestamp` (Date) and old `date` (string) fields
+        # to ensure backward compatibility with older transaction records.
+        month_str = f"{year}-{month:02d}"
+        transactions = db.transactions.find({
+            'user_id': user_id,
+            '$or': [
+                { 'timestamp': {'$gte': start_date, '$lt': end_date} },
+                { 'date': {'$regex': f'^{month_str}'} }
+            ]
+        })
+
+        spending_breakdown = {cat: 0 for cat in CATEGORIES}
+        for t in transactions:
+            if t['amount'] < 0:
+                cat = t.get('category', 'Miscellaneous')
+                if cat in spending_breakdown:
+                    spending_breakdown[cat] += abs(t['amount'])
+
+        # 2. Calculate remaining budget and perform rebalancing in memory
+        rebalanced_budget = original_budget.copy()
+        spending_complete = False
+        # adjustments_log is now loaded from the DB
+
+        while not spending_complete:
+            spending_complete = True
+            # Check for overspending based on the *current* rebalanced budget
+            for category, spent in spending_breakdown.items():
+                if spent > rebalanced_budget.get(category, 0):
+                    deficit = spent - rebalanced_budget.get(category, 0)
+                    
+                    # Find the best category to take funds from (largest available surplus)
+                    surplus_funds = {
+                        cat: rebalanced_budget.get(cat, 0) - spending_breakdown.get(cat, 0)
+                        for cat in rebalanced_budget if cat != category
+                    }
+                    
+                    # Filter for only those with actual surplus
+                    candidates = {cat: fund for cat, fund in surplus_funds.items() if fund > 0}
+                    
+                    if not candidates:
+                        # No funds to reallocate, stop trying
+                        break
+
+                    # Find the category with the most surplus to donate
+                    donor_category = max(candidates, key=candidates.get)
+                    
+                    # Determine the amount to transfer (deficit rounded up to nearest $10)
+                    transfer_amount = (int(deficit / 10) + 1) * 10
+                    
+                    # Ensure we don't take more than is available
+                    transfer_amount = min(transfer_amount, candidates[donor_category])
+
+                    if transfer_amount > 0:
+                        log_entry = {
+                            "from": donor_category,
+                            "to": category,
+                            "amount": transfer_amount
+                        }
+                        adjustments_log.append(log_entry)
+                        print(f"Rebalancing: Moving ${transfer_amount} from '{donor_category}' to '{category}'")
+                        rebalanced_budget[category] += transfer_amount
+                        rebalanced_budget[donor_category] -= transfer_amount
+
+                        # Persist the change and the log entry immediately
+                        db.budgets.update_one(
+                            {"user_id": user_id, "month_key": month_key},
+                            {
+                                "$set": {"budget": rebalanced_budget},
+                                "$push": {"adjustments": log_entry}
+                            },
+                            upsert=True
+                        )
+                        # Also update the log in memory to ensure it's returned in this call
+                        adjustments_log.append(log_entry)
+
+                        spending_complete = False # Re-run the loop to check again
+                        break # Exit inner loop and re-evaluate all categories
             
-            prev_month_key = f"{prev_year}-{prev_month:02d}"
-            budget = user.get('budgets', {}).get(prev_month_key)
+        # If the budget was changed, save it back to the database for this month.
+        if rebalanced_budget != original_budget:
+            print(f"Saving updated budget for {month_key}: {rebalanced_budget}")
+            db.users.update_one(
+                {'name': user_id},
+                {'$set': {f'budgets.{month_key}': rebalanced_budget}},
+                upsert=True
+            )
+            # The 'original_budget' for the purpose of the return value is now the rebalanced one
+            original_budget = rebalanced_budget
 
-            # If still no budget, provide a default one as a last resort.
-            if not budget:
-                budget = {
-                    "Transport": 200, "Meals": 400, "Shopping": 300,
-                    "Miscellaneous": 300, "Groceries": 100
-                }
-
-        return jsonify({"success": True, "user_id": user_id, "budget": budget})
+        return jsonify({
+            "success": True,
+            "original_budget": original_budget, # This is now the potentially updated budget
+            "spending_breakdown": spending_breakdown,
+            "rebalanced_budget": rebalanced_budget, # In this new logic, this is the same as original_budget
+            "adjustments": adjustments_log
+        })
 
     except Exception as e:
-        app.logger.error(f"Database error in get_budget for {user_id}: {e}")
+        app.logger.error(f"Error in get_budget for {user_id}: {e}")
         return jsonify({"success": False, "error": "An internal server error occurred."}), 500
 
 @app.route('/optimize-budget', methods=['POST'])

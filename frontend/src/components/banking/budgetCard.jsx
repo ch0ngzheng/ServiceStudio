@@ -16,18 +16,16 @@ const ToggleSwitch = ({ enabled, setEnabled }) => (
 const BudgetCard = ({ 
   userId, 
   refreshKey,
-  adjustments = [
-    { icon: Car, amount: 20, from: 'Entertainment', to: 'Transport' },
-    { icon: ShoppingBag, amount: 50, from: 'Shopping', to: 'Food' },
-  ],
   onSetNextMonthBudget = () => {},
 }) => {
   const [automationEnabled, setAutomationEnabled] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [budget, setBudget] = useState(null);
+  const [budget, setBudget] = useState(null); // This will hold the rebalanced budget for display logic
+  const [originalBudget, setOriginalBudget] = useState(null); // This will hold the original budget for display totals
   const [spending, setSpending] = useState(null);
   const [monthWrapped, setMonthWrapped] = useState(null);
+  const [adjustments, setAdjustments] = useState([]); // To store dynamic adjustments
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -49,49 +47,46 @@ const BudgetCard = ({
       try {
         setLoading(true);
 
-        // Fetch both budget limits and actual spending concurrently
-        const [budgetResponse, spendingResponse] = await Promise.all([
-          axios.get(`http://localhost:5001/budget/${userId}/${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}`),
-          axios.post('http://localhost:3000/api/transactions/calculate_spending', {
-            user_id: userId,
-            year: selectedDate.getFullYear(),
-            month: selectedDate.getMonth() + 1, // month is 1-based in the backend
-          }),
-        ]);
+        // Fetch all budget data from the single, enhanced endpoint
+        const response = await axios.get(`http://localhost:5001/budget/${userId}/${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}`);
+        
+        if (!response.data.success) {
+          throw new Error('Failed to fetch budget data.');
+        }
 
-        if (!budgetResponse.data.success) throw new Error('Failed to fetch budget data.');
-        if (!spendingResponse.data.success) throw new Error('Failed to calculate spending.');
-
-        const budgetData = budgetResponse.data.budget;
+        const { 
+          original_budget: budgetData, 
+          spending_breakdown: spendingData, 
+          rebalanced_budget: rebalancedBudgetData,
+          adjustments: adjustmentsData // Get adjustments from API
+        } = response.data;
 
         // Standard categories that should be displayed
         const standardCategories = ["Transport", "Food", "Shopping", "Entertainment", "Miscellaneous"];
         
-        // Create a new budget object with the correct structure
-        const processedBudget = {};
-
-        // Initialize standard categories with 0
+        // Create a new budget object with the correct structure for the *original* budget
+        const processedOriginalBudget = {};
         standardCategories.forEach(cat => {
-          processedBudget[cat] = 0;
+          processedOriginalBudget[cat] = 0;
         });
 
-        // Process fetched data, merging Meals and Groceries into Food
         for (const category in budgetData) {
           if (category === "Meals" || category === "Groceries") {
-            processedBudget["Food"] = (processedBudget["Food"] || 0) + budgetData[category];
+            processedOriginalBudget["Food"] = (processedOriginalBudget["Food"] || 0) + budgetData[category];
           } else if (standardCategories.includes(category)) {
-            processedBudget[category] = budgetData[category];
+            processedOriginalBudget[category] = budgetData[category];
           }
         }
 
-        const spendingData = spendingResponse.data.spendingBreakdown;
-
-        setBudget(processedBudget);
+        // Store both the original and rebalanced budgets
+        setOriginalBudget(processedOriginalBudget);
+        setBudget(rebalancedBudgetData);
         setSpending(spendingData);
+        setAdjustments(adjustmentsData || []); // Set adjustments, default to empty array
 
-        // Calculate month-wrapped data dynamically
-        const totalBudget = Object.values(processedBudget).reduce((sum, val) => sum + val, 0);
-        const totalSpent = Object.keys(processedBudget).reduce((sum, category) => sum + (spendingData[category] || 0), 0);
+        // Calculate month-wrapped data dynamically using the original budget values
+        const totalBudget = Object.values(processedOriginalBudget).reduce((sum, val) => sum + val, 0);
+        const totalSpent = Object.values(spendingData).reduce((sum, value) => sum + value, 0);
         const totalSaved = totalBudget - totalSpent;
 
         const currentMonth = selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -166,21 +161,22 @@ const BudgetCard = ({
           </div>
         </div>
         <p className="text-sm text-gray-500 mb-4">We've automatically adjusted your budgets to keep you on track</p>
-        <div className="flex gap-4 mb-2">
-          {adjustments.map((adj, index) => (
-            <div key={index} className="flex-1 bg-red-50 p-3 rounded-2xl border border-red-200 flex items-center gap-3">
-              <div className="bg-red-100 p-2 rounded-full">
-                <adj.icon className="w-6 h-6 text-red-600" />
+        <div className="flex gap-2 mb-2">
+          {adjustments.length > 0 ? (
+            adjustments.slice(-3).map((adj, index) => (
+              <div key={index} className="flex-1 bg-red-50 p-3 rounded-2xl border border-red-200 flex items-center gap-3">
+                <div className="bg-red-100 p-2 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <div>
+                  <p className="font-bold text-sm">Moved ${adj.amount.toFixed(2)}</p>
+                  <p className="text-xs text-gray-500">{`From ${adj.from} to ${adj.to}`}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-sm">Moved ${adj.amount}</p>
-                <p className="text-xs text-gray-600">{adj.from} to {adj.to}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-1.5">
-          <div className="bg-red-400 h-1.5 rounded-full" style={{ width: '60%' }}></div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">No adjustments made yet.</p>
+          )}
         </div>
       </div>
 
@@ -189,12 +185,12 @@ const BudgetCard = ({
       <div className="mb-4">
         {loading && <p>Loading budget...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
-        {budget && spending ? (
+        {originalBudget && spending ? (
           <BudgetBreakdown 
             key={refreshKey}
-            categories={Object.keys(budget).map(category => ({
+            categories={Object.keys(originalBudget).map(category => ({
               name: category,
-              total: budget[category],
+              total: originalBudget[category], // Use original budget for the total
               spent: spending[category] || 0,
             }))}
           />

@@ -70,23 +70,25 @@ router.post('/calculate_spending', async (req, res) => {
         const targetYear = year !== undefined ? year : now.getFullYear();
         const targetMonth = month !== undefined ? month - 1 : now.getMonth(); // month is 1-based in request
 
-        // Format the start date string as YYYY-MM-01
+        // Define the start and end dates for the query month
+        const startDate = new Date(targetYear, targetMonth, 1);
+        const endDate = new Date(targetYear, targetMonth + 1, 1);
+
+        // For backward compatibility, we create string versions for the old 'date' field.
         const startMonthStr = String(targetMonth + 1).padStart(2, '0');
         const startDateStr = `${targetYear}-${startMonthStr}-01`;
+        const nextMonthDateForStr = new Date(targetYear, targetMonth + 1, 1);
+        const endYearStr = nextMonthDateForStr.getFullYear();
+        const endMonthStr = String(nextMonthDateForStr.getMonth() + 1).padStart(2, '0');
+        const endDateStr = `${endYearStr}-${endMonthStr}-01`;
 
-        // Calculate the start of the next month for the end date
-        const nextMonthDate = new Date(targetYear, targetMonth + 1, 1);
-        const endYear = nextMonthDate.getFullYear();
-        const endMonthStr = String(nextMonthDate.getMonth() + 1).padStart(2, '0');
-        const endDateStr = `${endYear}-${endMonthStr}-01`;
-
-        // Find transactions where the date string is within the desired range
+        // Find transactions matching either the new timestamp (Date) or old date (string) format
         const transactions = await db.collection('transactions').find({
             user_id,
-            date: {
-                $gte: startDateStr,
-                $lt: endDateStr
-            }
+            $or: [
+                { timestamp: { $gte: startDate, $lt: endDate } }, // New format
+                { date: { $gte: startDateStr, $lt: endDateStr } }      // Old string format
+            ]
         }).toArray();
 
         const spendingBreakdown = {};
