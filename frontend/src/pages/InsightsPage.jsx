@@ -1,44 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { FaBell, FaEye, FaQuestionCircle, FaTrash, FaPlusCircle, FaPencilAlt } from 'react-icons/fa';
 import BottomNavigation from '../components/layout/BottomNavigation';
 
 
 const InsightsPage = () => {
-  const [categories, setCategories] = useState([
-    { name: 'Food', amount: '100.00', isEditing: false },
-    { name: 'Entertainment', amount: '60.00', isEditing: false },
-    { name: 'Shopping', amount: '50.00', isEditing: false },
-    { name: 'Transportation', amount: '50.00', isEditing: false },
-    { name: 'Miscellaneous', amount: '50.00', isEditing: false },
-  ]);
+  const { userId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleNameChange = (index, value) => {
-    const newCategories = [...categories];
-    newCategories[index].name = value;
-    setCategories(newCategories);
-  };
+  useEffect(() => {
+    const { totalBudget, year, month } = location.state || {};
 
-  const toggleEdit = (index) => {
-    const newCategories = [...categories];
-    newCategories[index].isEditing = !newCategories[index].isEditing;
-    setCategories(newCategories);
-  };
+    if (!totalBudget) {
+      setMessage('No budget amount was set. Please go back and set a budget.');
+      return;
+    }
 
-  const handleAmountChange = (index, value) => {
-    const newCategories = [...categories];
-    newCategories[index].amount = value;
-    setCategories(newCategories);
-  };
+    const fetchOptimizedBudget = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/optimize-budget', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            user_id: userId, 
+            total_budget: totalBudget,
+            year,
+            month
+          }),
+        });
 
-  const removeCategory = (index) => {
-    const newCategories = categories.filter((_, i) => i !== index);
-    setCategories(newCategories);
-  };
+        const result = await response.json();
 
-  const addCategory = () => {
-    const newCategory = { name: 'New Category', amount: '0.00', isEditing: true };
-    setCategories([...categories, newCategory]);
-  };
+        if (response.ok) {
+          setIsSuccess(true);
+          setMessage(result.message || 'Budget optimized successfully!');
+          if (result.optimized_budget) {
+            const updatedCategories = Object.keys(result.optimized_budget).map(key => ({
+              name: key,
+              amount: result.optimized_budget[key].toFixed(2),
+            }));
+            setCategories(updatedCategories);
+          }
+        } else {
+          setMessage(result.error || 'Failed to optimize budget.');
+        }
+      } catch (error) {
+        setMessage('An error occurred while optimizing the budget.');
+        console.error('Optimization error:', error);
+      }
+    };
+
+    fetchOptimizedBudget();
+  }, [userId, location.state]);
 
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
@@ -58,53 +77,39 @@ const InsightsPage = () => {
       </header>
 
       <main className="p-4 pb-32">
-        <h1 className="text-gray-500 text-sm mb-4">Your monthly budget</h1>
+        <h1 className="text-gray-500 text-lg mb-4">Your optimized monthly budget</h1>
 
         {/* Budget Categories */}
         <div className="space-y-2">
-          {categories.map((category, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-              <div className="flex justify-between items-center">
-                {category.isEditing ? (
-                  <input
-                    type="text"
-                    value={category.name}
-                    onChange={(e) => handleNameChange(index, e.target.value)}
-                    onBlur={() => toggleEdit(index)}
-                    autoFocus
-                    className="font-semibold text-gray-800 text-lg bg-transparent border-b border-gray-400 focus:outline-none"
-                  />
-                ) : (
-                  <h2 className="font-semibold text-gray-800 text-lg">{category.name}</h2>
-                )}
-                <div className="flex items-center space-x-3">
-                  <button onClick={() => toggleEdit(index)}>
-                    <FaPencilAlt className="text-gray-400" />
-                  </button>
-                  <button onClick={() => removeCategory(index)}>
-                    <FaTrash className="text-gray-400" />
-                  </button>
-                </div>
+          {categories.length > 0 ? (
+            categories.map((category, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <h2 className="font-semibold text-gray-800 text-lg">{category.name}</h2>
+                <hr className="my-4" />
+                <input
+                  type="text"
+                  value={`SGD ${category.amount}`}
+                  readOnly
+                  className="w-full p-6 text-lg border border-gray-300 rounded-md bg-gray-50"
+                />
               </div>
-              <hr className="my-4" />
-              <input
-                type="text"
-                value={`SGD ${category.amount}`}
-                onChange={(e) => handleAmountChange(index, e.target.value.replace('SGD ', ''))}
-                className="w-full p-6 text-lg border border-gray-300 rounded-md"
-              />
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-500">{message || 'Loading optimized budget...'}</p>
+          )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-col items-center">
-            <button onClick={addCategory} className="flex items-center justify-center w-full max-w-xs bg-white border border-gray-400 text-black px-6 py-3 rounded-md">
-                <FaPlusCircle className="mr-2 text-gray-500" /> Add categories
-            </button>
-            <button className="mt-6 w-full max-w-xs bg-teal-200 text-black px-6 py-3 rounded-full shadow-md font-bold">
-                Optimize budget
-            </button>
+        {/* Message Display */}
+        <div className="mt-8 flex flex-col items-center text-center">
+            {message && <p className="text-gray-500 text-lg mb-4">{message}</p>}
+            {isSuccess && (
+              <button 
+                onClick={() => navigate(`/homePage/${userId}`)}
+                className="mt-4 w-full max-w-xs bg-teal-400 text-white px-6 py-3 rounded-full shadow-md font-bold hover:bg-teal-500 transition-colors duration-300"
+              >
+                Back to Homepage
+              </button>
+            )}
         </div>
       </main>
 
