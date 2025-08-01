@@ -11,60 +11,46 @@ const InvestmentFOMOBanner = ({ userId }) => {
   };
 
   return (
-    <div style={styles.container} onClick={handleBannerClick}>
-      <h2 style={styles.title}>Consider $1000 a year from now</h2>
-      <div style={styles.accountsContainer}>
-        <div style={styles.accountBox}>
-          <p>Savings account</p>
-          <p style={styles.amount}>$1002</p>
+    <div 
+      className="p-4 mx-4 rounded-2xl shadow-md my-4 text-center cursor-pointer" 
+      style={{ background: 'linear-gradient(135deg, #E8E5FF 0%, #FFE4E8 100%)' }}
+      onClick={handleBannerClick}
+    >
+      {/* Header */}
+      <div className="mb-4">
+        <h1 className="text-lg font-bold text-gray-900 mb-1">
+          What happens to your $1000 in one year?
+        </h1>
+        <p className="text-sm text-gray-700">
+          Make your money work harder - choose <span className="text-purple-600 font-semibold">DigiPortfolio</span>.
+        </p>
+      </div>
+
+      {/* Investment Options */}
+      <div className="flex gap-3 justify-center">
+        {/* Savings Account */}
+        <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
+          <h3 className="font-semibold text-gray-900 text-xs mb-2">Savings Account</h3>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$1002</div>
+          <p className="text-green-600 text-xs font-medium">+ $2 (0.2%)</p>
         </div>
-        <div style={styles.accountBox}>
-          <p>Fixed Deposit account</p>
-          <p style={styles.amount}>$1005</p>
+
+        {/* Fixed Deposit */}
+        <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
+          <h3 className="font-semibold text-gray-900 text-xs mb-2">Fixed Deposit</h3>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$1005</div>
+          <p className="text-green-600 text-xs font-medium">+ $5 (0.5%)</p>
         </div>
-        <div style={styles.accountBox}>
-          <p>DigiPortfolio</p>
-          <p style={styles.amount}>$1008</p>
+
+        {/* DigiPortfolio */}
+        <div className="bg-purple-500 rounded-xl p-3 flex-1 max-w-32 text-center text-white">
+          <h3 className="font-semibold text-xs mb-2">DigiPortfolio</h3>
+          <div className="text-2xl font-bold mb-1">$1008</div>
+          <p className="text-purple-200 text-xs font-medium">+ $8 (0.8%)</p>
         </div>
       </div>
-      <p style={styles.footer}>Don't lose out on the gains! Invest now!</p>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    background: 'linear-gradient(to bottom, #FFDDC1, #FFC0CB)',
-    padding: '20px',
-    borderRadius: '10px',
-    textAlign: 'center',
-    maxWidth: '600px',
-    margin: '20px auto',
-  },
-  title: {
-    fontSize: '24px',
-    marginBottom: '20px',
-  },
-  accountsContainer: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    marginBottom: '20px',
-  },
-  accountBox: {
-    backgroundColor: '#E0E0E0',
-    padding: '15px',
-    borderRadius: '8px',
-    width: '30%',
-  },
-  amount: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    marginTop: '10px',
-  },
-  footer: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-  },
 };
 
 export default InvestmentFOMOBanner;
