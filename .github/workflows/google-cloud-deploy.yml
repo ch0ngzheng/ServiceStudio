@@ -53,10 +53,9 @@ jobs:
         with:
           service: 'budget-service'
           region: ${{ env.GAR_LOCATION }}
-          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/dbs-studio-repo/budget-service:${{ github.sha }}
-          platform: 'managed'
-          allow_unauthenticated: true # Set to false to restrict access
-          set-env-vars: MONGO_URI=secret:MONGO_URI:latest
+          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/service-design-studio-repo/budget-service:${{ github.sha }}
+          secrets: MONGO_URI=MONGO_URI:latest
+          flags: --allow-unauthenticated
 
       # --- DEPLOY BACKEND SERVICE ---
       - name: Build and Push Docker Image for backend_service
@@ -71,10 +70,9 @@ jobs:
         with:
           service: 'backend-service'
           region: ${{ env.GAR_LOCATION }}
-          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/dbs-studio-repo/backend-service:${{ github.sha }}
-          platform: 'managed'
-          allow_unauthenticated: true # Set to false to restrict access
-          set-env-vars: MONGODB_CONNECTIONSTR=secret:MONGODB_CONNECTIONSTR:latest
+          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/service-design-studio-repo/backend-service:${{ github.sha }}
+          secrets: MONGODB_CONNECTIONSTR=MONGODB_CONNECTIONSTR:latest
+          flags: --allow-unauthenticated
 
       # --- DEPLOY PREDICTION SERVICE ---
       - name: Build and Push Docker Image for prediction_service
