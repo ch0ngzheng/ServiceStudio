@@ -184,7 +184,7 @@ const BudgetCard = ({
                   <Icon className="w-6 h-6 text-dbs-red-600" />
                 </div>
                 <div>
-                  <p className="font-bold text-sm">Moved ${adj.amount}</p>
+                  <p className="font-bold text-sm">Moved ${adj.amount.toFixed(2)}</p>
                   <p className="text-xs text-gray-600">{adj.from} to {adj.to}</p>
                 </div>
               </div>
@@ -204,8 +204,8 @@ const BudgetCard = ({
             key={refreshKey}
             categories={Object.keys(budget).map(category => ({
               name: category,
-              total: budget[category], // Use rebalanced budget for the total
-              spent: spending[category] || 0,
+              total: parseFloat(budget[category] || 0),
+              spent: parseFloat(spending[category] || 0),
             }))}
           />
         ) : (
@@ -223,18 +223,18 @@ const BudgetCard = ({
         <div className="flex text-center border-b border-dbs-blue-200 pb-4 mb-4">
           <div className="w-1/2 border-r border-dbs-blue-200">
             <p className="text-xs text-gray-500">SGD</p>
-            <p className="text-2xl font-bold text-dbs-blue-900">{monthWrapped.totalBudget.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-dbs-blue-900">{monthWrapped.totalBudget.toFixed(2)}</p>
             <p className="text-xs text-gray-500">Total Budget for {monthWrapped.month}</p>
           </div>
           <div className="w-1/2">
             <p className="text-xs text-gray-500">SGD</p>
-            <p className="text-2xl font-bold text-dbs-blue-900">{monthWrapped.totalSpent.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-dbs-blue-900">{monthWrapped.totalSpent.toFixed(2)}</p>
             <p className="text-xs text-gray-500">Total Spent for {monthWrapped.month}</p>
           </div>
         </div>
         <div className="text-center mb-4">
           <p className="text-xs text-gray-500">SGD</p>
-          <p className="text-3xl font-bold text-dbs-blue-900">{monthWrapped.totalSaved.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-dbs-blue-900">{monthWrapped.totalSaved.toFixed(2)}</p>
           <p className="text-xs text-gray-500">Total Saved for {monthWrapped.month} after Smart Reallocations.</p>
         </div>
         <button onClick={() => navigate(`/set-budget/${userId}`)} className="w-full py-3 px-4 bg-dbs-green-300 text-dbs-green-900 font-bold rounded-full hover:bg-dbs-green-400 transition-colors">
