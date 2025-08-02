@@ -18,6 +18,7 @@ const bannerComponents = {
 const HomePage = () => {
   const navigate = useNavigate();
   const { userId } = useParams(); // Get userId from URL
+  const [balance, setBalance] = useState(0);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
   const [bannerToShow, setBannerToShow] = useState(null);
@@ -37,7 +38,22 @@ const HomePage = () => {
       }
     };
 
+        const fetchBalance = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/transactions/${userId}/balance`);
+        const data = await response.json();
+        if (response.ok) {
+          setBalance(data.balance);
+        } else {
+          console.error('Failed to fetch balance:', data.error);
+        }
+      } catch (error) {
+        console.error('Failed to fetch balance:', error);
+      }
+    };
+
     fetchTransactionData();
+    fetchBalance();
   }, [userId]);
 
   const toggleBalance = () => {
@@ -73,6 +89,7 @@ const HomePage = () => {
         {/* Header is overlaid on top */}
         <div className="absolute inset-0 flex flex-col z-10">
           <DBSHeader 
+            balance={balance}
             balanceVisible={balanceVisible}
             toggleBalance={toggleBalance}
             onLogout={handleLogout}
@@ -83,7 +100,7 @@ const HomePage = () => {
       {/* Main Content */}
       <div className="bg-gray-50">
         <SmartShortcuts onNavigate={handleNavigation} userId={userId} />
-        <AccountsSection balanceVisible={balanceVisible} userId={userId} />
+        <AccountsSection balance={balance} balanceVisible={balanceVisible} userId={userId} />
         <DigiPortfolio />
       </div>
       

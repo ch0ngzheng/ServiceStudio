@@ -3,7 +3,7 @@ import AccountCard from '../banking/AccountCard';
 import BudgetCard from '../banking/budgetCard';
 import AddTransactionForm from '../banking/AddTransactionForm';
 
-const AccountsSection = ({ balanceVisible, userId }) => {
+const AccountsSection = ({ balance, balanceVisible, userId }) => {
   const [activeTab, setActiveTab] = useState('accounts');
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -14,7 +14,7 @@ const AccountsSection = ({ balanceVisible, userId }) => {
   const account = {
     name: 'My Account',
     number: '120-741443-0',
-    balance: 'SGD 12,543.20'
+    balance: `SGD ${balance.toFixed(2)}`
   };
 
   return (

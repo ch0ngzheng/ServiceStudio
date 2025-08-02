@@ -65,7 +65,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <StyleInjector />
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-red-600 rounded-lg flex items-center justify-center mb-4">
@@ -119,7 +120,7 @@ const LoginPage = () => {
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400"
+                    className="absolute inset-y-[-4px] right-0 pr-3 flex items-center text-gray-400"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -151,5 +152,19 @@ const LoginPage = () => {
     </div>
   );
 };
+
+const styles = `
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+  input[type="password"]::-webkit-reveal,
+  input[type="password"]::-webkit-password-reveal-button {
+    display: none !important;
+    -webkit-appearance: none !important;
+  }
+`;
+
+const StyleInjector = () => <style>{styles}</style>;
 
 export default LoginPage;
