@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Car, ShoppingBag, Sparkles, ChevronDown, ChevronUp } from 'lucide-react'; // Example icons
+import { Car, ShoppingBag, Sparkles, ChevronDown, ChevronUp, Utensils, Ticket } from 'lucide-react';
+
+const iconMap = {
+  Food: Utensils,
+  Transport: Car,
+  Shopping: ShoppingBag,
+  Entertainment: Ticket,
+  Miscellaneous: Sparkles,
+};
+
 import BudgetBreakdown from './BudgetBreakdown';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -156,6 +165,7 @@ const BudgetCard = ({
       </div>
 
       {/* Smart Adjustments Card */}
+      {adjustments && adjustments.length > 0 && (
       <div className="bg-white p-4 rounded-2xl shadow-sm mb-4">
         <div className="flex justify-between items-center mb-1">
           <h2 className="font-bold text-lg">Smart Adjustments <span className="text-gray-400">({adjustments.length})</span></h2>
@@ -166,19 +176,23 @@ const BudgetCard = ({
         </div>
         <p className="text-sm text-gray-500 mb-4">We've automatically adjusted your budgets to keep you on track</p>
         <div className="flex gap-4 mb-2">
-          {adjustments.map((adj, index) => (
-            <div key={index} className="flex-1 bg-dbs-red-50 p-3 rounded-2xl border border-dbs-red-200 flex items-center gap-3">
-              <div className="bg-dbs-red-100 p-2 rounded-full">
-                <adj.icon className="w-6 h-6 text-dbs-red-600" />
+          {adjustments.map((adj, index) => {
+            const Icon = iconMap[adj.to] || Sparkles;
+            return (
+              <div key={index} className="flex-1 bg-dbs-red-50 p-3 rounded-2xl border border-dbs-red-200 flex items-center gap-3">
+                <div className="bg-dbs-red-100 p-2 rounded-full">
+                  <Icon className="w-6 h-6 text-dbs-red-600" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm">Moved ${adj.amount}</p>
+                  <p className="text-xs text-gray-600">{adj.from} to {adj.to}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-sm">Moved ${adj.amount}</p>
-                <p className="text-xs text-gray-600">{adj.from} to {adj.to}</p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
+      )}
 
       {/* Budget Breakdown Card */}
       <div className="mb-4">
@@ -188,9 +202,9 @@ const BudgetCard = ({
 
           <BudgetBreakdown 
             key={refreshKey}
-            categories={Object.keys(originalBudget).map(category => ({
+            categories={Object.keys(budget).map(category => ({
               name: category,
-              total: originalBudget[category], // Use original budget for the total
+              total: budget[category], // Use rebalanced budget for the total
               spent: spending[category] || 0,
             }))}
           />

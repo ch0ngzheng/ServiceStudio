@@ -135,11 +135,11 @@ def get_budget(user_id, year, month):
         month_key = f"{year}-{month:02d}"
         # Fetch the budget directly from the user's document, where `optimize_budget` saves it.
         user_budgets = user.get('budgets', {})
-        original_budget = user_budgets.get(month_key, None)
+        monthly_budget_data = user_budgets.get(month_key, {})
+        original_budget = monthly_budget_data.get('budget', monthly_budget_data) if isinstance(monthly_budget_data, dict) else None
 
-        # For now, we assume adjustments are not stored with this structure.
-        # This can be revisited if adjustments need to be stored per-month in the user doc.
-        adjustments_log = []
+        # Correctly extract budget and adjustments from the stored data.
+        adjustments_log = monthly_budget_data.get('adjustments', []) if isinstance(monthly_budget_data, dict) else []
 
         if not original_budget:
             # If no specific budget for the month, check for a user-defined default.
@@ -170,9 +170,9 @@ def get_budget(user_id, year, month):
                     spending_breakdown[cat] += abs(t['amount'])
 
         # 2. Calculate remaining budget and perform rebalancing in memory
-        rebalanced_budget = original_budget.copy()
+        rebalanced_budget = original_budget.copy() if isinstance(original_budget, dict) else {}
         spending_complete = False
-        # adjustments_log is now loaded from the DB
+        adjustments_log = [] # Reset adjustments for this run
 
         while not spending_complete:
             spending_complete = True
