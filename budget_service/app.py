@@ -135,7 +135,16 @@ def get_budget(user_id, year, month):
         month_key = f"{year}-{month:02d}"
         # Fetch the budget directly from the user's document, where `optimize_budget` saves it.
         user_budgets = user.get('budgets', {})
-        original_budget = user_budgets.get(month_key, None)
+        # Fetch the budget for the month. It might be a direct budget dict or a dict containing 'budget' and 'adjustments'.
+        budget_data = user_budgets.get(month_key, None)
+        if isinstance(budget_data, dict) and 'budget' in budget_data:
+            # This is a rebalanced budget, get the nested budget object.
+            original_budget = budget_data['budget']
+            # Load existing adjustments to avoid duplicating them.
+            adjustments_log = budget_data.get('adjustments', [])
+        else:
+            # This is a direct budget dict (or None), use it as is.
+            original_budget = budget_data
 
         # For now, we assume adjustments are not stored with this structure.
         # This can be revisited if adjustments need to be stored per-month in the user doc.

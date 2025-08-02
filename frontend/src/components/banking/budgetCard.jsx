@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Car, ShoppingBag, Sparkles, ChevronDown, ChevronUp } from 'lucide-react'; // Example icons
+import { Car, ShoppingBag, Sparkles, ChevronDown, ChevronUp, Utensils, Coins } from 'lucide-react'; // Example icons
 import BudgetBreakdown from './BudgetBreakdown';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import TransportCardBanner from './TransportCardBanner';
+import { categoryIcons } from './categoryIcons';
 
 // A simple toggle switch component
 const ToggleSwitch = ({ enabled, setEnabled }) => (
@@ -169,7 +170,10 @@ const BudgetCard = ({
           {adjustments.map((adj, index) => (
             <div key={index} className="flex-1 bg-dbs-red-50 p-3 rounded-2xl border border-dbs-red-200 flex items-center gap-3">
               <div className="bg-dbs-red-100 p-2 rounded-full">
-                <adj.icon className="w-6 h-6 text-dbs-red-600" />
+                {(() => {
+                  const Icon = categoryIcons[adj.from] || Sparkles; // Fallback to a default icon
+                  return <Icon className="w-6 h-6 text-dbs-red-600" />;
+                })()}
               </div>
               <div>
                 <p className="font-bold text-sm">Moved ${adj.amount}</p>
@@ -190,7 +194,7 @@ const BudgetCard = ({
             key={refreshKey}
             categories={Object.keys(originalBudget).map(category => ({
               name: category,
-              total: originalBudget[category], // Use original budget for the total
+              total: budget[category], // Use rebalanced budget for the total
               spent: spending[category] || 0,
             }))}
           />
