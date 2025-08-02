@@ -5,9 +5,10 @@ const dbClient = require('../Models/db');
 // fetches transactions data of user
 router.get('/:user_id', async (req, res) => {
     try {
-        console.log("Fetching transactions for user:", req.params.user_id);
+                const userId = decodeURIComponent(req.params.user_id);
+        console.log("Fetching transactions for user:", userId);
         const db = dbClient.getDb();
-        const transactions = await db.collection('transactions').find({ user_id: req.params.user_id }).toArray();
+        const transactions = await db.collection('transactions').find({ user_id: userId }).toArray();
 
         let banner_to_show = null;
 
@@ -113,6 +114,24 @@ router.post('/calculate_spending', async (req, res) => {
     } catch (err) {
         console.error("Error calculating spending:", err);
         res.status(500).json({ success: false, error: "Failed to calculate spending" });
+    }
+});
+
+// calculates the current balance of a user
+router.get('/:user_id/balance', async (req, res) => {
+    try {
+                const userId = decodeURIComponent(req.params.user_id);
+        console.log("Fetching balance for user:", userId);
+        const db = dbClient.getDb();
+        const transactions = await db.collection('transactions').find({ user_id: userId }).toArray();
+
+        const balance = transactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+
+        res.json({ balance });
+
+    } catch (err) {
+        console.error("Error fetching balance:", err);
+        res.status(500).json({ error: "Failed to fetch balance" });
     }
 });
 

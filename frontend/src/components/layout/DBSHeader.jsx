@@ -7,7 +7,7 @@ const DBSHeader = ({ balanceVisible, toggleBalance, onLogout }) => {
 
   return (
     // Added responsive padding: p-2 for small screens, p-3 for medium and up.
-    <div className="relative text-white p-2 md:p-3 bg-primary-red font-dbs">
+        <div className="relative text-gray-800 p-2 md:p-3 font-dbs">
       <div className="flex items-center z-20 w-full">
         {/* Left side - Notification and Eye icons */}
         <div className="flex items-center gap-2 md:gap-3">
