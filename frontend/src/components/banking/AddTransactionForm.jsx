@@ -31,7 +31,7 @@ const AddTransactionForm = ({ userId, onTransactionAdded }) => {
     };
 
     try {
-            const response = await axios.post(`${import.meta.env.VITE_BUDGET_URL}/transactions`, transactionData);
+                  const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/transactions`, transactionData);
       setSuccess(response.data.notification || 'Transaction added successfully!');
       setAmount('');
       setDescription('');
