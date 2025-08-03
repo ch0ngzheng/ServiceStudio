@@ -31,22 +31,22 @@ const InvestmentFOMOBanner = ({ userId }) => {
         {/* Savings Account */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
           <h3 className="font-semibold text-gray-900 text-xs mb-2">Savings Account</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-1">$1002</div>
-          <p className="text-green-600 text-xs font-medium">+ $2 (0.2%)</p>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$1020</div>
+          <p className="text-green-600 text-xs font-medium">+ $20 (2%)</p>
         </div>
 
         {/* Fixed Deposit */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
           <h3 className="font-semibold text-gray-900 text-xs mb-2">Fixed Deposit</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-1">$1005</div>
-          <p className="text-green-600 text-xs font-medium">+ $5 (0.5%)</p>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$1050</div>
+          <p className="text-green-600 text-xs font-medium">+ $50 (5%)</p>
         </div>
 
         {/* DigiPortfolio */}
         <div className="bg-purple-500 rounded-xl p-3 flex-1 max-w-32 text-center text-white">
           <h3 className="font-semibold text-xs mb-2">DigiPortfolio</h3>
-          <div className="text-2xl font-bold mb-1">$1008</div>
-          <p className="text-purple-200 text-xs font-medium">+ $8 (0.8%)</p>
+          <div className="text-2xl font-bold mb-1">$1080</div>
+          <p className="text-purple-200 text-xs font-medium">+ $80 (8%)</p>
         </div>
       </div>
     </div>

@@ -135,4 +135,40 @@ router.get('/:user_id/balance', async (req, res) => {
     }
 });
 
+// calculates total spending for a specific category for a user
+router.get('/:user_id/spending/:category', async (req, res) => {
+    try {
+        const { user_id, category } = req.params;
+        const db = dbClient.getDb();
+
+        const decodedUserId = decodeURIComponent(user_id);
+        const decodedCategory = decodeURIComponent(category);
+
+        const result = await db.collection('transactions').aggregate([
+            {
+                $match: {
+                    user_id: decodedUserId,
+                    category: decodedCategory,
+                    amount: { $lt: 0 } // Only consider spending
+                }
+            },
+            {
+                $group: {
+                    _id: null, // Group all matched documents into one
+                    totalSpending: { $sum: '$amount' }
+                }
+            }
+        ]).toArray();
+
+        // The result is an array, get the first element or 0 if no spending
+        const totalSpending = result.length > 0 ? Math.abs(result[0].totalSpending) : 0;
+
+        res.json({ totalSpending });
+
+    } catch (err) {
+        console.error("Error fetching category spending:", err);
+        res.status(500).json({ error: "Failed to fetch category spending" });
+    }
+});
+
 module.exports = router;

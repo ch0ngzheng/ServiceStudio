@@ -1,6 +1,7 @@
 import React from 'react';
 
-const TransportCardBanner = ({ cashbackAmount = 'XXX' }) => {
+const TransportCardBanner = ({ transportSpending = 0 }) => {
+  const cashbackAmount = (transportSpending * 0.06).toFixed(2);
   return (
     <div className="p-6 rounded-2xl shadow-md my-4" style={{ background: 'linear-gradient(135deg, #E8E5FF 0%, #FFE4E8 100%)' }}>
       {/* Header */}
@@ -18,14 +19,14 @@ const TransportCardBanner = ({ cashbackAmount = 'XXX' }) => {
         {/* Regular Card */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
           <h3 className="text-purple-600 font-semibold text-xs mb-2">Regular Card</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-1">$xx</div>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$0</div>
           <p className="text-gray-700 text-xs">after cashback</p>
         </div>
 
         {/* Live Fresh Card */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
           <h3 className="text-purple-600 font-semibold text-xs mb-2">Live Fresh Card</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-1">$xx</div>
+                    <div className="text-2xl font-bold text-gray-900 mb-1">${cashbackAmount}</div>
           <p className="text-gray-700 text-xs">after cashback</p>
         </div>
       </div>

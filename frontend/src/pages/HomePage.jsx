@@ -21,7 +21,8 @@ const HomePage = () => {
   const [balance, setBalance] = useState(0);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
-  const [bannerToShow, setBannerToShow] = useState(null);
+    const [bannerToShow, setBannerToShow] = useState(null);
+  const [transportSpending, setTransportSpending] = useState(0);
 
   useEffect(() => {
     if (!userId) return;
@@ -52,8 +53,21 @@ const HomePage = () => {
       }
     };
 
+    const fetchTransportSpending = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${userId}/spending/Transport`);
+        const data = await response.json();
+        if (response.ok) {
+          setTransportSpending(data.totalSpending);
+        }
+      } catch (error) {
+        console.error('Failed to fetch transport spending:', error);
+      }
+    };
+
     fetchTransactionData();
     fetchBalance();
+    fetchTransportSpending();
   }, [userId]);
 
   const toggleBalance = () => {
@@ -85,7 +99,7 @@ const HomePage = () => {
       {/* Header + Banner Section - Layered */}
       <div className="relative w-full">
         {/* Banner takes up the full space */}
-        <BannerComponent userId={userId} />
+                <BannerComponent userId={userId} transportSpending={transportSpending} />
         {/* Header is overlaid on top */}
         <div className="absolute inset-0 flex flex-col z-10">
           <DBSHeader 

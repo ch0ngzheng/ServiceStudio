@@ -64,39 +64,6 @@ def predict():
         print(f"An error occurred: {e}")
         return jsonify({'error': 'An error occurred during prediction.'}), 400
 
-@app.route('/predict/optimize-budget', methods=['POST'])
-def optimize_budget():
-    try:
-        data = request.get_json()
-        total_budget = data.get('total_budget')
-
-        if total_budget is None:
-            return jsonify({'error': 'Total budget is required.'}), 400
-
-        # Placeholder logic for budget optimization
-        # Distributes the budget according to predefined weights
-        categories = {
-            'Food & Dining': 0.30,
-            'Transportation': 0.15,
-            'Utilities': 0.10,
-            'Shopping': 0.15,
-            'Entertainment': 0.10,
-            'Health & Wellness': 0.05,
-            'Savings & Investments': 0.15
-        }
-
-        optimized_budget = {cat: total_budget * weight for cat, weight in categories.items()}
-
-        return jsonify({
-            'message': 'Budget optimized successfully!',
-            'optimized_budget': optimized_budget
-        })
-
-    except Exception as e:
-        print(f"An error occurred in optimize_budget: {e}")
-        return jsonify({'error': 'An error occurred during budget optimization.'}), 500
-
-
 if __name__ == '__main__':
     # Runs the Flask app on port 5000
     app.run(port=5000, debug=True)
