@@ -28,7 +28,7 @@ const InsightsPage = () => {
     }
 
     try {
-            const response = await fetch(`${import.meta.env.VITE_BUDGET_URL}/optimize-budget`, {
+                  const response = await fetch(`${import.meta.env.VITE_BUDGET_URL}/budget/optimize-budget`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
