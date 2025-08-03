@@ -54,14 +54,25 @@ const HomePage = () => {
     };
 
     const fetchTransportSpending = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${userId}/spending/Transport`);
-        const data = await response.json();
-        if (response.ok) {
-          setTransportSpending(data.totalSpending);
+      if (userId) {
+        try {
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = now.getMonth() + 1; // JS months are 0-indexed
+
+          const response = await axios.get(`${import.meta.env.VITE_BUDGET_URL}/budget/${userId}/${year}/${month}`);
+          
+          if (response.data && response.data.spending_breakdown) {
+            // Default to 0 if 'Transport' category doesn't exist
+            const spending = response.data.spending_breakdown.Transport || 0;
+            setTransportSpending(spending);
+          } else {
+            setTransportSpending(0);
+          }
+        } catch (error) {
+          console.error('Failed to fetch transport spending from budget service:', error);
+          setTransportSpending(0); // Set to 0 on error
         }
-      } catch (error) {
-        console.error('Failed to fetch transport spending:', error);
       }
     };
 

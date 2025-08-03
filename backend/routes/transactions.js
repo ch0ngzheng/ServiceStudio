@@ -135,49 +135,5 @@ router.get('/:user_id/balance', async (req, res) => {
     }
 });
 
-// calculates total spending for a specific category for a user
-router.get('/:user_id/spending/:category', async (req, res) => {
-    try {
-        const { user_id, category } = req.params;
-        const db = dbClient.getDb();
-
-        const decodedUserId = decodeURIComponent(user_id);
-        const decodedCategory = decodeURIComponent(category);
-
-        console.log(`[DEBUG] Fetching spending for user: '${decodedUserId}', category: '${decodedCategory}'`);
-
-        const aggregationPipeline = [
-            {
-                $match: {
-                    user_id: decodedUserId,
-                    category: { $regex: new RegExp(`^${decodedCategory}$`, 'i') },
-                    amount: { $lt: 0 } // Only consider spending
-                }
-            },
-            {
-                $group: {
-                    _id: null, // Group all matched documents into one
-                    totalSpending: { $sum: '$amount' }
-                }
-            }
-        ];
-
-        console.log('[DEBUG] Aggregation Pipeline:', JSON.stringify(aggregationPipeline, null, 2));
-
-        const result = await db.collection('transactions').aggregate(aggregationPipeline).toArray();
-
-        console.log('[DEBUG] Aggregation Result:', JSON.stringify(result, null, 2));
-
-        const totalSpending = result.length > 0 ? Math.abs(result[0].totalSpending) : 0;
-
-        console.log(`[DEBUG] Calculated totalSpending: ${totalSpending}`);
-
-        res.json({ totalSpending });
-
-    } catch (err) {
-        console.error("Error fetching category spending:", err);
-        res.status(500).json({ error: "Failed to fetch category spending" });
-    }
-});
 
 module.exports = router;
