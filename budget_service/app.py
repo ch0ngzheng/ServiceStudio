@@ -246,7 +246,7 @@ def get_budget(user_id, year, month):
         app.logger.error(f"Error in get_budget for {user_id}: {e}")
         return jsonify({"success": False, "error": "An internal server error occurred."}), 500
 
-@app.route('/optimize-budget', methods=['POST'])
+@app.route('/budget/optimize-budget', methods=['POST'])
 def optimize_budget():
     # Uses the user's assigned cluster model to suggest an optimized budget
     data = request.json
