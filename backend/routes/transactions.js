@@ -148,7 +148,7 @@ router.get('/:user_id/spending/:category', async (req, res) => {
             {
                 $match: {
                     user_id: decodedUserId,
-                    category: decodedCategory,
+                    category: { $regex: new RegExp(`^${decodedCategory}$`, 'i') },
                     amount: { $lt: 0 } // Only consider spending
                 }
             },
