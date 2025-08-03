@@ -144,7 +144,9 @@ router.get('/:user_id/spending/:category', async (req, res) => {
         const decodedUserId = decodeURIComponent(user_id);
         const decodedCategory = decodeURIComponent(category);
 
-        const result = await db.collection('transactions').aggregate([
+        console.log(`[DEBUG] Fetching spending for user: '${decodedUserId}', category: '${decodedCategory}'`);
+
+        const aggregationPipeline = [
             {
                 $match: {
                     user_id: decodedUserId,
@@ -158,10 +160,17 @@ router.get('/:user_id/spending/:category', async (req, res) => {
                     totalSpending: { $sum: '$amount' }
                 }
             }
-        ]).toArray();
+        ];
 
-        // The result is an array, get the first element or 0 if no spending
+        console.log('[DEBUG] Aggregation Pipeline:', JSON.stringify(aggregationPipeline, null, 2));
+
+        const result = await db.collection('transactions').aggregate(aggregationPipeline).toArray();
+
+        console.log('[DEBUG] Aggregation Result:', JSON.stringify(result, null, 2));
+
         const totalSpending = result.length > 0 ? Math.abs(result[0].totalSpending) : 0;
+
+        console.log(`[DEBUG] Calculated totalSpending: ${totalSpending}`);
 
         res.json({ totalSpending });
 
