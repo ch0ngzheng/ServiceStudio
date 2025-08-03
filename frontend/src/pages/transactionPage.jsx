@@ -5,7 +5,7 @@ function transactionPage() {
   const [trans, setTrans] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/transactions')
+        axios.get(`${import.meta.env.VITE_API_URL}/api/transactions`)
       .then(res => setTrans(res.data))
       .catch(err => console.error(err));
   }, []);

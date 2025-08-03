@@ -39,7 +39,7 @@ const LoginPage = () => {
 
     try {
       // Corrected API endpoint and payload to match the backend
-      const response = await axios.post('http://localhost:3000/api/login', {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, {
         user_id: formData.id, // Key changed from 'id' to 'user_id'
         password: formData.password
       });

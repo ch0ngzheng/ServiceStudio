@@ -58,7 +58,7 @@ const BudgetCard = ({
         setLoading(true);
 
         // Fetch all budget data from the single, enhanced endpoint
-        const response = await axios.get(`http://localhost:5001/budget/${userId}/${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}`);
+                const response = await axios.get(`${import.meta.env.VITE_BUDGET_URL}/budget/${userId}/${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}`);
         
         if (!response.data.success) {
           throw new Error('Failed to fetch budget data.');

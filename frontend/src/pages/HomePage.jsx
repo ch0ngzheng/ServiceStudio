@@ -28,7 +28,7 @@ const HomePage = () => {
 
     const fetchTransactionData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/transactions/${userId}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${userId}`);
         const data = await response.json();
         if (data.banner_to_show) {
           setBannerToShow(data.banner_to_show);
@@ -40,7 +40,7 @@ const HomePage = () => {
 
         const fetchBalance = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/transactions/${userId}/balance`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${userId}/balance`);
         const data = await response.json();
         if (response.ok) {
           setBalance(data.balance);
