@@ -99,11 +99,8 @@ jobs:
       - name: Install and Build Frontend
         run: |
           npm install
-          npm run build
+          VITE_API_URL=http://34.128.166.86 VITE_BUDGET_URL=http://34.128.166.86 npm run build
         working-directory: ./frontend
-        env:
-          VITE_API_URL: http://34.128.166.86
-          VITE_BUDGET_URL: http://34.128.166.86
 
       - name: Deploy Frontend to Google Cloud Storage
         uses: google-github-actions/upload-cloud-storage@v2
