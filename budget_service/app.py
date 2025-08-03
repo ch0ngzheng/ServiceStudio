@@ -44,7 +44,7 @@ def health_check():
     # health check endpoint
     return jsonify({"status": "ok"})
 
-@app.route('/db-status', methods=['GET'])
+@app.route('/budget/db-status', methods=['GET'])
 def db_status():
     """Checks the status of the MongoDB connection."""
     try:
@@ -54,7 +54,7 @@ def db_status():
     except Exception as e:
         return jsonify({"status": "disconnected", "error": str(e)}), 500
 
-@app.route('/transactions', methods=['POST'])
+@app.route('/budget/transactions', methods=['POST'])
 def handle_transactions():
     """Handles adding a new transaction."""
     try:
@@ -96,7 +96,7 @@ def handle_transactions():
         return jsonify({"success": False, "error": "An internal server error occurred."}), 500
 
 
-@app.route('/assign-cluster', methods=['POST'])
+@app.route('/budget/assign-cluster', methods=['POST'])
 def assign_cluster():
     """
     Assigns a new user to a cluster based on their profile data.
@@ -246,7 +246,7 @@ def get_budget(user_id, year, month):
         app.logger.error(f"Error in get_budget for {user_id}: {e}")
         return jsonify({"success": False, "error": "An internal server error occurred."}), 500
 
-@app.route('/optimize-budget', methods=['POST'])
+@app.route('/budget/optimize-budget', methods=['POST'])
 def optimize_budget():
     # Uses the user's assigned cluster model to suggest an optimized budget
     data = request.json
