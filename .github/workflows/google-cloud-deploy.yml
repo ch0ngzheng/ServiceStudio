@@ -96,10 +96,25 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Create production env file
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          file_name: ./frontend/.env.production
+          envkey_VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          envkey_VITE_BUDGET_URL: ${{ secrets.VITE_BUDGET_URL }}
+
+      - name: Verify Environment File
+        run: |
+          echo "Listing files in frontend directory:"
+          ls -la
+          echo "\nContents of .env.production:"
+          cat .env.production
+        working-directory: ./frontend
+
       - name: Install and Build Frontend
         run: |
           npm install
-          VITE_API_URL=http://34.128.166.86 VITE_BUDGET_URL=http://34.128.166.86 npm run build
+          npm run build
         working-directory: ./frontend
 
       - name: Deploy Frontend to Google Cloud Storage
