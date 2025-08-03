@@ -96,11 +96,17 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Create Environment File for Production
+        run: |
+          echo "VITE_API_URL=http://34.128.166.86" >> .env.production
+          echo "VITE_BUDGET_URL=http://34.128.166.86" >> .env.production
+        working-directory: ./frontend
+
       - name: Install and Build Frontend
         run: |
-          cd frontend
           npm install
           npm run build
+        working-directory: ./frontend
 
       - name: Deploy Frontend to Google Cloud Storage
         uses: google-github-actions/upload-cloud-storage@v2
