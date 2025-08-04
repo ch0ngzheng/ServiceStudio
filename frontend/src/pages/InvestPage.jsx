@@ -101,11 +101,11 @@ function InvestPage() {
       <div className="bg-white px-4 py-4 mb-2">
         {/* First row - 4 icons */}
         <div className="grid grid-cols-4 gap-2 mb-4">
-          <div className="flex flex-col items-center text-center gap-1">
+          <div className="flex flex-col items-center text-center gap-1" onClick={() => navigate(`/digiportfolio/${userId}`)}>
             <img 
               src="/assets/icons/digiportfolio.svg" 
               alt="digiPortfolio" 
-              className="w-14 h-14"
+              className="w-14 h-14 cursor-pointer"
               onError={(e) => {
                 console.log('Failed to load digiportfolio icon');
                 e.target.style.display = 'none';
@@ -157,7 +157,7 @@ function InvestPage() {
         {/* Investment Guide Card with Mountain Background */}
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
           {/* Asia ETF Button - Positioned with absolute positioning */}
-                              <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20 flex flex-row gap-2">
+                                                            <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20 flex flex-row gap-2" onClick={() => navigate(`/digiportfolio/${userId}`)}>
             {recommendedProducts.length > 0 ? (
               recommendedProducts.map((product, index) => (
                 <button key={index} className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
@@ -276,7 +276,7 @@ function InvestPage() {
         </div>
         
         {/* Fixed Deposit */}
-        <div className="bg-white rounded-lg shadow-sm mb-2 p-4 mx-4">
+        <div className="bg-white rounded-lg shadow-sm mb-2 p-4 mx-4 cursor-pointer" onClick={() => navigate(`/digiportfolio/${userId}`)}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-dbs-red-200">
@@ -295,7 +295,7 @@ function InvestPage() {
         </div>
 
         {/* Unit Trusts & ETFs */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mx-4">
+        <div className="bg-white rounded-lg shadow-sm p-4 mx-4 cursor-pointer" onClick={() => navigate(`/digiportfolio/${userId}`)}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-dbs-red-200">

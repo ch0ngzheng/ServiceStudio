@@ -10,6 +10,7 @@ import BTOBannerPage from './pages/BTOBannerPage.jsx';
 import SmartShortcuts from "./components/home/SmartShortcuts.jsx";
 import InsightsPage from './pages/InsightsPage';
 import SetBudgetPage from './pages/SetBudgetPage';
+import DigiPortfolio from './components/invest/DigiPortfolio.jsx';
 
 
 // Wrapper component for SmartAdjustments with navigation
@@ -36,7 +37,8 @@ function App() {
         <Route path="/bto/:userId" element={<BTOBannerPage />} />
         <Route path="/smartshortcuts/:userId" element={<SmartAdjustmentsWrapper />} />
         <Route path="/set-budget/:userId" element={<SetBudgetPage />} />
-        <Route path="/insights/:userId" element={<InsightsPage />} />
+                <Route path="/insights/:userId" element={<InsightsPage />} />
+                <Route path="/digiportfolio/:userId" element={<DigiPortfolio />} />
       </Routes>
     </Router>
   );
