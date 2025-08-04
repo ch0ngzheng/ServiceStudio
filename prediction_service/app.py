@@ -31,13 +31,13 @@ def predict_product_subscriptions(user_features, models, scalers):
             predictions[product] = prob
     return predictions
 
-@app.route('/', methods=['GET'])
+@app.route('/predict/', methods=['GET'])
 def health_check():
     """A simple health check endpoint to confirm the service is running."""
     # This endpoint can be accessed at http://127.0.0.1:5000/
     return jsonify({"status": "ok"})
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict/predict', methods=['POST'])
 def predict():
     if models is None or scalers is None:
         return jsonify({'error': 'Models or scalers are not loaded'}), 500

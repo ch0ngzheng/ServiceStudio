@@ -27,7 +27,9 @@ router.post('/', async (req, res) => {
             let recommendedProducts = []; // Default to an empty array
             try {
                 const features = [user.age, user.account_balance, user.average_monthly_spending, user.average_monthly_income, user.average_monthly_flow];
-                const predictionResponse = await axios.post('http://localhost:5000/predict', { features });
+                                                const predictionUrl = `${process.env.PREDICTION_URL}/predict/predict`;
+                console.log(`[DEBUG] Calling prediction service at: ${predictionUrl}`)
+                const predictionResponse = await axios.post(predictionUrl, { features });
                 const predictions = predictionResponse.data;
 
                 // Get user's existing products, defaulting to an empty array if not present
