@@ -262,6 +262,9 @@ function InvestPage() {
                 </div>
                 <div className="flex-1">
                   <span className="font-bold text-base md:text-lg text-dbs-navy">Ready to Invest!</span>
+                  <p className="text-text-black text-sm md:text-base mb-2 text-left">
+                    Based on your spending and income, we recommend the following products:
+                  </p>
                 </div>
               </div>
             </div>
