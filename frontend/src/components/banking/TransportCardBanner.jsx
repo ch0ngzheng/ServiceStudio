@@ -1,6 +1,7 @@
 import React from 'react';
 
 const TransportCardBanner = ({ transportSpending = 0 }) => {
+  console.log(`[DEBUG] TransportCardBanner received prop transportSpending: ${transportSpending}`);
   const cashbackAmount = (transportSpending * 0.06).toFixed(2);
   return (
     <div className="p-6 rounded-2xl shadow-md my-4" style={{ background: 'linear-gradient(135deg, #E8E5FF 0%, #FFE4E8 100%)' }}>

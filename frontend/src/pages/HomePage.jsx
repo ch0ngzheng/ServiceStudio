@@ -62,12 +62,14 @@ const HomePage = () => {
           const month = now.getMonth() + 1; // JS months are 0-indexed
 
           const response = await axios.get(`${import.meta.env.VITE_BUDGET_URL}/budget/${userId}/${year}/${month}`);
-          
+          console.log('[DEBUG] Full response from budget service:', response.data);
+
           if (response.data && response.data.spending_breakdown) {
-            // Default to 0 if 'Transport' category doesn't exist
             const spending = response.data.spending_breakdown.Transport || 0;
+            console.log(`[DEBUG] Transport spending value set to: ${spending}`);
             setTransportSpending(spending);
           } else {
+            console.log('[DEBUG] No spending_breakdown found in response.');
             setTransportSpending(0);
           }
         } catch (error) {
