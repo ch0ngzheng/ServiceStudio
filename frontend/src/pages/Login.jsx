@@ -44,6 +44,8 @@ const LoginPage = () => {
       });
 
       if (response.data.success) {
+        console.log('[DEBUG] Full login response from backend:', response.data);
+
         // Store the recommended products in localStorage to make it accessible to other pages
         if (response.data.recommendedProducts && response.data.recommendedProducts.length > 0) {
           localStorage.setItem('recommendedProducts', JSON.stringify(response.data.recommendedProducts));
