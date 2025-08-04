@@ -44,7 +44,7 @@ const InvestmentFOMOBanner = ({ userId }) => {
 
         {/* DigiPortfolio */}
         <div className="bg-purple-500 rounded-xl p-3 flex-1 max-w-32 text-center text-white">
-          <h3 className="font-semibold text-xs mb-2">DigiPortfolio</h3>
+          <h3 className="font-semibold text-xs mb-2">Income DigiPortfolio</h3>
           <div className="text-2xl font-bold mb-1">$1080</div>
           <p className="text-purple-200 text-xs font-medium">+ $80 (8%)</p>
         </div>
