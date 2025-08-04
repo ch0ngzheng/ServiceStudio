@@ -113,7 +113,7 @@ const HomePage = () => {
       {/* Header + Banner Section - Layered */}
       <div className="relative w-full">
         {/* Banner takes up the full space */}
-                <BannerComponent userId={userId} transportSpending={transportSpending} />
+                <BannerComponent userId={userId} />
         {/* Header is overlaid on top */}
         <div className="absolute inset-0 flex flex-col z-10">
           <DBSHeader 
