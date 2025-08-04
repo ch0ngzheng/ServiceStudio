@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 
                 // Find all products with a probability over 0.01 that the user doesn't already have
                 for (const [product, probability] of Object.entries(predictions)) {
-                    if (probability > 0.01 && !userProducts.includes(product)) {
+                    if (probability > 0.013 && !userProducts.includes(product)) {
                         recommendedProducts.push(product);
                     }
                 }
