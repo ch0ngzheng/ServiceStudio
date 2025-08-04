@@ -39,29 +39,31 @@ def health_check():
 
 @app.route('/predict/predict', methods=['POST'])
 def predict():
+    print('[DEBUG] Prediction Service: /predict/predict endpoint hit.')
     if models is None or scalers is None:
+        print('[DEBUG] Prediction Service: Models or scalers not loaded.')
         return jsonify({'error': 'Models or scalers are not loaded'}), 500
 
     try:
         data = request.get_json()
-        # The client sends a JSON object with a 'features' key
-        # e.g., {"features": [25, 50000, 250, 4000, 1500]}
-        # the features are in the order of: age, balance, spending, income, flow
+        print(f'[DEBUG] Prediction Service: Received data: {data}')
+        
         user_features = data['features']
+        print(f'[DEBUG] Prediction Service: Extracted features: {user_features}')
 
         if not isinstance(user_features, list):
+            print(f'[DEBUG] Prediction Service: Features are not a list.')
             return jsonify({'error': 'Features must be a list'}), 400
 
-        # Get the prediction probabilities
         predictions = predict_product_subscriptions(user_features, models, scalers)
-        print(predictions)
+        print(f'[DEBUG] Prediction Service: Generated predictions: {predictions}')
         
-        # Return the dictionary of predictions
         return jsonify(predictions)
 
     except Exception as e:
-        # Log the error for debugging
-        print(f"An error occurred: {e}")
+        print(f'[DEBUG] Prediction Service: An error occurred: {e}')
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': 'An error occurred during prediction.'}), 400
 
 if __name__ == '__main__':

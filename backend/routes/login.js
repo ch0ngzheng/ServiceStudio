@@ -27,9 +27,14 @@ router.post('/', async (req, res) => {
             let recommendedProducts = []; // Default to an empty array
             try {
                 const features = [user.age, user.account_balance, user.average_monthly_spending, user.average_monthly_income, user.average_monthly_flow];
-                                                const predictionUrl = `${process.env.PREDICTION_URL}/predict/predict`;
-                console.log(`[DEBUG] Calling prediction service at: ${predictionUrl}`)
+                console.log(`[DEBUG] Backend: Sending features to prediction service: ${JSON.stringify(features)}`);
+
+                const predictionUrl = `${process.env.PREDICTION_URL}/predict/predict`;
+                console.log(`[DEBUG] Backend: Calling prediction service at: ${predictionUrl}`);
+                
                 const predictionResponse = await axios.post(predictionUrl, { features });
+                console.log('[DEBUG] Backend: Raw response from prediction service:', predictionResponse.data);
+
                 const predictions = predictionResponse.data;
 
                 // Get user's existing products, defaulting to an empty array if not present
@@ -42,10 +47,23 @@ router.post('/', async (req, res) => {
                     }
                 }
                 
-                console.log(`Recommended products for user ${user_id}: ${recommendedProducts.join(', ')}`);
+                console.log(`[DEBUG] Backend: Processed recommended products for user ${user_id}: ${recommendedProducts.join(', ')}`);
 
             } catch (predictionError) {
-                console.error('Error calling prediction service or processing recommendations:', predictionError.message);
+                console.error('[DEBUG] Backend: Error calling prediction service.');
+                if (predictionError.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.error('[DEBUG] Backend: Error Data:', predictionError.response.data);
+                    console.error('[DEBUG] Backend: Error Status:', predictionError.response.status);
+                    console.error('[DEBUG] Backend: Error Headers:', predictionError.response.headers);
+                } else if (predictionError.request) {
+                    // The request was made but no response was received
+                    console.error('[DEBUG] Backend: No response received:', predictionError.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.error('[DEBUG] Backend: Error Message:', predictionError.message);
+                }
             }
 
             // Respond to the client with success and the recommended products
