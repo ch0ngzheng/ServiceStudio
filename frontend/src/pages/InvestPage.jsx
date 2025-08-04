@@ -156,20 +156,6 @@ function InvestPage() {
 
         {/* Investment Guide Card with Mountain Background */}
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
-          {/* Asia ETF Button - Positioned with absolute positioning */}
-                                                            <div className="absolute bottom-[6%] left-1/2 transform -translate-x-1/2 z-20 flex flex-row gap-2 mt-4" onClick={() => navigate(`/digiportfolio/${userId}`)}>
-            {recommendedProducts.length > 0 ? (
-              recommendedProducts.map((product, index) => (
-                <button key={index} className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
-                  {product}
-                </button>
-              ))
-            ) : (
-              <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
-                Explore Investments
-              </button>
-            )}
-          </div>
           {/* Background Image: Scales to set the aspect ratio */}
           <div className="h-[350px]">
             <img 
@@ -265,6 +251,19 @@ function InvestPage() {
                   <p className="text-text-black text-sm md:text-base mb-2 text-left">
                     Based on your spending and income, we recommend the following products:
                   </p>
+                  <div className="flex flex-row gap-2 mt-2">
+                    {recommendedProducts.length > 0 ? (
+                      recommendedProducts.map((product, index) => (
+                        <button key={index} className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8" onClick={() => navigate(`/digiportfolio/${userId}`)}>
+                          {product}
+                        </button>
+                      ))
+                    ) : (
+                      <button className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8" onClick={() => navigate(`/digiportfolio/${userId}`)}>
+                        Explore Investments
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
