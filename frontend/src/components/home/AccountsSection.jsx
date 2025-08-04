@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import AccountCard from '../banking/AccountCard';
 import BudgetCard from '../banking/budgetCard';
+import TransportCardBanner from '../banking/TransportCardBanner';
 import AddTransactionForm from '../banking/AddTransactionForm';
 
-const AccountsSection = ({ balance, balanceVisible, userId }) => {
+const AccountsSection = ({ balance, balanceVisible, userId, transportSpending }) => {
   const [activeTab, setActiveTab] = useState('accounts');
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -61,7 +62,8 @@ const AccountsSection = ({ balance, balanceVisible, userId }) => {
             <h3 className="font-medium text-gray-900">Insights</h3>
             <span className="text-gray-400">›</span>
           </div>
-          <BudgetCard userId={userId} refreshKey={refreshKey} />
+                    <BudgetCard userId={userId} refreshKey={refreshKey} />
+          <TransportCardBanner transportSpending={transportSpending} />
           <div className="mt-6">
             <AddTransactionForm userId={userId} onTransactionAdded={handleTransactionAdded} />
           </div>
