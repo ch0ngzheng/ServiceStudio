@@ -31,15 +31,15 @@ const InvestmentFOMOBanner = ({ userId }) => {
         {/* Savings Account */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
           <h3 className="font-semibold text-gray-900 text-xs mb-2">Savings Account</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-1">$1020</div>
-          <p className="text-green-600 text-xs font-medium">+ $20 (2%)</p>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$1002</div>
+          <p className="text-green-600 text-xs font-medium">+ $2 (0.25%)</p>
         </div>
 
         {/* Fixed Deposit */}
         <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 flex-1 max-w-32 text-center">
           <h3 className="font-semibold text-gray-900 text-xs mb-2">Fixed Deposit</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-1">$1050</div>
-          <p className="text-green-600 text-xs font-medium">+ $50 (5%)</p>
+          <div className="text-2xl font-bold text-gray-900 mb-1">$1025</div>
+          <p className="text-green-600 text-xs font-medium">+ $25 (2.45%)</p>
         </div>
 
         {/* DigiPortfolio */}
