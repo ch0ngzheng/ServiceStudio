@@ -186,7 +186,7 @@ function InvestPage() {
             </div>
 
             {/* Steps Container */}
-            <div className="mt-8 pl-4">
+            <div className="mt-6 pl-4 pb-4">
               {/* Step 1 - CKA not Completed */}
               <div className="text-left flex items-start w-full mb-6">
                 <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-dbs-navy w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
@@ -242,7 +242,7 @@ function InvestPage() {
               </div>
 
               {/* Step 3 - Ready to Invest */}
-              <div className="text-left flex items-center w-full">
+              <div className="text-left flex items-start w-full">
                 <div className="text-white flex items-center justify-center font-bold mr-3 md:mr-5 flex-shrink-0 rounded-full bg-dbs-red-700 w-8 h-8 md:w-10 md:h-10 text-base md:text-xl">
                   3.
                 </div>
