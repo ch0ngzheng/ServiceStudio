@@ -157,7 +157,7 @@ function InvestPage() {
         {/* Investment Guide Card with Mountain Background */}
         <div className="bg-white shadow-sm overflow-hidden relative mb-2">
           {/* Asia ETF Button - Positioned with absolute positioning */}
-                                                            <div className="absolute bottom-[8%] left-1/2 transform -translate-x-1/2 z-20 flex flex-row gap-2" onClick={() => navigate(`/digiportfolio/${userId}`)}>
+                                                            <div className="absolute bottom-[6%] left-1/2 transform -translate-x-1/2 z-20 flex flex-row gap-2 mt-4" onClick={() => navigate(`/digiportfolio/${userId}`)}>
             {recommendedProducts.length > 0 ? (
               recommendedProducts.map((product, index) => (
                 <button key={index} className="font-bold hover:opacity-90 transition-colors flex items-center justify-center bg-primary-red shadow-lg rounded-full text-white text-sm md:text-base py-2 px-8">
