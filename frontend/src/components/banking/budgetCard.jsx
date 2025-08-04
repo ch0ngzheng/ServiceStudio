@@ -247,7 +247,7 @@ const BudgetCard = ({
         </div>
       )}
       {/* Transport Cashback Banner */}
-      <TransportCardBanner cashbackAmount={cashbackAmount} />
+      <TransportCardBanner transportSpending={spending?.Transport || 0} />
     </div>
   );
 };
