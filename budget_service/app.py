@@ -63,7 +63,7 @@ def optimize_budget():
         cluster_id = user_map.loc[user_id, 'cluster']
         
         # 2. Load the corresponding model artifacts
-        model_path = os.path.join('cluster_models', f'cluster_{cluster_id}_model.pkl')
+        model_path = os.path.join('models', 'cluster_models', f'cluster_{cluster_id}_model.pkl')
         artifacts = joblib.load(model_path)
         model = artifacts['model']
         feature_names = artifacts['feature_names']
