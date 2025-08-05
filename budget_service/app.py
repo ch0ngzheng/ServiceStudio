@@ -21,9 +21,9 @@ try:
     client = MongoClient(mongo_uri)
     client.admin.command('ismaster')
     db = client.banking
-    print("MongoDB connection successful.")
+    app.logger.info("MongoDB connection successful.")
 except ConnectionFailure as e:
-    print(f"Could not connect to MongoDB: {e}")
+    app.logger.error(f"Could not connect to MongoDB: {e}")
     db = None
 
 # --- Load User Cluster Map at Startup ---
@@ -31,9 +31,9 @@ try:
     # This assumes 'user_cluster_map.csv' is in the 'models' directory
     user_map_path = os.path.join('models', 'user_cluster_map.csv')
     user_map = pd.read_csv(user_map_path).set_index('user_id')
-    print("User cluster map loaded successfully.")
+    app.logger.info("User cluster map loaded successfully.")
 except FileNotFoundError:
-    print("ERROR: 'user_cluster_map.csv' not found. The service will not be able to optimize budgets.")
+    app.logger.error("ERROR: 'user_cluster_map.csv' not found. The service will not be able to optimize budgets.")
     user_map = None
 
 # --- Routes ---
@@ -114,7 +114,7 @@ def optimize_budget():
         "message": "Budget optimized and saved successfully!",
         "optimized_budget": optimized_budget
     }
-    print(f"[DEBUG] Final JSON response: {response_data}")
+    app.logger.info(f"[DEBUG] Final JSON response: {response_data}")
     return jsonify(response_data)
 
 if __name__ == '__main__':
