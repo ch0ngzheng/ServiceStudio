@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def parse_iso_date(date_str):
     """Parses an ISO 8601 string, handling the 'Z' suffix for UTC."""
@@ -132,7 +132,13 @@ def get_budget(user_id, year, month):
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 404
 
-        month_key = f"{year}-{month:02d}"
+        # Calculate the correct month_key for the previous month
+        first_day_of_current_month = datetime(year, month, 1)
+        last_day_of_previous_month = first_day_of_current_month - timedelta(days=1)
+        prev_year = last_day_of_previous_month.year
+        prev_month = last_day_of_previous_month.month
+
+        month_key = f"{prev_year}-{prev_month:02d}"
         # Fetch the budget directly from the user's document, where `optimize_budget` saves it.
         user_budgets = user.get('budgets', {})
         monthly_budget_data = user_budgets.get(month_key, {})
