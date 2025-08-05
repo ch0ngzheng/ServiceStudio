@@ -12,6 +12,8 @@ const InsightsPage = () => {
   const [categories, setCategories] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [setAsDefault, setSetAsDefault] = useState(false);
+  const [clusterId, setClusterId] = useState(null);
+  const [proportions, setProportions] = useState([]);
 
   useEffect(() => {
     const { totalBudget } = location.state || {};
@@ -28,7 +30,7 @@ const InsightsPage = () => {
     }
 
     try {
-                  const response = await fetch(`${import.meta.env.VITE_BUDGET_URL}/budget/optimize-budget`, {
+      const response = await fetch(`${import.meta.env.VITE_BUDGET_URL}/budget/optimize-budget`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -51,6 +53,12 @@ const InsightsPage = () => {
             amount: result.optimized_budget[key].toFixed(2),
           }));
           setCategories(updatedCategories);
+        }
+        if (result.cluster_id !== undefined) {
+          setClusterId(result.cluster_id);
+        }
+        if (result.predicted_proportions) {
+          setProportions(result.predicted_proportions);
         }
         return true; // Indicate success
       } else {
@@ -77,21 +85,30 @@ const InsightsPage = () => {
     <div className="bg-light-gray-background min-h-screen font-sans">
       {/* Header */}
       <header className="bg-white p-4 flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-                <div className="relative">
-                    <FaBell className="text-light-gray" size={20} />
-                    <span className="absolute -top-1 -right-1 bg-dbs-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">15</span>
-                </div>
-                <FaEye className="text-light-gray" size={20} />
-            </div>
-            <div className="flex items-center space-x-4">
-                <FaQuestionCircle className="text-light-gray" size={20} />
-                <button className="border border-dbs-red-500 text-dbs-red-500 px-4 py-1 rounded-full text-sm font-semibold">LOG OUT</button>
-            </div>
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <FaBell className="text-light-gray" size={20} />
+            <span className="absolute -top-1 -right-1 bg-dbs-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">15</span>
+          </div>
+          <FaEye className="text-light-gray" size={20} />
+        </div>
+        <div className="flex items-center space-x-4">
+          <FaQuestionCircle className="text-light-gray" size={20} />
+          <button className="border border-dbs-red-500 text-dbs-red-500 px-4 py-1 rounded-full text-sm font-semibold">LOG OUT</button>
+        </div>
       </header>
 
       <main className="p-4 pb-32">
         <h1 className="text-light-gray text-lg mb-4">Your optimized monthly budget</h1>
+
+        {/* Debug Info Display */}
+        {isSuccess && clusterId !== null && (
+          <div className="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 mb-4" role="alert">
+            <p className="font-bold">Debug Information</p>
+            <p>Cluster ID: {clusterId}</p>
+            <p>Proportions: [{proportions.map(p => p.toFixed(4)).join(', ')}]</p>
+          </div>
+        )}
 
         {/* Budget Categories */}
         <div className="space-y-2">

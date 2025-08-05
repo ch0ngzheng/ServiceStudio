@@ -260,13 +260,11 @@ def optimize_budget():
 
     # Use the new helper method to get the model directly
     try:
+        cluster_id = model_manager.user_map.loc[user_id, 'cluster']
         model_artifacts = model_manager.get_model_for_user(user_id)
         if not model_artifacts:
-            # This can happen if the user is in the map but the model file is missing
-            cluster_id = model_manager.user_map.loc[user_id, 'cluster']
             return jsonify({"error": f"Model for cluster {cluster_id} not found."}), 500
         
-        # The actual model is inside the loaded dictionary
         model = model_artifacts['model']
 
     except KeyError:
@@ -319,7 +317,9 @@ def optimize_budget():
     
     return jsonify({
         "message": "Budget optimized and saved successfully!",
-        "optimized_budget": optimized_budget
+        "optimized_budget": optimized_budget,
+        "cluster_id": int(cluster_id),
+        "predicted_proportions": predicted_proportions.tolist()
     })
 
 if __name__ == '__main__':
