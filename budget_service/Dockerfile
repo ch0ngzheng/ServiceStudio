@@ -11,6 +11,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application's code into the container at /app
+# Copy the application source code and necessary data files
+COPY user_cluster_map.csv ./
 COPY . .
 
 # Make port 8080 available to the world outside this container
