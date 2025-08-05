@@ -110,10 +110,12 @@ def optimize_budget():
         app.logger.error(f"Database update failed for user {user_id}: {e}")
         return jsonify({"error": "Failed to save the optimized budget."}), 500
     
-    return jsonify({
+    response_data = {
         "message": "Budget optimized and saved successfully!",
         "optimized_budget": optimized_budget
-    })
+    }
+    print(f"[DEBUG] Final JSON response: {response_data}")
+    return jsonify(response_data)
 
 if __name__ == '__main__':
     # Use Gunicorn's port configuration for consistency with Docker
