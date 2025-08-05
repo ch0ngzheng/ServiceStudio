@@ -28,8 +28,9 @@ except ConnectionFailure as e:
 
 # --- Load User Cluster Map at Startup ---
 try:
-    # This assumes 'user_cluster_map.csv' is in the same directory as the Dockerfile context
-    user_map = pd.read_csv('user_cluster_map.csv').set_index('user_id')
+    # This assumes 'user_cluster_map.csv' is in the 'models' directory
+    user_map_path = os.path.join('models', 'user_cluster_map.csv')
+    user_map = pd.read_csv(user_map_path).set_index('user_id')
     print("User cluster map loaded successfully.")
 except FileNotFoundError:
     print("ERROR: 'user_cluster_map.csv' not found. The service will not be able to optimize budgets.")
