@@ -258,29 +258,32 @@ def optimize_budget():
     if not user_id or total_budget is None:
         return jsonify({"error": "user_id and total_budget are required"}), 400
 
-    # Use the new helper method to get the model directly
+    # --- Model Loading and Prediction --- 
     try:
-        model_artifacts = model_manager.get_model_for_user(user_id)
-        if not model_artifacts:
-            # This can happen if the user is in the map but the model file is missing
-            cluster_id = model_manager.user_map.loc[user_id, 'cluster']
-            return jsonify({"error": f"Model for cluster {cluster_id} not found."}), 500
+        # 1. Find user's cluster
+        user_map = pd.read_csv('user_cluster_map.csv').set_index('user_id')
+        cluster_id = user_map.loc[user_id, 'cluster']
         
-        # The actual model is inside the loaded dictionary
-        model = model_artifacts['model']
+        # 2. Load the corresponding model artifacts
+        model_path = os.path.join('cluster_models', f'cluster_{cluster_id}_model.pkl')
+        artifacts = joblib.load(model_path)
+        model = artifacts['model']
+        feature_names = artifacts['feature_names']
+        CATEGORIES = artifacts['categories']
 
+        # 3. Prepare features for prediction (using the next month)
+        next_month = (datetime.now().month) % 12 + 1
+        features_df = pd.DataFrame([[next_month]], columns=feature_names)
+
+        # 4. Get the model's prediction for spending distribution
+        predicted_proportions = model.predict(features_df)[0]
+
+    except FileNotFoundError:
+        return jsonify({"error": f"Model file not found for cluster {cluster_id}."}), 500
     except KeyError:
-        return jsonify({"error": f"User '{user_id}' not found in cluster map. Please assign a cluster first."}), 404
-    except TypeError:
-        # This handles cases where the loaded artifact isn't a dictionary
-        return jsonify({"error": f"Model file for user '{user_id}' appears to be corrupt or in the wrong format."}), 500
-
-    # Prepare features for prediction (using the next month)
-    next_month = (datetime.now().month) % 12 + 1
-    features = [[next_month]] # model expects a 2D array
-
-    # Get the model's prediction for spending distribution
-    predicted_proportions = model.predict(features)[0]
+        return jsonify({"error": f"User '{user_id}' not found in cluster map."}), 404
+    except Exception as e:
+        return jsonify({"error": f"An error occurred during model prediction: {e}"}), 500
     
     # The total budget is now received directly from the request
     
