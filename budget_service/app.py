@@ -317,9 +317,7 @@ def optimize_budget():
     
     return jsonify({
         "message": "Budget optimized and saved successfully!",
-        "optimized_budget": optimized_budget,
-        "cluster_id": int(cluster_id),
-        "predicted_proportions": predicted_proportions.tolist()
+        "optimized_budget": optimized_budget
     })
 
 if __name__ == '__main__':

@@ -12,8 +12,6 @@ const InsightsPage = () => {
   const [categories, setCategories] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [setAsDefault, setSetAsDefault] = useState(false);
-  const [clusterId, setClusterId] = useState(null);
-  const [proportions, setProportions] = useState([]);
 
   useEffect(() => {
     const { totalBudget } = location.state || {};
@@ -54,12 +52,7 @@ const InsightsPage = () => {
           }));
           setCategories(updatedCategories);
         }
-        if (result.cluster_id !== undefined) {
-          setClusterId(result.cluster_id);
-        }
-        if (result.predicted_proportions) {
-          setProportions(result.predicted_proportions);
-        }
+
         return true; // Indicate success
       } else {
         setMessage(result.error || 'Failed to optimize budget.');
@@ -101,14 +94,7 @@ const InsightsPage = () => {
       <main className="p-4 pb-32">
         <h1 className="text-light-gray text-lg mb-4">Your optimized monthly budget</h1>
 
-        {/* Debug Info Display */}
-        {isSuccess && clusterId !== null && (
-          <div className="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 mb-4" role="alert">
-            <p className="font-bold">Debug Information</p>
-            <p>Cluster ID: {clusterId}</p>
-            <p>Proportions: [{proportions.map(p => p.toFixed(4)).join(', ')}]</p>
-          </div>
-        )}
+
 
         {/* Budget Categories */}
         <div className="space-y-2">
