@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def parse_iso_date(date_str):
     """Parses an ISO 8601 string, handling the 'Z' suffix for UTC."""
@@ -132,13 +132,7 @@ def get_budget(user_id, year, month):
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 404
 
-        # Calculate the correct month_key for the previous month
-        first_day_of_current_month = datetime(year, month, 1)
-        last_day_of_previous_month = first_day_of_current_month - timedelta(days=1)
-        prev_year = last_day_of_previous_month.year
-        prev_month = last_day_of_previous_month.month
-
-        month_key = f"{prev_year}-{prev_month:02d}"
+        month_key = f"{year}-{month:02d}"
         # Fetch the budget directly from the user's document, where `optimize_budget` saves it.
         user_budgets = user.get('budgets', {})
         monthly_budget_data = user_budgets.get(month_key, {})
@@ -279,9 +273,9 @@ def optimize_budget():
         # This handles cases where the loaded artifact isn't a dictionary
         return jsonify({"error": f"Model file for user '{user_id}' appears to be corrupt or in the wrong format."}), 500
 
-    # Prepare features for prediction (using the next month)
-    next_month = (datetime.now().month) % 12 + 1
-    features = [[next_month]] # model expects a 2D array
+    # Prepare features for prediction using the month from the request
+    # The model was trained on month numbers (e.g., 1 for Jan, 5 for May)
+    features = [[month]] # model expects a 2D array
 
     # Get the model's prediction for spending distribution
     predicted_proportions = model.predict(features)[0]
