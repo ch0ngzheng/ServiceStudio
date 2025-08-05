@@ -285,7 +285,10 @@ def optimize_budget():
     # The total budget is now received directly from the request
     
     # Distribute the total budget according to the model's predicted proportions
+    app.logger.info(f"[DEBUG] Predicted Proportions: {predicted_proportions}")
+    app.logger.info(f"[DEBUG] Categories Used: {CATEGORIES}")
     optimized_budget = {cat: round(total_budget * prop, 2) for cat, prop in zip(CATEGORIES, predicted_proportions)}
+    app.logger.info(f"[DEBUG] Calculated Optimized Budget: {optimized_budget}")
     
     set_as_default = data.get('set_as_default', False)
 
