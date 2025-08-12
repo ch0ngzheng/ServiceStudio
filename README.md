@@ -108,18 +108,18 @@ Once the dependencies are installed, you can start each service in a separate te
 The frontend will typically be available at `http://localhost:5173`.
 
 ## Project Video
-![Project Video](https://github.com/jhjh0409/EduCube_SUTD/assets/124416920/990eea48-a303-4c08-ab1e-2ef0947f9f63)
+[Project Video Link](placeholder-link)
 
 
 ## Project Design Process
-![Our Design Process](https://docs.google.com/document/d/18MOwI4YNyY9gpaiDc2xSt0gREpZ2dgRA4IzS8gsjsDg/edit?usp=sharing)
+[Our Design Process](https://docs.google.com/document/d/18MOwI4YNyY9gpaiDc2xSt0gREpZ2dgRA4IzS8gsjsDg/edit?usp=sharing)
 
-![Our Final Report](placeholder-link)
+[Our Final Report](placeholder-link)
 
 ## Peoject Presentation
-![Our Presentation](placeholder-link)
+[Our Presentation video](https://youtu.be/R0IeuId8JI4?si=IOK7m9W7H1i8euWC)
 
 ## Project Report
-![Our Report](placeholder-link)
+[Our Report](placeholder-link)
 
 
