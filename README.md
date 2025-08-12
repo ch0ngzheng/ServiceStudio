@@ -108,7 +108,7 @@ Once the dependencies are installed, you can start each service in a separate te
 The frontend will typically be available at `http://localhost:5173`.
 
 ## Project Video
-[Project Video Link](placeholder-link)
+[Project Video Link](https://youtu.be/R0IeuId8JI4?si=IOK7m9W7H1i8euWC)
 
 
 ## Project Design Process
@@ -117,9 +117,6 @@ The frontend will typically be available at `http://localhost:5173`.
 [Our Final Report](placeholder-link)
 
 ## Peoject Presentation
-[Our Presentation video](https://youtu.be/R0IeuId8JI4?si=IOK7m9W7H1i8euWC)
-
-## Project Report
-[Our Report](placeholder-link)
+[Our Presentation video](placeholder-link)
 
 
